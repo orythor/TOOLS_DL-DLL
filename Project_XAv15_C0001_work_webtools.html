@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NANO Dashboard</title>
+<style>
+/* ============================
+   NANO DASHBOARD - style.css
+   Blue-Black Color Scheme
+   ============================ */
+
+:root {
+  --bg-base:       #060a12;
+  --bg-surface:    rgba(13,21,37,0.82);
+  --bg-card:       rgba(14,24,45,0.75);
+  --bg-card-hover: rgba(20,34,58,0.88);
+  --bg-input:      rgba(8,15,28,0.80);
+  --border:        #1e3050;
+  --border-bright: #2a4570;
+  --accent:        #2563eb;
+  --accent-mid:    #1d4ed8;
+  --accent-glow:   #3b82f6;
+  --accent-soft:   rgba(37,99,235,0.15);
+  --accent-soft2:  rgba(37,99,235,0.08);
+  --text-primary:  #e8f0fe;
+  --text-secondary:#7fa3cc;
+  --text-muted:    #3d5a80;
+  --text-dim:      #263952;
+  --success:       #22c55e;
+  --error:         #ef4444;
+  --warning:       #f59e0b;
+  --topbar-h:      52px;
+  --bnav-h:        60px;
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-base);
+  background-image: url('https://img2.pixhost.to/images/9209/747759088_1000230870.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+}
+
+/* ============================
+   TOP BAR
+   ============================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar-h);
+  background: rgba(4,7,14,0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 100;
+  gap: 12px;
+}
+
+.topbar-menu {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.topbar-menu span {
+  display: block;
+  height: 2px;
+  background: var(--text-secondary);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.topbar-menu:hover span {
+  background: var(--text-primary);
+}
+
+.topbar-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.topbar-history-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.topbar-history-btn:hover {
+  color: var(--text-primary);
+  background: var(--accent-soft);
+}
+
+/* ============================
+   SIDEBAR
+   ============================ */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 260px;
+  background: rgba(10,18,35,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.05em;
+}
+
+.logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.12em;
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.sidebar-close:hover {
+  color: var(--text-primary);
+  background: var(--accent-soft);
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  padding: 12px 8px 4px;
+  text-transform: uppercase;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+  margin-bottom: 1px;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  background: var(--accent-soft);
+  color: var(--accent-glow);
+}
+
+.sidebar-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* ============================
+   PAGES
+   ============================ */
+.pages-container {
+  position: fixed;
+  top: var(--topbar-h);
+  left: 0; right: 0;
+  bottom: var(--bnav-h);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.page {
+  display: none;
+  padding: 16px 16px 24px;
+  min-height: 100%;
+  animation: pageIn 0.2s ease;
+  background: transparent;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ============================
+   DASHBOARD PAGE
+   ============================ */
+.dashboard-hero {
+  position: relative;
+  border-radius: 16px;
+  padding: 32px 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #0d1e3d 0%, #060f22 100%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(37,99,235,0.22) 0%, transparent 70%);
+  top: -60px;
+  right: -60px;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-glow);
+  background: var(--accent-soft);
+  border: 1px solid rgba(59,130,246,0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.dash-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 8px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-card:hover, .dash-card:active {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.dash-card-icon {
+  color: var(--accent-glow);
+}
+
+.dash-card-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.activity-list {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.activity-text {
+  flex: 1;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-time {
+  color: var(--text-muted);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.activity-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.about-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.about-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-row:last-child {
+  border-bottom: none;
+}
+
+.about-key {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.about-val {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.about-link {
+  font-size: 13px;
+  color: var(--accent-glow);
+  text-decoration: none;
+}
+
+/* ============================
+   CALCULATOR
+   ============================ */
+.calc-wrap {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.calc-display {
+  padding: 24px 20px 16px;
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.calc-expr {
+  font-size: 14px;
+  color: var(--text-muted);
+  min-height: 20px;
+  margin-bottom: 4px;
+}
+
+.calc-result {
+  font-size: 40px;
+  font-weight: 300;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  word-break: break-all;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.calc-btn {
+  border: none;
+  padding: 18px 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: filter 0.1s;
+  font-family: var(--font);
+}
+
+.calc-btn:active {
+  filter: brightness(1.3);
+}
+
+.calc-btn.span2 {
+  grid-column: span 2;
+}
+
+.calc-btn.num {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.calc-btn.op {
+  background: var(--bg-surface);
+  color: var(--accent-glow);
+  font-weight: 600;
+}
+
+.calc-btn.fn {
+  background: #0f1e35;
+  color: var(--text-secondary);
+}
+
+.calc-btn.eq {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ============================
+   FORMS / INPUTS
+   ============================ */
+.input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.text-input {
+  flex: 1;
+  background: var(--bg-input);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+
+.text-input::placeholder {
+  color: var(--text-dim);
+}
+
+.text-input:focus {
+  border-color: var(--accent);
+}
+
+.weather-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+  font-family: var(--font);
+}
+
+.btn-primary:hover {
+  background: var(--accent-mid);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary.full {
+  width: 100%;
+}
+
+.btn-ghost {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  font-family: var(--font);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent-glow);
+}
+
+/* ============================
+   RESULT AREAS
+   ============================ */
+.result-box {
+  background: var(--bg-input);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  min-height: 120px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-family: monospace;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.result-area {
+  margin-top: 16px;
+}
+
+.result-placeholder {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 32px 16px;
+}
+
+/* Card for search results */
+.result-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  transition: border-color 0.15s;
+}
+
+.result-card:hover {
+  border-color: var(--border-bright);
+}
+
+.result-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.result-card-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.result-card-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Download button */
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  font-family: var(--font);
+  margin-right: 6px;
+  margin-top: 4px;
+}
+
+.dl-btn:hover {
+  background: var(--accent-mid);
+}
+
+.dl-btn.secondary {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.dl-btn.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent-glow);
+}
+
+/* Thumbnail */
+.result-thumb {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Error / Success banners */
+.banner {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.banner.error {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+}
+
+.banner.success {
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  color: #86efac;
+}
+
+/* ============================
+   LYRICS PAGE
+   ============================ */
+.lyrics-box {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.lyrics-song-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.lyrics-artist {
+  font-size: 13px;
+  color: var(--accent-glow);
+  margin-bottom: 14px;
+}
+
+.lyrics-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* ============================
+   WEATHER PAGE
+   ============================ */
+.weather-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.weather-location {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.weather-desc {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.weather-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.weather-stat {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.weather-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.weather-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ============================
+   YOUTUBE SEARCH GRID
+   ============================ */
+.yt-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+.yt-thumb-wrap {
+  flex-shrink: 0;
+  width: 110px;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-surface);
+}
+
+.yt-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yt-duration {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.yt-info {
+  padding: 10px 12px 10px 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.yt-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.yt-channel {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.yt-views {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ============================
+   FORMAT TOGGLE (YouTube DL)
+   ============================ */
+.format-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.fmt-btn {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+}
+
+.fmt-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.api-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.api-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.api-select {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+  font-family: var(--font);
+  cursor: pointer;
+}
+
+.mt8 { margin-top: 8px; }
+
+/* ============================
+   DOWNLOAD RESULT BLOCK
+   ============================ */
+.dl-result-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.dl-result-thumb {
+  width: 100%;
+  border-radius: 8px;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.dl-result-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.dl-result-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.dl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ============================
+   HISTORY PAGE
+   ============================ */
+.history-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-item {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.history-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent-glow);
+}
+
+.history-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-item-page {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-glow);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+
+.history-item-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-item-time {
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ============================
+   BOTTOM NAV
+   ============================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--bnav-h);
+  background: rgba(4,7,14,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  z-index: 100;
+}
+
+.bnav-item {
+  border: none;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-family: var(--font);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+  padding: 0;
+}
+
+.bnav-item.active {
+  color: var(--accent-glow);
+}
+
+.bnav-item:hover {
+  color: var(--text-secondary);
+}
+
+.bnav-item.active:hover {
+  color: var(--accent-glow);
+}
+
+/* ============================
+   LOADING OVERLAY
+   ============================ */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(6,10,18,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ============================
+   SCROLLBAR
+   ============================ */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* ============================
+   ANIME / NEKOPOI / FDROID
+   ============================ */
+.media-card {
+  display: flex;
+  gap: 12px;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.media-card-thumb {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+}
+
+.media-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.media-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.media-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--accent-soft2);
+  color: var(--accent-glow);
+  border: 1px solid rgba(59,130,246,0.2);
+}
+
+.tag.genre {
+  background: rgba(34,197,94,0.08);
+  color: #86efac;
+  border-color: rgba(34,197,94,0.2);
+}
+
+.media-card-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* SRC Result */
+.src-header {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Spotify result */
+.spotify-art {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.spotify-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.spotify-info-block {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Progress for audio */
+.audio-player-wrap {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+audio {
+  width: 100%;
+  outline: none;
+  filter: invert(0.8) hue-rotate(180deg);
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <span class="logo-mark">N</span>
+      <span class="logo-text">NANO</span>
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()">&#10005;</button>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a class="sidebar-link active" onclick="showPage('dashboard'); closeSidebar()">Dashboard</a>
+    <div class="nav-section-label">TOOLS</div>
+    <a class="sidebar-link" onclick="showPage('calculator'); closeSidebar()">Calculator</a>
+    <a class="sidebar-link" onclick="showPage('src'); closeSidebar()">SRC Proxy</a>
+    <a class="sidebar-link" onclick="showPage('lyrics'); closeSidebar()">Lyrics Search</a>
+    <a class="sidebar-link" onclick="showPage('weather'); closeSidebar()">Weather</a>
+    <a class="sidebar-link" onclick="showPage('ytsearch'); closeSidebar()">YouTube Search</a>
+    <a class="sidebar-link" onclick="showPage('nekopoi'); closeSidebar()">Nekopoi</a>
+    <a class="sidebar-link" onclick="showPage('fdroid'); closeSidebar()">F-Droid Search</a>
+    <a class="sidebar-link" onclick="showPage('anime'); closeSidebar()">Anime Search</a>
+    <div class="nav-section-label">DOWNLOADER</div>
+    <a class="sidebar-link" onclick="showPage('tiktok'); closeSidebar()">TikTok DL</a>
+    <a class="sidebar-link" onclick="showPage('youtube'); closeSidebar()">YouTube DL</a>
+    <a class="sidebar-link" onclick="showPage('tiktok2'); closeSidebar()">TikTok DL 2</a>
+    <a class="sidebar-link" onclick="showPage('spotify'); closeSidebar()">Spotify DL</a>
+    <a class="sidebar-link" onclick="showPage('instagram'); closeSidebar()">Instagram DL</a>
+    <div class="nav-section-label">LINKS</div>
+    <a class="sidebar-link" href="https://whatsapp.com/channel/0029Vb8avaAJJhzUqKd0Xv15" target="_blank">WhatsApp Channel</a>
+    <a class="sidebar-link" href="https://tiktok.com/@yanxs_present" target="_blank">TikTok</a>
+    <a class="sidebar-link" href="https://instagram.com/@derty_xyz" target="_blank">Instagram</a>
+  </nav>
+  <div class="sidebar-footer">NANO v1.0 &copy; 2025</div>
+</aside>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <button class="topbar-menu" id="menuBtn" onclick="openSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="topbar-title" id="topbarTitle">Dashboard</div>
+  <div class="topbar-history-btn" onclick="showPage('history')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  </div>
+</header>
+
+<!-- PAGES CONTAINER -->
+<main class="pages-container">
+
+  <!-- PAGE: DASHBOARD -->
+  <section class="page active" id="page-dashboard">
+    <div class="dashboard-hero">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge">NANO SYSTEM</div>
+        <h1 class="hero-title">Your All-in-One<br>Digital Toolkit</h1>
+        <p class="hero-sub">Tools, downloaders, and utilities — all in one place.</p>
+      </div>
+    </div>
+
+    <div class="section-label">Quick Access</div>
+    <div class="dashboard-grid">
+      <div class="dash-card" onclick="showPage('calculator')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+        </div>
+        <div class="dash-card-label">Calculator</div>
+      </div>
+      <div class="dash-card" onclick="showPage('lyrics')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <div class="dash-card-label">Lyrics</div>
+      </div>
+      <div class="dash-card" onclick="showPage('weather')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+        </div>
+        <div class="dash-card-label">Weather</div>
+      </div>
+      <div class="dash-card" onclick="showPage('ytsearch')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="dash-card-label">YT Search</div>
+      </div>
+      <div class="dash-card" onclick="showPage('tiktok')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="dash-card-label">TikTok DL</div>
+      </div>
+      <div class="dash-card" onclick="showPage('youtube')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        </div>
+        <div class="dash-card-label">YouTube DL</div>
+      </div>
+      <div class="dash-card" onclick="showPage('spotify')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12.5c2.5-1 5-1 7.5 0M8 9c3.5-1.5 7-1.5 10 0M8.5 16c1.5-.5 3-.5 4.5 0"/></svg>
+        </div>
+        <div class="dash-card-label">Spotify DL</div>
+      </div>
+      <div class="dash-card" onclick="showPage('instagram')">
+        <div class="dash-card-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div class="dash-card-label">Instagram DL</div>
+      </div>
+    </div>
+
+    <div class="section-label">Recent Activity</div>
+    <div class="activity-list" id="dashboardActivity">
+      <div class="activity-empty">No recent activity yet.</div>
+    </div>
+
+    <div class="section-label">About</div>
+    <div class="about-card">
+      <div class="about-row">
+        <span class="about-key">Creator</span>
+        <span class="about-val">yanxs_present</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Version</span>
+        <span class="about-val">NANO v1.0</span>
+      </div>
+      <div class="about-row">
+        <span class="about-key">TikTok</span>
+        <a class="about-link" href="https://tiktok.com/@yanxs_present" target="_blank">@yanxs_present</a>
+      </div>
+      <div class="about-row">
+        <span class="about-key">Instagram</span>
+        <a class="about-link" href="https://instagram.com/@derty_xyz" target="_blank">@derty_xyz</a>
+      </div>
+      <div class="about-row">
+        <span class="about-key">WhatsApp</span>
+        <a class="about-link" href="https://whatsapp.com/channel/0029Vb8avaAJJhzUqKd0Xv15" target="_blank">Join Channel</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE: CALCULATOR -->
+  <section class="page" id="page-calculator">
+    <div class="page-header">
+      <div class="page-title">Calculator</div>
+      <div class="page-sub">Standard arithmetic operations</div>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-display">
+        <div class="calc-expr" id="calcExpr"></div>
+        <div class="calc-result" id="calcResult">0</div>
+      </div>
+      <div class="calc-grid">
+        <button class="calc-btn span2 fn" onclick="calcClear()">AC</button>
+        <button class="calc-btn fn" onclick="calcSign()">+/-</button>
+        <button class="calc-btn op" onclick="calcOp('/')">÷</button>
+        <button class="calc-btn num" onclick="calcNum('7')">7</button>
+        <button class="calc-btn num" onclick="calcNum('8')">8</button>
+        <button class="calc-btn num" onclick="calcNum('9')">9</button>
+        <button class="calc-btn op" onclick="calcOp('*')">x</button>
+        <button class="calc-btn num" onclick="calcNum('4')">4</button>
+        <button class="calc-btn num" onclick="calcNum('5')">5</button>
+        <button class="calc-btn num" onclick="calcNum('6')">6</button>
+        <button class="calc-btn op" onclick="calcOp('-')">-</button>
+        <button class="calc-btn num" onclick="calcNum('1')">1</button>
+        <button class="calc-btn num" onclick="calcNum('2')">2</button>
+        <button class="calc-btn num" onclick="calcNum('3')">3</button>
+        <button class="calc-btn op" onclick="calcOp('+')">+</button>
+        <button class="calc-btn num span2" onclick="calcNum('0')">0</button>
+        <button class="calc-btn num" onclick="calcDot()">.</button>
+        <button class="calc-btn eq" onclick="calcEqual()">=</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE: SRC PROXY -->
+  <section class="page" id="page-src">
+    <div class="page-header">
+      <div class="page-title">SRC Proxy</div>
+      <div class="page-sub">Fetch public web scripts via proxy</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="srcInput" class="text-input" placeholder="Enter script URL...">
+      <button class="btn-primary" onclick="fetchSrc()">Fetch</button>
+    </div>
+    <div class="result-box" id="srcResult">
+      <div class="result-placeholder">Enter a URL above to fetch its content through the proxy.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: LYRICS -->
+  <section class="page" id="page-lyrics">
+    <div class="page-header">
+      <div class="page-title">Lyrics Search</div>
+      <div class="page-sub">Search song lyrics by title or artist</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="lyricsInput" class="text-input" placeholder="Song title or artist...">
+      <button class="btn-primary" onclick="searchLyrics()">Search</button>
+    </div>
+    <div id="lyricsResult" class="result-area">
+      <div class="result-placeholder">Search for a song to view its lyrics.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: WEATHER -->
+  <section class="page" id="page-weather">
+    <div class="page-header">
+      <div class="page-title">Weather</div>
+      <div class="page-sub">Check current weather conditions</div>
+    </div>
+    <div class="weather-form">
+      <input type="text" id="weatherKab" class="text-input" placeholder="Kabupaten (e.g. Pekalongan)" value="Pekalongan">
+      <input type="text" id="weatherKec" class="text-input" placeholder="Kecamatan (e.g. Karanganyar)" value="Karanganyar">
+      <input type="text" id="weatherDesa" class="text-input" placeholder="Desa (e.g. Kulu)" value="Kulu">
+      <button class="btn-primary full" onclick="fetchWeather()">Check Weather</button>
+    </div>
+    <div id="weatherResult" class="result-area">
+      <div class="result-placeholder">Fill in the fields above to check weather.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: YOUTUBE SEARCH -->
+  <section class="page" id="page-ytsearch">
+    <div class="page-header">
+      <div class="page-title">YouTube Search</div>
+      <div class="page-sub">Find videos on YouTube</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="ytSearchInput" class="text-input" placeholder="Search YouTube...">
+      <button class="btn-primary" onclick="searchYouTube()">Search</button>
+    </div>
+    <div id="ytSearchResult" class="result-area grid-result">
+      <div class="result-placeholder">Enter a query to search YouTube.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: NEKOPOI -->
+  <section class="page" id="page-nekopoi">
+    <div class="page-header">
+      <div class="page-title">Nekopoi</div>
+      <div class="page-sub">Search anime titles</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="nekoInput" class="text-input" placeholder="Search title...">
+      <button class="btn-primary" onclick="searchNekopoi()">Search</button>
+    </div>
+    <div id="nekoResult" class="result-area">
+      <div class="result-placeholder">Enter a title to search.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: F-DROID -->
+  <section class="page" id="page-fdroid">
+    <div class="page-header">
+      <div class="page-title">F-Droid Search</div>
+      <div class="page-sub">Find open-source Android apps</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="fdroidInput" class="text-input" placeholder="App name (e.g. Termux)...">
+      <button class="btn-primary" onclick="searchFdroid()">Search</button>
+    </div>
+    <div id="fdroidResult" class="result-area">
+      <div class="result-placeholder">Search for an app to get the APK details.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: ANIME SEARCH -->
+  <section class="page" id="page-anime">
+    <div class="page-header">
+      <div class="page-title">Anime Search</div>
+      <div class="page-sub">Search and discover anime titles</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="animeInput" class="text-input" placeholder="Anime title...">
+      <button class="btn-primary" onclick="searchAnime()">Search</button>
+    </div>
+    <div id="animeResult" class="result-area">
+      <div class="result-placeholder">Search for an anime title above.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: TIKTOK DOWNLOADER -->
+  <section class="page" id="page-tiktok">
+    <div class="page-header">
+      <div class="page-title">TikTok Downloader</div>
+      <div class="page-sub">Download TikTok videos without watermark</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="tiktokInput" class="text-input" placeholder="Paste TikTok URL...">
+      <button class="btn-primary" onclick="downloadTikTok()">Download</button>
+    </div>
+    <div class="api-toggle-row">
+      <span class="api-label">API Source:</span>
+      <select class="api-select" id="tiktokApiSelect">
+        <option value="v1">Nanzz V1 (MP3/MP4/HD/NoWM)</option>
+        <option value="v2">Nanzz V2 (MP3/MP4)</option>
+        <option value="v3">EmiliaBot V3 (All Formats)</option>
+      </select>
+    </div>
+    <div id="tiktokResult" class="result-area">
+      <div class="result-placeholder">Paste a TikTok link and tap Download.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: YOUTUBE DOWNLOADER -->
+  <section class="page" id="page-youtube">
+    <div class="page-header">
+      <div class="page-title">YouTube Downloader</div>
+      <div class="page-sub">Download YouTube videos or audio</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="youtubeInput" class="text-input" placeholder="Paste YouTube URL...">
+    </div>
+    <div class="api-toggle-row">
+      <span class="api-label">API Source:</span>
+      <select class="api-select" id="youtubeApiSelect">
+        <option value="v1">EmiliaBot V1 (MP4 + MP3)</option>
+        <option value="v2">FAA V2 (MP4)</option>
+      </select>
+    </div>
+    <button class="btn-primary full mt8" onclick="downloadYouTube()">Download</button>
+    <div id="youtubeResult" class="result-area">
+      <div class="result-placeholder">Paste a YouTube link and tap Download.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: TIKTOK DOWNLOADER 2 -->
+  <section class="page" id="page-tiktok2">
+    <div class="page-header">
+      <div class="page-title">TikTok DL 2</div>
+      <div class="page-sub">Alternative TikTok downloader</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="tiktok2Input" class="text-input" placeholder="Paste TikTok URL...">
+      <button class="btn-primary" onclick="downloadTikTok2()">Download</button>
+    </div>
+    <div class="api-toggle-row">
+      <span class="api-label">API Source:</span>
+      <select class="api-select" id="tiktok2ApiSelect">
+        <option value="v1">Nanzz V1 (MP3/MP4/HD/NoWM)</option>
+        <option value="v2">Nanzz V2 (MP3/MP4)</option>
+      </select>
+    </div>
+    <div id="tiktok2Result" class="result-area">
+      <div class="result-placeholder">Paste a TikTok link and tap Download.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: SPOTIFY DOWNLOADER -->
+  <section class="page" id="page-spotify">
+    <div class="page-header">
+      <div class="page-title">Spotify Downloader</div>
+      <div class="page-sub">Download Spotify tracks as MP3</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="spotifyInput" class="text-input" placeholder="Paste Spotify track URL...">
+    </div>
+    <div class="api-toggle-row">
+      <span class="api-label">API Source:</span>
+      <select class="api-select" id="spotifyApiSelect">
+        <option value="v1">Nanzz V1</option>
+        <option value="v2">Yupra V2</option>
+      </select>
+    </div>
+    <button class="btn-primary full mt8" onclick="downloadSpotify()">Download</button>
+    <div id="spotifyResult" class="result-area">
+      <div class="result-placeholder">Paste a Spotify track link and tap Download.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: INSTAGRAM DOWNLOADER -->
+  <section class="page" id="page-instagram">
+    <div class="page-header">
+      <div class="page-title">Instagram Downloader</div>
+      <div class="page-sub">Download Instagram reels and posts</div>
+    </div>
+    <div class="input-group">
+      <input type="text" id="igInput" class="text-input" placeholder="Paste Instagram URL...">
+    </div>
+    <div class="api-toggle-row">
+      <span class="api-label">API Source:</span>
+      <select class="api-select" id="igApiSelect">
+        <option value="v1">Nanzz V1</option>
+        <option value="v2">FAA V2</option>
+      </select>
+    </div>
+    <button class="btn-primary full mt8" onclick="downloadInstagram()">Download</button>
+    <div id="igResult" class="result-area">
+      <div class="result-placeholder">Paste an Instagram link and tap Download.</div>
+    </div>
+  </section>
+
+  <!-- PAGE: HISTORY -->
+  <section class="page" id="page-history">
+    <div class="page-header">
+      <div class="page-title">History</div>
+      <div class="page-sub">Your recent activity log</div>
+    </div>
+    <div class="history-controls">
+      <button class="btn-ghost" onclick="clearHistory()">Clear All</button>
+    </div>
+    <div id="historyList" class="history-list">
+      <div class="result-placeholder">No history recorded yet.</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-item active" id="bnav-dashboard" onclick="showPage('dashboard')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <span>Dashboard</span>
+  </button>
+  <button class="bnav-item" id="bnav-tools" onclick="showPage('calculator')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    <span>Tools</span>
+  </button>
+  <button class="bnav-item" id="bnav-downloader" onclick="showPage('tiktok')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    <span>Downloader</span>
+  </button>
+  <button class="bnav-item" id="bnav-history" onclick="showPage('history')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>History</span>
+  </button>
+</nav>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Fetching data...</div>
+</div>
+
+<script>
+/* ============================
+   NANO DASHBOARD - app.js
+   ============================ */
+
+// ============================
+// STATE
+// ============================
+let currentPage = 'dashboard';
+let calcCurrent = '0';
+let calcPrev = '';
+let calcOper = null;
+let calcReset = false;
+
+const PAGE_TITLES = {
+  dashboard:  'Dashboard',
+  calculator: 'Calculator',
+  src:        'SRC Proxy',
+  lyrics:     'Lyrics Search',
+  weather:    'Weather',
+  ytsearch:   'YouTube Search',
+  nekopoi:    'Nekopoi',
+  fdroid:     'F-Droid Search',
+  anime:      'Anime Search',
+  tiktok:     'TikTok DL',
+  youtube:    'YouTube DL',
+  tiktok2:    'TikTok DL 2',
+  spotify:    'Spotify DL',
+  instagram:  'Instagram DL',
+  history:    'History',
+};
+
+const TOOLS_PAGES = ['calculator','src','lyrics','weather','ytsearch','nekopoi','fdroid','anime'];
+const DL_PAGES    = ['tiktok','youtube','tiktok2','spotify','instagram'];
+
+// ============================
+// SIDEBAR
+// ============================
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('active');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+// ============================
+// PAGE NAVIGATION
+// ============================
+function showPage(id) {
+  // Hide all
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Show target
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
+  target.classList.add('active');
+  currentPage = id;
+
+  // Update topbar title
+  document.getElementById('topbarTitle').textContent = PAGE_TITLES[id] || id;
+
+  // Update bottom nav highlights
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  if (id === 'dashboard') {
+    document.getElementById('bnav-dashboard').classList.add('active');
+  } else if (TOOLS_PAGES.includes(id)) {
+    document.getElementById('bnav-tools').classList.add('active');
+  } else if (DL_PAGES.includes(id)) {
+    document.getElementById('bnav-downloader').classList.add('active');
+  } else if (id === 'history') {
+    document.getElementById('bnav-history').classList.add('active');
+  }
+
+  // Update sidebar active
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+
+  // If dashboard, refresh activity widget
+  if (id === 'dashboard') renderDashboardActivity();
+  if (id === 'history') renderHistory();
+
+  // Scroll to top
+  document.querySelector('.pages-container').scrollTo(0, 0);
+}
+
+// ============================
+// LOADING
+// ============================
+function showLoading(text = 'Fetching data...') {
+  const ov = document.getElementById('loadingOverlay');
+  ov.querySelector('.loading-text').textContent = text;
+  ov.classList.add('active');
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('active');
+}
+
+// ============================
+// HISTORY
+// ============================
+function getHistory() {
+  try {
+    return JSON.parse(localStorage.getItem('nano_history') || '[]');
+  } catch { return []; }
+}
+
+function addHistory(page, text) {
+  const hist = getHistory();
+  hist.unshift({ page, text, time: Date.now() });
+  if (hist.length > 50) hist.pop();
+  localStorage.setItem('nano_history', JSON.stringify(hist));
+}
+
+function clearHistory() {
+  if (!confirm('Clear all history?')) return;
+  localStorage.removeItem('nano_history');
+  renderHistory();
+  renderDashboardActivity();
+}
+
+function timeAgo(ts) {
+  const diff = Math.floor((Date.now() - ts) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  return Math.floor(diff / 86400) + 'd ago';
+}
+
+function renderHistory() {
+  const hist = getHistory();
+  const el = document.getElementById('historyList');
+  if (!hist.length) {
+    el.innerHTML = '<div class="result-placeholder">No history recorded yet.</div>';
+    return;
+  }
+  el.innerHTML = hist.map(h => `
+    <div class="history-item">
+      <div class="history-item-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="history-item-body">
+        <div class="history-item-page">${PAGE_TITLES[h.page] || h.page}</div>
+        <div class="history-item-text">${escHtml(h.text)}</div>
+      </div>
+      <div class="history-item-time">${timeAgo(h.time)}</div>
+    </div>
+  `).join('');
+}
+
+function renderDashboardActivity() {
+  const hist = getHistory().slice(0, 5);
+  const el = document.getElementById('dashboardActivity');
+  if (!hist.length) {
+    el.innerHTML = '<div class="activity-empty">No recent activity yet.</div>';
+    return;
+  }
+  el.innerHTML = hist.map(h => `
+    <div class="activity-item">
+      <div class="activity-dot"></div>
+      <div class="activity-text">${escHtml(h.text)}</div>
+      <div class="activity-time">${timeAgo(h.time)}</div>
+    </div>
+  `).join('');
+}
+
+// ============================
+// UTILS
+// ============================
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function setResult(elId, html) {
+  document.getElementById(elId).innerHTML = html;
+}
+
+function errBanner(msg) {
+  return `<div class="banner error">${escHtml(msg)}</div>`;
+}
+
+// Direct download via fetch -> blob
+async function directDownload(url, filename) {
+  try {
+    showLoading('Downloading file...');
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch file');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename || 'download';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+  } catch (e) {
+    alert('Download failed: ' + e.message);
+  } finally {
+    hideLoading();
+  }
+}
+
+// Expose globally for inline onclick
+window.directDownload = directDownload;
+
+// ============================
+// CALCULATOR
+// ============================
+function calcDisplay() {
+  document.getElementById('calcResult').textContent =
+    parseFloat(calcCurrent).toLocaleString('en-US', { maximumFractionDigits: 10 });
+  document.getElementById('calcExpr').textContent =
+    calcPrev ? calcPrev + ' ' + (calcOper === '*' ? 'x' : calcOper === '/' ? '÷' : calcOper) : '';
+}
+
+function calcNum(n) {
+  if (calcReset || calcCurrent === '0') {
+    calcCurrent = n;
+    calcReset = false;
+  } else {
+    if (calcCurrent.replace('.','').replace('-','').length >= 12) return;
+    calcCurrent += n;
+  }
+  calcDisplay();
+}
+
+function calcDot() {
+  if (calcReset) { calcCurrent = '0.'; calcReset = false; calcDisplay(); return; }
+  if (!calcCurrent.includes('.')) calcCurrent += '.';
+  calcDisplay();
+}
+
+function calcSign() {
+  calcCurrent = String(parseFloat(calcCurrent) * -1);
+  calcDisplay();
+}
+
+function calcClear() {
+  calcCurrent = '0'; calcPrev = ''; calcOper = null; calcReset = false;
+  calcDisplay();
+}
+
+function calcOp(op) {
+  if (calcOper && !calcReset) {
+    calcEqual(true);
+  }
+  calcPrev = calcCurrent;
+  calcOper = op;
+  calcReset = true;
+  calcDisplay();
+}
+
+function calcEqual(silent = false) {
+  if (!calcOper || !calcPrev) return;
+  const a = parseFloat(calcPrev);
+  const b = parseFloat(calcCurrent);
+  let res;
+  switch (calcOper) {
+    case '+': res = a + b; break;
+    case '-': res = a - b; break;
+    case '*': res = a * b; break;
+    case '/': res = b === 0 ? 'Error' : a / b; break;
+    default:  res = b;
+  }
+  if (!silent) {
+    document.getElementById('calcExpr').textContent =
+      calcPrev + ' ' + (calcOper === '*' ? 'x' : calcOper === '/' ? '÷' : calcOper) + ' ' + calcCurrent + ' =';
+    calcCurrent = String(res);
+    calcOper = null; calcPrev = ''; calcReset = true;
+    calcDisplay();
+    document.getElementById('calcExpr').textContent = document.getElementById('calcExpr').textContent;
+  } else {
+    calcCurrent = String(res);
+  }
+}
+
+// ============================
+// SRC PROXY
+// ============================
+async function fetchSrc() {
+  const url = document.getElementById('srcInput').value.trim();
+  if (!url) return;
+  showLoading('Fetching script...');
+  addHistory('src', url);
+  try {
+    const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+    const res = await fetch(proxy);
+    const text = await res.text();
+    document.getElementById('srcResult').innerHTML =
+      `<div class="src-header">Response — ${escHtml(url)}</div>` +
+      `<pre style="white-space:pre-wrap;word-break:break-word;font-size:12px;color:var(--text-secondary);max-height:60vh;overflow:auto;">${escHtml(text)}</pre>`;
+  } catch (e) {
+    document.getElementById('srcResult').innerHTML = errBanner('Failed to fetch: ' + e.message);
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// LYRICS
+// ============================
+async function searchLyrics() {
+  const q = document.getElementById('lyricsInput').value.trim();
+  if (!q) return;
+  showLoading('Searching lyrics...');
+  addHistory('lyrics', q);
+  try {
+    const res = await fetch(`https://api.lolhuman.xyz/api/lirik?apikey=62ccb3e3a2140428a299f592&query=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    if (data.status !== 200 || !data.result) throw new Error(data.message || 'Not found');
+    const r = data.result;
+    setResult('lyricsResult', `
+      <div class="lyrics-box">
+        <div class="lyrics-song-title">${escHtml(r.title || q)}</div>
+        <div class="lyrics-artist">${escHtml(r.artist || '')}</div>
+        <div class="lyrics-text">${escHtml(r.lyrics || r.lirik || 'No lyrics found.')}</div>
+      </div>
+    `);
+  } catch (e) {
+    setResult('lyricsResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// WEATHER
+// ============================
+async function fetchWeather() {
+  const kab  = document.getElementById('weatherKab').value.trim();
+  const kec  = document.getElementById('weatherKec').value.trim();
+  const desa = document.getElementById('weatherDesa').value.trim();
+  if (!kab || !kec || !desa) return;
+  showLoading('Checking weather...');
+  addHistory('weather', `${kab}, ${kec}, ${desa}`);
+  try {
+    const url = `https://api-faa.my.id/faa/cuaca?kabupaten=${encodeURIComponent(kab)}&kecamatan=${encodeURIComponent(kec)}&desa=${encodeURIComponent(desa)}`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    if (!data.result && !data.data) throw new Error(data.message || 'No data');
+    const r = data.result || data.data || data;
+    const cuaca = Array.isArray(r) ? r[0] : r;
+    setResult('weatherResult', `
+      <div class="weather-card">
+        <div class="weather-location">${escHtml(kab)} / ${escHtml(kec)} / ${escHtml(desa)}</div>
+        <div class="weather-desc">${escHtml(cuaca.cuaca || cuaca.weather || cuaca.description || 'N/A')}</div>
+        <div class="weather-stats">
+          <div class="weather-stat">
+            <div class="weather-stat-label">Temperature</div>
+            <div class="weather-stat-value">${escHtml(String(cuaca.suhu || cuaca.temp || cuaca.temperature || '--'))} C</div>
+          </div>
+          <div class="weather-stat">
+            <div class="weather-stat-label">Humidity</div>
+            <div class="weather-stat-value">${escHtml(String(cuaca.kelembaban || cuaca.humidity || '--'))}%</div>
+          </div>
+          <div class="weather-stat">
+            <div class="weather-stat-label">Wind</div>
+            <div class="weather-stat-value">${escHtml(String(cuaca.angin || cuaca.wind_speed || cuaca.wind || '--'))}</div>
+          </div>
+          <div class="weather-stat">
+            <div class="weather-stat-label">Visibility</div>
+            <div class="weather-stat-value">${escHtml(String(cuaca.jarak_pandang || cuaca.visibility || '--'))}</div>
+          </div>
+        </div>
+        ${cuaca.waktu || cuaca.time ? `<div style="margin-top:12px;font-size:11px;color:var(--text-dim)">Updated: ${escHtml(cuaca.waktu || cuaca.time)}</div>` : ''}
+      </div>
+      <details style="margin-top:10px;">
+        <summary style="font-size:12px;color:var(--text-muted);cursor:pointer;padding:6px 0;">Raw response</summary>
+        <pre style="font-size:11px;color:var(--text-secondary);white-space:pre-wrap;word-break:break-word;margin-top:8px;">${escHtml(JSON.stringify(r, null, 2))}</pre>
+      </details>
+    `);
+  } catch (e) {
+    setResult('weatherResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// YOUTUBE SEARCH
+// ============================
+async function searchYouTube() {
+  const q = document.getElementById('ytSearchInput').value.trim();
+  if (!q) return;
+  showLoading('Searching YouTube...');
+  addHistory('ytsearch', q);
+  try {
+    const res = await fetch('https://api.yuulabs.web.id/api/search/youtube', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: q })
+    });
+    const data = await res.json();
+    const items = data.result || data.results || data.data || data.items || [];
+    if (!items.length) throw new Error('No results found');
+    const html = items.map(v => `
+      <div class="yt-card">
+        <div class="yt-thumb-wrap">
+          ${v.thumbnail ? `<img class="yt-thumb" src="${escHtml(v.thumbnail)}" loading="lazy" onerror="this.style.display='none'">` : ''}
+          ${v.duration ? `<div class="yt-duration">${escHtml(v.duration)}</div>` : ''}
+        </div>
+        <div class="yt-info">
+          <div class="yt-title">${escHtml(v.title || v.name || '')}</div>
+          <div class="yt-channel">${escHtml(v.channel || v.author || '')}</div>
+          <div class="yt-views">${escHtml(v.views || v.viewCount || '')}</div>
+          ${v.url || v.link ? `<div style="margin-top:6px"><a class="dl-btn secondary" href="${escHtml(v.url || v.link)}" target="_blank">Watch</a></div>` : ''}
+        </div>
+      </div>
+    `).join('');
+    setResult('ytSearchResult', html);
+  } catch (e) {
+    setResult('ytSearchResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// NEKOPOI
+// ============================
+async function searchNekopoi() {
+  const q = document.getElementById('nekoInput').value.trim();
+  if (!q) return;
+  showLoading('Searching Nekopoi...');
+  addHistory('nekopoi', q);
+  try {
+    const res  = await fetch(`https://api.covenant.sbs/api/anime/nekopoi/watch?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    const items = data.result || data.data || data.results || [];
+    if (!items.length) throw new Error('No results found');
+    const html = items.map(v => `
+      <div class="media-card">
+        ${v.thumbnail || v.cover ? `<img class="media-card-thumb" src="${escHtml(v.thumbnail || v.cover)}" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="media-card-info">
+          <div class="media-card-title">${escHtml(v.title || v.name || '')}</div>
+          <div class="media-card-tags">
+            ${(v.genre || v.genres || []).map ? (v.genre || v.genres || []).map(g => `<span class="tag genre">${escHtml(g)}</span>`).join('') : ''}
+            ${v.type ? `<span class="tag">${escHtml(v.type)}</span>` : ''}
+          </div>
+          <div class="media-card-meta">
+            ${v.episode ? 'Episode: ' + escHtml(String(v.episode)) + '<br>' : ''}
+            ${v.date || v.year ? 'Year: ' + escHtml(String(v.date || v.year)) : ''}
+          </div>
+          ${v.url || v.link ? `<a class="dl-btn" style="margin-top:8px" href="${escHtml(v.url || v.link)}" target="_blank">Watch</a>` : ''}
+        </div>
+      </div>
+    `).join('');
+    setResult('nekoResult', html);
+  } catch (e) {
+    setResult('nekoResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// F-DROID
+// ============================
+async function searchFdroid() {
+  const q = document.getElementById('fdroidInput').value.trim();
+  if (!q) return;
+  showLoading('Searching F-Droid...');
+  addHistory('fdroid', q);
+  try {
+    const res  = await fetch(`https://api.emiliabot.my.id/search/fdroid?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    const items = data.result || data.data || data.results || [];
+    if (!items.length) throw new Error('No results found');
+    const html = items.map(app => `
+      <div class="result-card">
+        <div class="result-card-title">${escHtml(app.name || app.title || '')}</div>
+        <div class="result-card-meta">
+          ${app.packageName || app.package ? `<span style="font-size:11px;color:var(--text-muted);font-family:monospace">${escHtml(app.packageName || app.package)}</span><br>` : ''}
+          ${app.version ? 'Version: ' + escHtml(app.version) + '<br>' : ''}
+          ${app.summary || app.description ? escHtml((app.summary || app.description).substring(0,120)) + (app.summary?.length > 120 ? '...' : '') : ''}
+        </div>
+        ${app.apkUrl || app.download || app.url
+          ? `<button class="dl-btn" onclick="directDownload('${escHtml(app.apkUrl || app.download || app.url)}', '${escHtml((app.name || 'app').replace(/\s+/g,'-'))}.apk')">Download APK</button>`
+          : ''}
+      </div>
+    `).join('');
+    setResult('fdroidResult', html);
+  } catch (e) {
+    setResult('fdroidResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// ANIME SEARCH
+// ============================
+async function searchAnime() {
+  const q = document.getElementById('animeInput').value.trim();
+  if (!q) return;
+  showLoading('Searching anime...');
+  addHistory('anime', q);
+  try {
+    const res  = await fetch(`https://api.emiliabot.my.id/anime/alqanime/search?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    const items = data.result || data.data || data.results || [];
+    if (!items.length) throw new Error('No results found');
+    const html = items.map(v => `
+      <div class="media-card">
+        ${v.thumbnail || v.image || v.cover ? `<img class="media-card-thumb" src="${escHtml(v.thumbnail || v.image || v.cover)}" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="media-card-info">
+          <div class="media-card-title">${escHtml(v.title || v.name || '')}</div>
+          <div class="media-card-tags">
+            ${v.type ? `<span class="tag">${escHtml(v.type)}</span>` : ''}
+            ${v.status ? `<span class="tag genre">${escHtml(v.status)}</span>` : ''}
+            ${(v.genres || v.genre || []).map ? (v.genres || v.genre || []).slice(0,3).map(g => `<span class="tag genre">${escHtml(g)}</span>`).join('') : ''}
+          </div>
+          <div class="media-card-meta">
+            ${v.episode || v.episodes ? 'Episodes: ' + escHtml(String(v.episode || v.episodes)) + '<br>' : ''}
+            ${v.score || v.rating ? 'Score: ' + escHtml(String(v.score || v.rating)) + '<br>' : ''}
+            ${v.synopsis || v.description ? escHtml((v.synopsis || v.description).substring(0,100)) + '...' : ''}
+          </div>
+          ${v.url || v.link ? `<a class="dl-btn" style="margin-top:8px" href="${escHtml(v.url || v.link)}" target="_blank">View</a>` : ''}
+        </div>
+      </div>
+    `).join('');
+    setResult('animeResult', html);
+  } catch (e) {
+    setResult('animeResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// HELPERS: RENDER DL CARD
+// ============================
+function renderDlCard(elId, { thumb, title, author, buttons }) {
+  setResult(elId, `
+    <div class="dl-result-card">
+      ${thumb ? `<img class="dl-result-thumb" src="${escHtml(thumb)}" onerror="this.style.display='none'">` : ''}
+      <div class="dl-result-title">${escHtml(title || 'Media')}</div>
+      ${author ? `<div class="dl-result-meta">${escHtml(author)}</div>` : ''}
+      <div class="dl-actions">${buttons || '<span style="color:var(--text-muted);font-size:13px">No download link found.</span>'}</div>
+    </div>
+  `);
+}
+
+function dlBtn(url, label, filename, secondary = false) {
+  if (!url) return '';
+  const cls = secondary ? 'dl-btn secondary' : 'dl-btn';
+  const safe = url.replace(/'/g, '%27');
+  const fn   = (filename || 'download').replace(/'/g, '');
+  return `<button class="${cls}" onclick="directDownload('${safe}','${fn}')">${label}</button>`;
+}
+
+// ============================
+// TIKTOK DOWNLOADER (V1 / V2 / V3)
+// ============================
+// V1 nanzz: result.thumbnail, result.title, result.downloads[{type,label,url}]
+// V2 nanzz: result.video_tanpa_watermark, result.audio_mp3, result.caption, result.author
+// V3 emilia: result.data.{ cover, title, author.nickname, play(nowm), hdplay, wmplay, music }
+
+async function downloadTikTok() {
+  const url = document.getElementById('tiktokInput').value.trim();
+  const api = document.getElementById('tiktokApiSelect').value;
+  if (!url) return;
+  showLoading('Fetching TikTok...');
+  addHistory('tiktok', url);
+  try {
+    if (api === 'v1') {
+      // nanzz v1 — result.downloads array
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktok.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      const r = data.result;
+      const buttons = (r.downloads || []).map(d =>
+        dlBtn(d.url, d.label, 'tiktok-' + (d.type || 'video') + (d.type === 'mp3' ? '.mp3' : '.mp4'))
+      ).join('');
+      renderDlCard('tiktokResult', {
+        thumb: r.thumbnail, title: r.title,
+        author: '', buttons
+      });
+
+    } else if (api === 'v2') {
+      // nanzz v2 — result.video_tanpa_watermark + result.audio_mp3
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktokv2.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      const r = data.result;
+      const buttons =
+        dlBtn(r.video_tanpa_watermark, 'Download MP4 (No Watermark)', 'tiktok-nowm.mp4') +
+        dlBtn(r.audio_mp3, 'Download MP3', 'tiktok-audio.mp3', true);
+      renderDlCard('tiktokResult', {
+        thumb: '', title: r.caption,
+        author: r.author || '', buttons
+      });
+
+    } else {
+      // emilia v3 — result.data.{ cover, title, author, play, hdplay, wmplay, music }
+      const res  = await fetch(`https://api.emiliabot.my.id/download/tiktok?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      const d = data.result.data;
+      const buttons =
+        dlBtn(d.play,   'Download MP4 (No WM)',    'tiktok-nowm.mp4') +
+        dlBtn(d.hdplay, 'Download MP4 HD',         'tiktok-hd.mp4', true) +
+        dlBtn(d.wmplay, 'Download MP4 (Watermark)','tiktok-wm.mp4', true) +
+        dlBtn(d.music,  'Download MP3',            'tiktok-audio.mp3', true);
+      renderDlCard('tiktokResult', {
+        thumb: d.cover, title: d.title,
+        author: d.author ? d.author.nickname || '' : '', buttons
+      });
+    }
+  } catch (e) {
+    setResult('tiktokResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// TIKTOK DOWNLOADER 2 (V1 / V2)
+// ============================
+async function downloadTikTok2() {
+  const url = document.getElementById('tiktok2Input').value.trim();
+  const api = document.getElementById('tiktok2ApiSelect').value;
+  if (!url) return;
+  showLoading('Fetching TikTok...');
+  addHistory('tiktok2', url);
+  try {
+    if (api === 'v1') {
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktok.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      const r = data.result;
+      const buttons = (r.downloads || []).map(d =>
+        dlBtn(d.url, d.label, 'tiktok-' + (d.type || 'video') + (d.type === 'mp3' ? '.mp3' : '.mp4'))
+      ).join('');
+      renderDlCard('tiktok2Result', { thumb: r.thumbnail, title: r.title, author: '', buttons });
+
+    } else {
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktokv2.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      const r = data.result;
+      const buttons =
+        dlBtn(r.video_tanpa_watermark, 'Download MP4 (No Watermark)', 'tiktok-nowm.mp4') +
+        dlBtn(r.audio_mp3, 'Download MP3', 'tiktok-audio.mp3', true);
+      renderDlCard('tiktok2Result', { thumb: '', title: r.caption, author: r.author || '', buttons });
+    }
+  } catch (e) {
+    setResult('tiktok2Result', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// YOUTUBE DOWNLOADER (V1 / V2)
+// ============================
+// V1 emilia: data.{ title, thumbnail, author, mp3, mp4 }
+// V2 faa:    result.{ title, thumbnail, author, url } (MP4 only)
+
+async function downloadYouTube() {
+  const url = document.getElementById('youtubeInput').value.trim();
+  const api = document.getElementById('youtubeApiSelect').value;
+  if (!url) return;
+  showLoading('Fetching YouTube...');
+  addHistory('youtube', url);
+  try {
+    if (api === 'v1') {
+      // emilia — data.mp3 + data.mp4 both available
+      const res  = await fetch(`https://api.emiliabot.my.id/download/youtube?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error(data.message || 'API error');
+      const d = data.data;
+      const buttons =
+        dlBtn(d.mp4, 'Download MP4', 'youtube-video.mp4') +
+        dlBtn(d.mp3, 'Download MP3', 'youtube-audio.mp3', true);
+      renderDlCard('youtubeResult', {
+        thumb: d.thumbnail, title: d.title,
+        author: d.author || '', buttons
+      });
+
+    } else {
+      // faa ytmp4 — result.{ title, thumbnail, author/channel, url }
+      const res  = await fetch(`https://api-faa.my.id/faa/ytmp4?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      const r = data.result || data.data || data;
+      const dlUrl = r.url || r.download || r.link;
+      const buttons = dlBtn(dlUrl, 'Download MP4', 'youtube-video.mp4');
+      renderDlCard('youtubeResult', {
+        thumb: r.thumbnail || r.image,
+        title: r.title || r.judul || 'YouTube Video',
+        author: r.author || r.channel || '',
+        buttons
+      });
+    }
+  } catch (e) {
+    setResult('youtubeResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// SPOTIFY DOWNLOADER (V1 / V2)
+// ============================
+// V1 nanzz: { download_url, metadata.{ name, artist, album, duration, image } }
+// V2 yupra: check structure at runtime (fallback gracefully)
+
+async function downloadSpotify() {
+  const url = document.getElementById('spotifyInput').value.trim();
+  const api = document.getElementById('spotifyApiSelect').value;
+  if (!url) return;
+  showLoading('Fetching Spotify track...');
+  addHistory('spotify', url);
+  try {
+    let dlUrl, title, artist, album, dur, thumb;
+
+    if (api === 'v1') {
+      // nanzz — top-level download_url + metadata object
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/spotify-dl.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (!data.status) throw new Error('API error');
+      dlUrl  = data.download_url;
+      const m = data.metadata || {};
+      title  = m.name   || 'Spotify Track';
+      artist = m.artist || '';
+      album  = m.album  || '';
+      dur    = m.duration || '';
+      thumb  = m.image  || '';
+
+    } else {
+      // yupra
+      const res  = await fetch(`https://api.yupra.my.id/api/downloader/spotify?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      const r = data.result || data.data || data;
+      dlUrl  = r.download_url || r.url || r.mp3 || r.audio || r.link;
+      title  = r.title || r.name || 'Spotify Track';
+      artist = r.artist || r.artists || '';
+      album  = r.album  || '';
+      dur    = r.duration || '';
+      thumb  = r.thumbnail || r.image || r.cover || '';
+    }
+
+    const safeName = (title || 'track').replace(/[^a-z0-9]/gi, '-');
+    setResult('spotifyResult', `
+      <div class="dl-result-card">
+        <div class="spotify-row">
+          ${thumb ? `<img class="spotify-art" src="${escHtml(thumb)}" onerror="this.style.display='none'">` : ''}
+          <div class="spotify-info-block">
+            <div class="dl-result-title">${escHtml(title)}</div>
+            <div class="dl-result-meta">
+              ${escHtml(Array.isArray(artist) ? artist.join(', ') : artist)}
+              ${album ? ' · ' + escHtml(album) : ''}
+              ${dur   ? ' · ' + escHtml(String(dur)) : ''}
+            </div>
+          </div>
+        </div>
+        <div class="dl-actions">
+          ${dlBtn(dlUrl, 'Download MP3', safeName + '.mp3')}
+        </div>
+        ${dlUrl ? `<div class="audio-player-wrap"><audio controls src="${escHtml(dlUrl)}"></audio></div>` : ''}
+      </div>
+    `);
+  } catch (e) {
+    setResult('spotifyResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// INSTAGRAM DOWNLOADER (V1 / V2)
+// ============================
+// V1 nanzz: debug.result.download_urls[] array of strings
+// V2 faa:   result.{ url, thumbnail } or result[] array
+
+async function downloadInstagram() {
+  const url = document.getElementById('igInput').value.trim();
+  const api = document.getElementById('igApiSelect').value;
+  if (!url) return;
+  showLoading('Fetching Instagram post...');
+  addHistory('instagram', url);
+  try {
+    let buttons = '';
+    let thumb = '', title = 'Instagram Post';
+
+    if (api === 'v1') {
+      // nanzz — debug.result.download_urls[]
+      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/Instagram.php?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      const urls = data?.debug?.result?.download_urls || [];
+      if (!urls.length) throw new Error('No media found');
+      buttons = urls.map((u, i) => {
+        const ext = (u.includes('.mp4') || u.includes('mp4')) ? 'mp4' : 'mp4';
+        return dlBtn(u, `Download Video ${urls.length > 1 ? i+1 : ''}`.trim(), `instagram-${i+1}.${ext}`);
+      }).join('');
+
+    } else {
+      // faa igdl — result can be array or single object
+      const res  = await fetch(`https://api-faa.my.id/faa/igdl?url=${encodeURIComponent(url)}`);
+      const data = await res.json();
+      const r = data.result || data.data || data;
+      const items = Array.isArray(r) ? r : [r];
+      thumb = items[0]?.thumbnail || items[0]?.cover || '';
+      buttons = items.map((item, i) => {
+        const u = item.url || item.download || item.video || item.media;
+        const ext = (u && u.includes('.mp4')) ? 'mp4' : 'mp4';
+        return dlBtn(u, `Download Video ${items.length > 1 ? i+1 : ''}`.trim(), `instagram-${i+1}.${ext}`);
+      }).join('');
+    }
+
+    renderDlCard('igResult', { thumb, title, author: '', buttons });
+  } catch (e) {
+    setResult('igResult', errBanner('Error: ' + e.message));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ============================
+// KEYBOARD ENTER SUPPORT
+// ============================
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  const map = {
+    srcInput:      fetchSrc,
+    lyricsInput:   searchLyrics,
+    ytSearchInput: searchYouTube,
+    nekoInput:     searchNekopoi,
+    fdroidInput:   searchFdroid,
+    animeInput:    searchAnime,
+    tiktokInput:   downloadTikTok,
+    youtubeInput:  downloadYouTube,
+    tiktok2Input:  downloadTikTok2,
+    spotifyInput:  downloadSpotify,
+    igInput:       downloadInstagram,
+  };
+  const active = document.activeElement;
+  if (active && map[active.id]) map[active.id]();
+});
+
+// ============================
+// INIT
+// ============================
+document.addEventListener('DOMContentLoaded', function() {
+  showPage('dashboard');
+  renderDashboardActivity();
+});
+</script>
+</body>
+</html>
