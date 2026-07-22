@@ -1,2643 +1,2010 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NANO Dashboard</title>
-<style>
-/* ============================
-   NANO DASHBOARD - style.css
-   Blue-Black Color Scheme
-   ============================ */
-
-:root {
-  --bg-base:       #060a12;
-  --bg-surface:    rgba(13,21,37,0.82);
-  --bg-card:       rgba(14,24,45,0.75);
-  --bg-card-hover: rgba(20,34,58,0.88);
-  --bg-input:      rgba(8,15,28,0.80);
-  --border:        #1e3050;
-  --border-bright: #2a4570;
-  --accent:        #2563eb;
-  --accent-mid:    #1d4ed8;
-  --accent-glow:   #3b82f6;
-  --accent-soft:   rgba(37,99,235,0.15);
-  --accent-soft2:  rgba(37,99,235,0.08);
-  --text-primary:  #e8f0fe;
-  --text-secondary:#7fa3cc;
-  --text-muted:    #3d5a80;
-  --text-dim:      #263952;
-  --success:       #22c55e;
-  --error:         #ef4444;
-  --warning:       #f59e0b;
-  --topbar-h:      52px;
-  --bnav-h:        60px;
-  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  height: 100%;
-  overflow: hidden;
-  background-color: var(--bg-base);
-  background-image: url('https://img2.pixhost.to/images/9209/747759088_1000230870.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: var(--text-primary);
-  font-family: var(--font);
-  font-size: 14px;
-}
-
-/* ============================
-   TOP BAR
-   ============================ */
-.topbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--topbar-h);
-  background: rgba(4,7,14,0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  z-index: 100;
-  gap: 12px;
-}
-
-.topbar-menu {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  padding: 4px;
-  border-radius: 6px;
-  flex-shrink: 0;
-}
-
-.topbar-menu span {
-  display: block;
-  height: 2px;
-  background: var(--text-secondary);
-  border-radius: 2px;
-  transition: background 0.2s;
-}
-
-.topbar-menu:hover span {
-  background: var(--text-primary);
-}
-
-.topbar-title {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: 0.02em;
-}
-
-.topbar-history-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  border-radius: 6px;
-  transition: color 0.2s, background 0.2s;
-}
-
-.topbar-history-btn:hover {
-  color: var(--text-primary);
-  background: var(--accent-soft);
-}
-
-/* ============================
-   SIDEBAR
-   ============================ */
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  z-index: 200;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.sidebar-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: 260px;
-  background: rgba(10,18,35,0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border);
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-
-.sidebar.open {
-  transform: translateX(0);
-}
-
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.sidebar-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-mark {
-  width: 32px;
-  height: 32px;
-  background: var(--accent);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.05em;
-}
-
-.logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 0.12em;
-}
-
-.sidebar-close {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 16px;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: color 0.2s, background 0.2s;
-}
-
-.sidebar-close:hover {
-  color: var(--text-primary);
-  background: var(--accent-soft);
-}
-
-.sidebar-nav {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.nav-section-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--text-dim);
-  padding: 12px 8px 4px;
-  text-transform: uppercase;
-}
-
-.sidebar-link {
-  display: block;
-  padding: 9px 12px;
-  border-radius: 6px;
-  color: var(--text-secondary);
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  text-decoration: none;
-  margin-bottom: 1px;
-}
-
-.sidebar-link:hover,
-.sidebar-link.active {
-  background: var(--accent-soft);
-  color: var(--accent-glow);
-}
-
-.sidebar-footer {
-  padding: 12px 16px;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text-dim);
-  text-align: center;
-}
-
-/* ============================
-   PAGES
-   ============================ */
-.pages-container {
-  position: fixed;
-  top: var(--topbar-h);
-  left: 0; right: 0;
-  bottom: var(--bnav-h);
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.page {
-  display: none;
-  padding: 16px 16px 24px;
-  min-height: 100%;
-  animation: pageIn 0.2s ease;
-  background: transparent;
-}
-
-.page.active {
-  display: block;
-}
-
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.page-header {
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-.page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.page-sub {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
-
-/* ============================
-   DASHBOARD PAGE
-   ============================ */
-.dashboard-hero {
-  position: relative;
-  border-radius: 16px;
-  padding: 32px 20px;
-  margin-bottom: 24px;
-  background: linear-gradient(135deg, #0d1e3d 0%, #060f22 100%);
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-
-.hero-glow {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  background: radial-gradient(circle, rgba(37,99,235,0.22) 0%, transparent 70%);
-  top: -60px;
-  right: -60px;
-  pointer-events: none;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-}
-
-.hero-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: var(--accent-glow);
-  background: var(--accent-soft);
-  border: 1px solid rgba(59,130,246,0.3);
-  padding: 3px 10px;
-  border-radius: 20px;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-}
-
-.hero-title {
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1.25;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.hero-sub {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-top: 10px;
-  line-height: 1.5;
-}
-
-.section-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 10px;
-  margin-top: 4px;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.dash-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 8px 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.dash-card:hover, .dash-card:active {
-  background: var(--bg-card-hover);
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.dash-card-icon {
-  color: var(--accent-glow);
-}
-
-.dash-card-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.02em;
-}
-
-.activity-list {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--border);
-  font-size: 12px;
-}
-
-.activity-item:last-child {
-  border-bottom: none;
-}
-
-.activity-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-.activity-text {
-  flex: 1;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.activity-time {
-  color: var(--text-muted);
-  font-size: 11px;
-  flex-shrink: 0;
-}
-
-.activity-empty {
-  padding: 24px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.about-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.about-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--border);
-}
-
-.about-row:last-child {
-  border-bottom: none;
-}
-
-.about-key {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.about-val {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
-.about-link {
-  font-size: 13px;
-  color: var(--accent-glow);
-  text-decoration: none;
-}
-
-/* ============================
-   CALCULATOR
-   ============================ */
-.calc-wrap {
-  background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  max-width: 360px;
-  margin: 0 auto;
-}
-
-.calc-display {
-  padding: 24px 20px 16px;
-  background: var(--bg-input);
-  border-bottom: 1px solid var(--border);
-  text-align: right;
-}
-
-.calc-expr {
-  font-size: 14px;
-  color: var(--text-muted);
-  min-height: 20px;
-  margin-bottom: 4px;
-}
-
-.calc-result {
-  font-size: 40px;
-  font-weight: 300;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  word-break: break-all;
-}
-
-.calc-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border);
-}
-
-.calc-btn {
-  border: none;
-  padding: 18px 8px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: filter 0.1s;
-  font-family: var(--font);
-}
-
-.calc-btn:active {
-  filter: brightness(1.3);
-}
-
-.calc-btn.span2 {
-  grid-column: span 2;
-}
-
-.calc-btn.num {
-  background: var(--bg-card);
-  color: var(--text-primary);
-}
-
-.calc-btn.op {
-  background: var(--bg-surface);
-  color: var(--accent-glow);
-  font-weight: 600;
-}
-
-.calc-btn.fn {
-  background: #0f1e35;
-  color: var(--text-secondary);
-}
-
-.calc-btn.eq {
-  background: var(--accent);
-  color: #fff;
-  font-weight: 700;
-}
-
-/* ============================
-   FORMS / INPUTS
-   ============================ */
-.input-group {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.text-input {
-  flex: 1;
-  background: var(--bg-input);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 11px 14px;
-  color: var(--text-primary);
-  font-size: 13px;
-  font-family: var(--font);
-  outline: none;
-  transition: border-color 0.2s;
-  min-width: 0;
-}
-
-.text-input::placeholder {
-  color: var(--text-dim);
-}
-
-.text-input:focus {
-  border-color: var(--accent);
-}
-
-.weather-form {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 11px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
-  white-space: nowrap;
-  font-family: var(--font);
-}
-
-.btn-primary:hover {
-  background: var(--accent-mid);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary.full {
-  width: 100%;
-}
-
-.btn-ghost {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  border-radius: 8px;
-  padding: 7px 14px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-  font-family: var(--font);
-}
-
-.btn-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent-glow);
-}
-
-/* ============================
-   RESULT AREAS
-   ============================ */
-.result-box {
-  background: var(--bg-input);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px;
-  min-height: 120px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-family: monospace;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.result-area {
-  margin-top: 16px;
-}
-
-.result-placeholder {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-align: center;
-  padding: 32px 16px;
-}
-
-/* Card for search results */
-.result-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 10px;
-  transition: border-color 0.15s;
-}
-
-.result-card:hover {
-  border-color: var(--border-bright);
-}
-
-.result-card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-
-.result-card-meta {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.result-card-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-/* Download button */
-.dl-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 7px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-  text-decoration: none;
-  font-family: var(--font);
-  margin-right: 6px;
-  margin-top: 4px;
-}
-
-.dl-btn:hover {
-  background: var(--accent-mid);
-}
-
-.dl-btn.secondary {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-
-.dl-btn.secondary:hover {
-  border-color: var(--accent);
-  color: var(--accent-glow);
-}
-
-/* Thumbnail */
-.result-thumb {
-  width: 100%;
-  max-height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: block;
-}
-
-/* Error / Success banners */
-.banner {
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.banner.error {
-  background: rgba(239,68,68,0.12);
-  border: 1px solid rgba(239,68,68,0.3);
-  color: #fca5a5;
-}
-
-.banner.success {
-  background: rgba(34,197,94,0.1);
-  border: 1px solid rgba(34,197,94,0.25);
-  color: #86efac;
-}
-
-/* ============================
-   LYRICS PAGE
-   ============================ */
-.lyrics-box {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-}
-
-.lyrics-song-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.lyrics-artist {
-  font-size: 13px;
-  color: var(--accent-glow);
-  margin-bottom: 14px;
-}
-
-.lyrics-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.8;
-  white-space: pre-wrap;
-}
-
-/* ============================
-   WEATHER PAGE
-   ============================ */
-.weather-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-}
-
-.weather-location {
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-
-.weather-desc {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-
-.weather-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.weather-stat {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-}
-
-.weather-stat-label {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.weather-stat-value {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-/* ============================
-   YOUTUBE SEARCH GRID
-   ============================ */
-.yt-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 12px;
-  display: flex;
-  gap: 12px;
-}
-
-.yt-thumb-wrap {
-  flex-shrink: 0;
-  width: 110px;
-  height: 75px;
-  overflow: hidden;
-  position: relative;
-  background: var(--bg-surface);
-}
-
-.yt-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.yt-duration {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background: rgba(0,0,0,0.75);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 5px;
-  border-radius: 3px;
-}
-
-.yt-info {
-  padding: 10px 12px 10px 0;
-  flex: 1;
-  min-width: 0;
-}
-
-.yt-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.yt-channel {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.yt-views {
-  font-size: 11px;
-  color: var(--text-dim);
-}
-
-/* ============================
-   FORMAT TOGGLE (YouTube DL)
-   ============================ */
-.format-toggle {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.fmt-btn {
-  flex: 1;
-  border: 1px solid var(--border);
-  background: var(--bg-surface);
-  color: var(--text-secondary);
-  border-radius: 8px;
-  padding: 9px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: var(--font);
-}
-
-.fmt-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
-.api-toggle-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.api-label {
-  font-size: 12px;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.api-select {
-  flex: 1;
-  background: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  font-size: 13px;
-  padding: 8px 12px;
-  outline: none;
-  font-family: var(--font);
-  cursor: pointer;
-}
-
-.mt8 { margin-top: 8px; }
-
-/* ============================
-   DOWNLOAD RESULT BLOCK
-   ============================ */
-.dl-result-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-
-.dl-result-thumb {
-  width: 100%;
-  border-radius: 8px;
-  max-height: 200px;
-  object-fit: cover;
-  margin-bottom: 12px;
-}
-
-.dl-result-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-  line-height: 1.3;
-}
-
-.dl-result-meta {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.dl-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* ============================
-   HISTORY PAGE
-   ============================ */
-.history-controls {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 12px;
-}
-
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.history-item {
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.history-item-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: var(--accent-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--accent-glow);
-}
-
-.history-item-body {
-  flex: 1;
-  min-width: 0;
-}
-
-.history-item-page {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--accent-glow);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 2px;
-}
-
-.history-item-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.history-item-time {
-  font-size: 11px;
-  color: var(--text-dim);
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-/* ============================
-   BOTTOM NAV
-   ============================ */
-.bottom-nav {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: var(--bnav-h);
-  background: rgba(4,7,14,0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  z-index: 100;
-}
-
-.bnav-item {
-  border: none;
-  background: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  cursor: pointer;
-  color: var(--text-dim);
-  font-size: 10px;
-  font-family: var(--font);
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  transition: color 0.15s;
-  padding: 0;
-}
-
-.bnav-item.active {
-  color: var(--accent-glow);
-}
-
-.bnav-item:hover {
-  color: var(--text-secondary);
-}
-
-.bnav-item.active:hover {
-  color: var(--accent-glow);
-}
-
-/* ============================
-   LOADING OVERLAY
-   ============================ */
-.loading-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(6,10,18,0.7);
-  backdrop-filter: blur(4px);
-  z-index: 500;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.loading-overlay.active {
-  display: flex;
-}
-
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.loading-text {
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-/* ============================
-   SCROLLBAR
-   ============================ */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-/* ============================
-   ANIME / NEKOPOI / FDROID
-   ============================ */
-.media-card {
-  display: flex;
-  gap: 12px;
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 10px;
-  align-items: flex-start;
-}
-
-.media-card-thumb {
-  width: 70px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-  background: var(--bg-surface);
-}
-
-.media-card-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.media-card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 5px;
-  line-height: 1.3;
-}
-
-.media-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 8px;
-}
-
-.tag {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 7px;
-  border-radius: 20px;
-  background: var(--accent-soft2);
-  color: var(--accent-glow);
-  border: 1px solid rgba(59,130,246,0.2);
-}
-
-.tag.genre {
-  background: rgba(34,197,94,0.08);
-  color: #86efac;
-  border-color: rgba(34,197,94,0.2);
-}
-
-.media-card-meta {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/* SRC Result */
-.src-header {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-/* Spotify result */
-.spotify-art {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
-}
-
-.spotify-row {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.spotify-info-block {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Progress for audio */
-.audio-player-wrap {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  margin-top: 10px;
-}
-
-audio {
-  width: 100%;
-  outline: none;
-  filter: invert(0.8) hue-rotate(180deg);
-}
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VONZX TOLS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* ── RESET & ROOT ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0c0820;
+            --bg-secondary: #12102a;
+            --bg-card: #1a1640;
+            --bg-input: #221e4a;
+            --border: rgba(139, 92, 246, 0.25);
+            --text: #e8e4f8;
+            --text-muted: #9890c8;
+            --accent: #7c3aed;
+            --accent-glow: rgba(124, 58, 237, 0.45);
+            --accent2: #a78bfa;
+            --accent3: #8b5cf6;
+            --danger: #f472b6;
+            --success: #6ee7b7;
+            --warning: #fcd34d;
+            --radius: 16px;
+            --radius-sm: 12px;
+            --radius-xs: 8px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --glass-bg: rgba(26, 22, 64, 0.75);
+            --glass-border: rgba(139, 92, 246, 0.15);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --sidebar-width: 260px;
+        }
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        body {
+            background-image: url('https://img2.pixhost.to/images/9526/751519126_1000236800.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 20% 20%, rgba(124, 58, 237, 0.18) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 80%, rgba(167, 139, 250, 0.10) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(12, 8, 32, 0.92) 0%, rgba(18, 16, 42, 0.94) 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 8px;
+        }
+
+        /* ── APP LAYOUT ── */
+        #app {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid var(--glass-border);
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transform: translateX(-100%);
+            transition: transform var(--transition);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+        }
+        .sidebar-brand .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .sidebar-brand .logo svg {
+            width: 22px;
+            height: 22px;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 2.5;
+        }
+        .sidebar-brand h1 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sidebar-brand small {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            -webkit-text-fill-color: var(--text-muted);
+            display: block;
+            margin-top: -2px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+        .sidebar-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font);
+            letter-spacing: 0.01em;
+            position: relative;
+        }
+        .sidebar-nav .nav-item:hover {
+            color: #fff;
+            background: rgba(139, 92, 246, 0.12);
+        }
+        .sidebar-nav .nav-item.active {
+            color: #fff;
+            background: var(--accent);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .sidebar-nav .nav-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .sidebar-nav .nav-item .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-left: auto;
+            box-shadow: 0 0 12px rgba(110, 231, 183, 0.4);
+        }
+        .sidebar-footer {
+            padding-top: 16px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-footer .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+            display: inline-block;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-wrap {
+            flex: 1;
+            margin-left: 0;
+            transition: margin var(--transition);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .main-wrap.sidebar-open {
+            margin-left: var(--sidebar-width);
+        }
+
+        /* ── TOP BAR ── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            flex-shrink: 0;
+            min-height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .hamburger {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--transition);
+        }
+        .hamburger:hover {
+            background: rgba(139, 92, 246, 0.15);
+        }
+        .hamburger svg {
+            width: 26px;
+            height: 26px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topbar-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #fff;
+            flex: 1;
+        }
+        .topbar-title span {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 13px;
+        }
+        .topbar-path {
+            font-size: 12px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 14px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            letter-spacing: 0.02em;
+            display: none;
+        }
+        @media (min-width: 640px) {
+            .topbar-path {
+                display: block;
+            }
+        }
+
+        /* ── PAGE CONTAINER ── */
+        .pages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px 40px;
+            scroll-behavior: smooth;
+        }
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease forwards;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            backdrop-filter: blur(6px);
+            box-shadow: var(--shadow);
+            transition: border-color var(--transition), transform var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(139, 92, 246, 0.35);
+            transform: translateY(-2px);
+        }
+        .card-header {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .card-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* ── VIDEO WRAP ── */
+        .video-hero {
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: #0a0720;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .video-hero video {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+            background: #0a0720;
+        }
+        .video-hero .overlay {
+            padding: 20px 24px 24px;
+            background: linear-gradient(0deg, rgba(12, 8, 32, 0.9) 0%, transparent 100%);
+        }
+        .video-hero .overlay h2 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 4px;
+        }
+        .video-hero .overlay p {
+            color: var(--text-muted);
+            font-size: 14px;
+            max-width: 560px;
+            line-height: 1.5;
+        }
+        .video-hero .overlay .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* ── BTN ── */
+        .btn {
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font);
+            user-select: none;
+            text-decoration: none;
+            background: transparent;
+            color: #fff;
+        }
+        .btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .btn-primary:hover {
+            background: #8b5cf6;
+            box-shadow: 0 6px 24px rgba(124, 58, 237, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text-light);
+        }
+        .btn-outline:hover {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: var(--accent);
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 10px;
+            letter-spacing: 0.03em;
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* ── GRAPH ── */
+        .graph-wrap {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+        .graph-wrap .graph-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .graph-wrap .graph-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .graph-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 120px;
+            padding-top: 8px;
+        }
+        .graph-bars .bar {
+            flex: 1;
+            border-radius: 6px 6px 0 0;
+            background: linear-gradient(180deg, var(--accent), var(--accent2));
+            min-height: 8px;
+            transition: height 0.6s ease;
+            position: relative;
+            opacity: 0.8;
+        }
+        .graph-bars .bar:hover {
+            opacity: 1;
+        }
+        .graph-bars .bar-label {
+            text-align: center;
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* ── INPUTS ── */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .input-field {
+            flex: 1;
+            min-width: 180px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .input-field:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+        .input-field::placeholder {
+            color: #5a5288;
+        }
+        select.input-field {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239890c8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        /* ── CODE CONTAINER ── */
+        .code-container {
+            background: #0a0720;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 14px;
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background: rgba(18, 16, 42, 0.9);
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .code-header .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .code-body {
+            max-height: 45vh;
+            overflow: auto;
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.7;
+            color: #cfd4e6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            counter-reset: line;
+            background-image: linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px);
+            background-size: 100% 1.7em;
+        }
+        .code-line {
+            display: block;
+            counter-increment: line;
+            padding-left: 2.8em;
+            position: relative;
+            min-height: 1.7em;
+        }
+        .code-line::before {
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            width: 2.3em;
+            text-align: right;
+            color: #4a4280;
+            font-size: 10px;
+            user-select: none;
+        }
+        .code-empty {
+            text-align: center;
+            padding: 48px 20px;
+            color: #4a4280;
+            font-style: italic;
+        }
+
+        /* ── CONSOLE ── */
+        .console-panel {
+            background: #08061a;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-top: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .console-header {
+            padding: 10px 16px;
+            background: rgba(12, 10, 30, 0.9);
+            border-bottom: 1px solid var(--border);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .console-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3a3470;
+        }
+        .console-dot.active {
+            background: var(--accent2);
+            box-shadow: 0 0 14px var(--accent2);
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+        .console-body {
+            max-height: 160px;
+            overflow-y: auto;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            line-height: 1.6;
+            color: #b8b0e0;
+        }
+        .log-entry {
+            padding: 3px 0;
+            display: flex;
+            gap: 10px;
+            border-left: 3px solid transparent;
+            padding-left: 12px;
+            margin: 2px 0;
+        }
+        .log-time {
+            color: #4a4280;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+        .log-success {
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+        .log-error {
+            color: var(--danger);
+            border-left-color: var(--danger);
+        }
+        .log-warning {
+            color: var(--warning);
+            border-left-color: var(--warning);
+        }
+        .log-info {
+            color: #9890c8;
+            border-left-color: #9890c8;
+        }
+
+        /* ── DOWNLOADER TABS ── */
+        .dl-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .dl-tab {
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dl-tab svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .dl-tab:hover {
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .dl-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .dl-result {
+            display: none;
+            margin-top: 16px;
+        }
+        .dl-result.show {
+            display: block;
+        }
+        .dl-result .thumb-wrap {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        .dl-result .thumb-wrap img {
+            width: 160px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-xs);
+            background: #0a0720;
+            border: 1px solid var(--border);
+        }
+        .dl-result .thumb-wrap .info {
+            flex: 1;
+            min-width: 140px;
+        }
+        .dl-result .thumb-wrap .info .title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+        .dl-result .thumb-wrap .info .meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .dl-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .dl-btns a {
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            transition: all var(--transition);
+            background: rgba(124, 58, 237, 0.08);
+        }
+        .dl-btns a:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .dl-btns a svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ── STATUS SERVER ── */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .status-item {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .status-item .indicator {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .status-item .indicator.on {
+            background: rgba(110, 231, 183, 0.15);
+            color: var(--success);
+            box-shadow: 0 0 30px rgba(110, 231, 183, 0.2);
+        }
+        .status-item .indicator.off {
+            background: rgba(244, 114, 182, 0.12);
+            color: var(--danger);
+            box-shadow: 0 0 30px rgba(244, 114, 182, 0.15);
+        }
+        .status-item .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .status-item .name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* ── HISTORY TABLE ── */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            box-shadow: var(--shadow);
+        }
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .table-wrap th {
+            text-align: left;
+            padding: 12px 16px;
+            background: rgba(18, 16, 42, 0.7);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+        .table-wrap td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(42, 38, 80, 0.5);
+            color: var(--text);
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+        .table-wrap tr:hover td {
+            background: rgba(124, 58, 237, 0.04);
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .badge-success {
+            background: rgba(110, 231, 183, 0.12);
+            color: var(--success);
+        }
+        .badge-failed {
+            background: rgba(244, 114, 182, 0.12);
+            color: var(--danger);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+            }
+            .main-wrap.sidebar-open {
+                margin-left: 0;
+            }
+            .main-wrap.sidebar-open .sidebar {
+                transform: translateX(0);
+            }
+            .topbar {
+                padding: 10px 16px;
+                min-height: 56px;
+            }
+            .pages {
+                padding: 14px 14px 32px;
+            }
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            }
+            .video-hero .overlay h2 {
+                font-size: 18px;
+            }
+            .video-hero .overlay p {
+                font-size: 13px;
+            }
+            .dl-result .thumb-wrap img {
+                width: 100%;
+                height: auto;
+                max-height: 160px;
+            }
+            .code-body {
+                max-height: 30vh;
+                font-size: 10px;
+            }
+            .topbar-path {
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            .main-wrap {
+                margin-left: var(--sidebar-width);
+            }
+            .hamburger {
+                display: none;
+            }
+        }
+
+        /* ── MISC ── */
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-3 {
+            margin-top: 12px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mt-6 {
+            margin-top: 24px;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-3 {
+            margin-bottom: 12px;
+        }
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+        .flex {
+            display: flex;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .text-sm {
+            font-size: 13px;
+        }
+        .text-xs {
+            font-size: 11px;
+        }
+        .truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .w-full {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">
-      <span class="logo-mark">N</span>
-      <span class="logo-text">NANO</span>
-    </div>
-    <button class="sidebar-close" onclick="closeSidebar()">&#10005;</button>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">MAIN</div>
-    <a class="sidebar-link active" onclick="showPage('dashboard'); closeSidebar()">Dashboard</a>
-    <div class="nav-section-label">TOOLS</div>
-    <a class="sidebar-link" onclick="showPage('calculator'); closeSidebar()">Calculator</a>
-    <a class="sidebar-link" onclick="showPage('src'); closeSidebar()">SRC Proxy</a>
-    <a class="sidebar-link" onclick="showPage('lyrics'); closeSidebar()">Lyrics Search</a>
-    <a class="sidebar-link" onclick="showPage('weather'); closeSidebar()">Weather</a>
-    <a class="sidebar-link" onclick="showPage('ytsearch'); closeSidebar()">YouTube Search</a>
-    <a class="sidebar-link" onclick="showPage('nekopoi'); closeSidebar()">Nekopoi</a>
-    <a class="sidebar-link" onclick="showPage('fdroid'); closeSidebar()">F-Droid Search</a>
-    <a class="sidebar-link" onclick="showPage('anime'); closeSidebar()">Anime Search</a>
-    <div class="nav-section-label">DOWNLOADER</div>
-    <a class="sidebar-link" onclick="showPage('tiktok'); closeSidebar()">TikTok DL</a>
-    <a class="sidebar-link" onclick="showPage('youtube'); closeSidebar()">YouTube DL</a>
-    <a class="sidebar-link" onclick="showPage('tiktok2'); closeSidebar()">TikTok DL 2</a>
-    <a class="sidebar-link" onclick="showPage('spotify'); closeSidebar()">Spotify DL</a>
-    <a class="sidebar-link" onclick="showPage('instagram'); closeSidebar()">Instagram DL</a>
-    <div class="nav-section-label">LINKS</div>
-    <a class="sidebar-link" href="https://whatsapp.com/channel/0029Vb8avaAJJhzUqKd0Xv15" target="_blank">WhatsApp Channel</a>
-    <a class="sidebar-link" href="https://tiktok.com/@yanxs_present" target="_blank">TikTok</a>
-    <a class="sidebar-link" href="https://instagram.com/@derty_xyz" target="_blank">Instagram</a>
-  </nav>
-  <div class="sidebar-footer">NANO v1.0 &copy; 2025</div>
-</aside>
+    <div id="app">
 
-<!-- TOP BAR -->
-<header class="topbar">
-  <button class="topbar-menu" id="menuBtn" onclick="openSidebar()">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="topbar-title" id="topbarTitle">Dashboard</div>
-  <div class="topbar-history-btn" onclick="showPage('history')">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-  </div>
-</header>
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+                <div>
+                    <h1>NOVA</h1>
+                    <small>v2.1 · dashboard</small>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <button class="nav-item active" data-page="dashboard">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-page="nova-src">
+                    <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    NOVA SRC
+                </button>
+                <button class="nav-item" data-page="downloaderID">
+                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    DOWNLOADER
+                </button>
+                <button class="nav-item" data-page="status-server-all">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="1.5"/><rect x="2" y="14" width="20" height="8" rx="1.5"/><line x1="6" y1="6" x2="6" y2="6.01"/><line x1="6" y1="18" x2="6" y2="18.01"/></svg>
+                    STATUS SERVER
+                </button>
+                <button class="nav-item" data-page="history">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    HISTORY
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <span class="dot"></span> System online
+                <span style="margin-left:auto;font-size:10px;">v2.1</span>
+            </div>
+        </aside>
 
-<!-- PAGES CONTAINER -->
-<main class="pages-container">
+        <!-- ===== MAIN WRAP ===== -->
+        <div class="main-wrap" id="mainWrap">
 
-  <!-- PAGE: DASHBOARD -->
-  <section class="page active" id="page-dashboard">
-    <div class="dashboard-hero">
-      <div class="hero-glow"></div>
-      <div class="hero-content">
-        <div class="hero-badge">NANO SYSTEM</div>
-        <h1 class="hero-title">Your All-in-One<br>Digital Toolkit</h1>
-        <p class="hero-sub">Tools, downloaders, and utilities — all in one place.</p>
-      </div>
-    </div>
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <button class="hamburger" id="hamburger" aria-label="Toggle sidebar">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="2" rx="1"/><rect x="3" y="11" width="18" height="2" rx="1"/><rect x="3" y="18" width="18" height="2" rx="1"/></svg>
+                </button>
+                <div class="topbar-title" id="pageTitle">Dashboard <span>· overview</span></div>
+                <div class="topbar-path" id="pagePath">/dashboard</div>
+            </header>
 
-    <div class="section-label">Quick Access</div>
-    <div class="dashboard-grid">
-      <div class="dash-card" onclick="showPage('calculator')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+            <!-- PAGES -->
+            <div class="pages" id="pagesContainer">
+
+                <!-- ============================================================ -->
+                <!-- PAGE: DASHBOARD -->
+                <!-- ============================================================ -->
+                <section class="page active" id="page-dashboard">
+                    <div class="video-hero">
+                        <video
+                        src="https://ik.imagekit.io/bngy9omc4/From%20Klickpin.com-%20Paper%20Flower%20Ideas%20for%20a%20More%20Beautiful%20Life%2099522-pin-id-15481192464709543.mp4?updatedAt=1784723702985"
+                        autoplay loop muted playsinline
+                        poster="https://img2.pixhost.to/images/9504/751327786_1000236603.jpg"
+                    ></video>
+                    <div class="overlay">
+                        <h2>Paper Flower Ideas</h2>
+                        <p>Create a more beautiful life with these stunning paper flower inspirations. Watch, learn, and start crafting today.</p>
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="navigateTo('nova-src')">
+                                <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                Get Start
+                            </button>
+                            <button class="btn btn-outline" onclick="navigateTo('downloaderID')">
+                                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card"><div class="card-header">Total Visitors</div><div class="card-value">12.4K</div><div class="text-xs text-muted">+8.2% this week</div></div>
+                    <div class="card"><div class="card-header">Downloads</div><div class="card-value">3.2K</div><div class="text-xs text-muted">+12%</div></div>
+                    <div class="card"><div class="card-header">Active Users</div><div class="card-value">847</div><div class="text-xs text-muted">now online</div></div>
+                    <div class="card"><div class="card-header">Server Status</div><div class="card-value" style="color:var(--success);-webkit-text-fill-color:var(--success);">Online</div><div class="text-xs text-muted">99.9% uptime</div></div>
+                </div>
+
+                <!-- GRAPH -->
+                <div class="graph-wrap">
+                    <div class="graph-header">
+                        <h4>Weekly Visits</h4>
+                        <span class="text-xs text-muted">Last 7 days</span>
+                    </div>
+                    <div class="graph-bars" id="visitGraph">
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:70px;"></div>
+                            <span class="bar-label">Mon</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:55px;"></div>
+                            <span class="bar-label">Tue</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:90px;"></div>
+                            <span class="bar-label">Wed</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:65px;"></div>
+                            <span class="bar-label">Thu</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:110px;"></div>
+                            <span class="bar-label">Fri</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:85px;"></div>
+                            <span class="bar-label">Sat</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;flex:1;align-items:center;">
+                            <div class="bar" style="height:130px;"></div>
+                            <span class="bar-label">Sun</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: NOVA SRC -->
+            <!-- ============================================================ -->
+            <section class="page" id="page-nova-src">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">Fetch Source Code</div>
+                    <div class="input-group">
+                        <input class="input-field" id="srcUrl" placeholder="https://example.com" value="https://example.com" />
+                        <select class="input-field" id="srcProxyType" style="max-width:150px;">
+                            <option value="cors">CORS Proxy</option>
+                            <option value="regular">Regular Proxy</option>
+                        </select>
+                        <select class="input-field" id="srcProxySelect" style="max-width:240px;"></select>
+                        <button class="btn btn-primary" id="srcFetchBtn">
+                            <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            Fetch
+                        </button>
+                        <button class="btn btn-outline btn-sm" id="srcAutoBtn">
+                            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.5 17.5A9 9 0 1 0 2 12"/></svg>
+                            Auto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span id="srcFileLabel">No file</span>
+                        <div class="actions">
+                            <button class="btn btn-outline btn-sm" id="srcCopyBtn" disabled>Copy</button>
+                            <button class="btn btn-outline btn-sm" id="srcDownloadBtn" disabled>Download</button>
+                            <button class="btn btn-outline btn-sm" id="srcPreviewBtn" disabled>Preview</button>
+                        </div>
+                    </div>
+                    <div class="code-body" id="srcCodeBody"><div class="code-empty">No source fetched yet. Enter URL and click Fetch.</div></div>
+                </div>
+
+                <div class="console-panel">
+                    <div class="console-header"><span class="console-dot" id="srcDot"></span> Console</div>
+                    <div class="console-body" id="srcConsole"><div class="log-entry log-info"><span class="log-time">--:--:--</span>Console ready.</div></div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: DOWNLOADER -->
+            <!-- ============================================================ -->
+            <section class="page" id="page-downloaderID">
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="card-header">Download dari Platform</div>
+                    <div class="dl-tabs" id="dlTabs">
+                        <button class="dl-tab active" data-dl="yt">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2.5"/><polygon points="10 9 15 12 10 15 10 9"/></svg>
+                            YouTube
+                        </button>
+                        <button class="dl-tab" data-dl="tt">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.5"/><path d="M12 5v2.5"/><path d="M12 16.5V19"/><path d="M5 12h2.5"/><path d="M16.5 12H19"/></svg>
+                            TikTok
+                        </button>
+                        <button class="dl-tab" data-dl="ig">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+                            Instagram
+                        </button>
+                        <button class="dl-tab" data-dl="sp">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+                            Spotify
+                        </button>
+                        <button class="dl-tab" data-dl="fb">
+                            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            Facebook
+                        </button>
+                        <button class="dl-tab" data-dl="pt">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            Pinterest
+                        </button>
+                    </div>
+                    <div class="input-group">
+                        <input class="input-field" id="dlUrl" placeholder="https://youtu.be/... atau https://vt.tiktok.com/..." />
+                        <button class="btn btn-primary" id="dlFetchBtn">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Ambil Data
+                        </button>
+                    </div>
+                    <p id="dlMsg" class="text-xs text-muted" style="min-height:18px;"></p>
+                </div>
+
+                <div class="dl-result" id="dlResult">
+                    <div class="card">
+                        <div class="thumb-wrap">
+                            <img id="dlThumb" src="" alt="thumbnail" />
+                            <div class="info">
+                                <div class="title" id="dlTitle">—</div>
+                                <div class="meta" id="dlMeta">—</div>
+                            </div>
+                        </div>
+                        <div class="dl-btns" id="dlButtons"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: STATUS SERVER -->
+            <!-- ============================================================ -->
+            <section class="page" id="page-status-server-all">
+                <div class="card-grid status-grid">
+                    <div class="status-item">
+                        <div class="indicator on">●</div>
+                        <div class="name">NOVA SRC</div>
+                        <div class="label">Online</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="indicator on">●</div>
+                        <div class="name">Downloader API</div>
+                        <div class="label">Online</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="indicator on">●</div>
+                        <div class="name">Proxy Gateway</div>
+                        <div class="label">Online</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="indicator off">●</div>
+                        <div class="name">Legacy CDN</div>
+                        <div class="label">Offline</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="indicator on">●</div>
+                        <div class="name">Database</div>
+                        <div class="label">Online</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="indicator on">●</div>
+                        <div class="name">Cache Server</div>
+                        <div class="label">Online</div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">System Uptime</div>
+                    <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:4px;">
+                        <div><span class="text-muted text-xs">Uptime</span><br><strong style="font-size:20px;">99.94%</strong></div>
+                        <div><span class="text-muted text-xs">Response</span><br><strong style="font-size:20px;">142 ms</strong></div>
+                        <div><span class="text-muted text-xs">Active Proxies</span><br><strong style="font-size:20px;">52</strong></div>
+                        <div><span class="text-muted text-xs">Total Requests</span><br><strong style="font-size:20px;">1.8M</strong></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- PAGE: HISTORY -->
+            <!-- ============================================================ -->
+            <section class="page" id="page-history">
+                <div class="table-wrap" id="historyTableWrap">
+                    <table>
+                        <thead><tr><th>URL</th><th>Proxy</th><th>Timestamp</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="historyBody">
+                            <tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">No history yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-outline btn-sm mt-3" style="color:var(--danger);" id="clearHistoryBtn">Clear All</button>
+            </section>
+
+        </div><!-- /pages -->
+    </div><!-- /main-wrap -->
+</div><!-- /app -->
+
+
+<!-- ===== PREVIEW MODAL ===== -->
+<div id="previewModal" style="display:none;position:fixed;inset:0;background:rgba(5,3,16,0.92);backdrop-filter:blur(12px);z-index:200;align-items:center;justify-content:center;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);width:92vw;height:88vh;display:flex;flex-direction:column;box-shadow:0 0 48px rgba(124,58,237,0.25);">
+        <div style="padding:12px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-weight:600;color:#fff;">
+            <span>Preview — <span id="previewUrlLabel" style="font-weight:400;color:var(--text-muted);font-size:13px;"></span></span>
+            <button id="previewCloseBtn" style="background:none;border:none;color:var(--text-muted);font-size:24px;cursor:pointer;padding:0 8px;">&times;</button>
         </div>
-        <div class="dash-card-label">Calculator</div>
-      </div>
-      <div class="dash-card" onclick="showPage('lyrics')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        </div>
-        <div class="dash-card-label">Lyrics</div>
-      </div>
-      <div class="dash-card" onclick="showPage('weather')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
-        </div>
-        <div class="dash-card-label">Weather</div>
-      </div>
-      <div class="dash-card" onclick="showPage('ytsearch')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </div>
-        <div class="dash-card-label">YT Search</div>
-      </div>
-      <div class="dash-card" onclick="showPage('tiktok')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        </div>
-        <div class="dash-card-label">TikTok DL</div>
-      </div>
-      <div class="dash-card" onclick="showPage('youtube')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-        </div>
-        <div class="dash-card-label">YouTube DL</div>
-      </div>
-      <div class="dash-card" onclick="showPage('spotify')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12.5c2.5-1 5-1 7.5 0M8 9c3.5-1.5 7-1.5 10 0M8.5 16c1.5-.5 3-.5 4.5 0"/></svg>
-        </div>
-        <div class="dash-card-label">Spotify DL</div>
-      </div>
-      <div class="dash-card" onclick="showPage('instagram')">
-        <div class="dash-card-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </div>
-        <div class="dash-card-label">Instagram DL</div>
-      </div>
+        <div style="flex:1;"><iframe id="previewFrame" style="width:100%;height:100%;border:none;background:#fff;" sandbox="allow-scripts allow-same-origin"></iframe></div>
     </div>
-
-    <div class="section-label">Recent Activity</div>
-    <div class="activity-list" id="dashboardActivity">
-      <div class="activity-empty">No recent activity yet.</div>
-    </div>
-
-    <div class="section-label">About</div>
-    <div class="about-card">
-      <div class="about-row">
-        <span class="about-key">Creator</span>
-        <span class="about-val">yanxs_present</span>
-      </div>
-      <div class="about-row">
-        <span class="about-key">Version</span>
-        <span class="about-val">NANO v1.0</span>
-      </div>
-      <div class="about-row">
-        <span class="about-key">TikTok</span>
-        <a class="about-link" href="https://tiktok.com/@yanxs_present" target="_blank">@yanxs_present</a>
-      </div>
-      <div class="about-row">
-        <span class="about-key">Instagram</span>
-        <a class="about-link" href="https://instagram.com/@derty_xyz" target="_blank">@derty_xyz</a>
-      </div>
-      <div class="about-row">
-        <span class="about-key">WhatsApp</span>
-        <a class="about-link" href="https://whatsapp.com/channel/0029Vb8avaAJJhzUqKd0Xv15" target="_blank">Join Channel</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- PAGE: CALCULATOR -->
-  <section class="page" id="page-calculator">
-    <div class="page-header">
-      <div class="page-title">Calculator</div>
-      <div class="page-sub">Standard arithmetic operations</div>
-    </div>
-    <div class="calc-wrap">
-      <div class="calc-display">
-        <div class="calc-expr" id="calcExpr"></div>
-        <div class="calc-result" id="calcResult">0</div>
-      </div>
-      <div class="calc-grid">
-        <button class="calc-btn span2 fn" onclick="calcClear()">AC</button>
-        <button class="calc-btn fn" onclick="calcSign()">+/-</button>
-        <button class="calc-btn op" onclick="calcOp('/')">÷</button>
-        <button class="calc-btn num" onclick="calcNum('7')">7</button>
-        <button class="calc-btn num" onclick="calcNum('8')">8</button>
-        <button class="calc-btn num" onclick="calcNum('9')">9</button>
-        <button class="calc-btn op" onclick="calcOp('*')">x</button>
-        <button class="calc-btn num" onclick="calcNum('4')">4</button>
-        <button class="calc-btn num" onclick="calcNum('5')">5</button>
-        <button class="calc-btn num" onclick="calcNum('6')">6</button>
-        <button class="calc-btn op" onclick="calcOp('-')">-</button>
-        <button class="calc-btn num" onclick="calcNum('1')">1</button>
-        <button class="calc-btn num" onclick="calcNum('2')">2</button>
-        <button class="calc-btn num" onclick="calcNum('3')">3</button>
-        <button class="calc-btn op" onclick="calcOp('+')">+</button>
-        <button class="calc-btn num span2" onclick="calcNum('0')">0</button>
-        <button class="calc-btn num" onclick="calcDot()">.</button>
-        <button class="calc-btn eq" onclick="calcEqual()">=</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- PAGE: SRC PROXY -->
-  <section class="page" id="page-src">
-    <div class="page-header">
-      <div class="page-title">SRC Proxy</div>
-      <div class="page-sub">Fetch public web scripts via proxy</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="srcInput" class="text-input" placeholder="Enter script URL...">
-      <button class="btn-primary" onclick="fetchSrc()">Fetch</button>
-    </div>
-    <div class="result-box" id="srcResult">
-      <div class="result-placeholder">Enter a URL above to fetch its content through the proxy.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: LYRICS -->
-  <section class="page" id="page-lyrics">
-    <div class="page-header">
-      <div class="page-title">Lyrics Search</div>
-      <div class="page-sub">Search song lyrics by title or artist</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="lyricsInput" class="text-input" placeholder="Song title or artist...">
-      <button class="btn-primary" onclick="searchLyrics()">Search</button>
-    </div>
-    <div id="lyricsResult" class="result-area">
-      <div class="result-placeholder">Search for a song to view its lyrics.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: WEATHER -->
-  <section class="page" id="page-weather">
-    <div class="page-header">
-      <div class="page-title">Weather</div>
-      <div class="page-sub">Check current weather conditions</div>
-    </div>
-    <div class="weather-form">
-      <input type="text" id="weatherKab" class="text-input" placeholder="Kabupaten (e.g. Pekalongan)" value="Pekalongan">
-      <input type="text" id="weatherKec" class="text-input" placeholder="Kecamatan (e.g. Karanganyar)" value="Karanganyar">
-      <input type="text" id="weatherDesa" class="text-input" placeholder="Desa (e.g. Kulu)" value="Kulu">
-      <button class="btn-primary full" onclick="fetchWeather()">Check Weather</button>
-    </div>
-    <div id="weatherResult" class="result-area">
-      <div class="result-placeholder">Fill in the fields above to check weather.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: YOUTUBE SEARCH -->
-  <section class="page" id="page-ytsearch">
-    <div class="page-header">
-      <div class="page-title">YouTube Search</div>
-      <div class="page-sub">Find videos on YouTube</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="ytSearchInput" class="text-input" placeholder="Search YouTube...">
-      <button class="btn-primary" onclick="searchYouTube()">Search</button>
-    </div>
-    <div id="ytSearchResult" class="result-area grid-result">
-      <div class="result-placeholder">Enter a query to search YouTube.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: NEKOPOI -->
-  <section class="page" id="page-nekopoi">
-    <div class="page-header">
-      <div class="page-title">Nekopoi</div>
-      <div class="page-sub">Search anime titles</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="nekoInput" class="text-input" placeholder="Search title...">
-      <button class="btn-primary" onclick="searchNekopoi()">Search</button>
-    </div>
-    <div id="nekoResult" class="result-area">
-      <div class="result-placeholder">Enter a title to search.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: F-DROID -->
-  <section class="page" id="page-fdroid">
-    <div class="page-header">
-      <div class="page-title">F-Droid Search</div>
-      <div class="page-sub">Find open-source Android apps</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="fdroidInput" class="text-input" placeholder="App name (e.g. Termux)...">
-      <button class="btn-primary" onclick="searchFdroid()">Search</button>
-    </div>
-    <div id="fdroidResult" class="result-area">
-      <div class="result-placeholder">Search for an app to get the APK details.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: ANIME SEARCH -->
-  <section class="page" id="page-anime">
-    <div class="page-header">
-      <div class="page-title">Anime Search</div>
-      <div class="page-sub">Search and discover anime titles</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="animeInput" class="text-input" placeholder="Anime title...">
-      <button class="btn-primary" onclick="searchAnime()">Search</button>
-    </div>
-    <div id="animeResult" class="result-area">
-      <div class="result-placeholder">Search for an anime title above.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: TIKTOK DOWNLOADER -->
-  <section class="page" id="page-tiktok">
-    <div class="page-header">
-      <div class="page-title">TikTok Downloader</div>
-      <div class="page-sub">Download TikTok videos without watermark</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="tiktokInput" class="text-input" placeholder="Paste TikTok URL...">
-      <button class="btn-primary" onclick="downloadTikTok()">Download</button>
-    </div>
-    <div class="api-toggle-row">
-      <span class="api-label">API Source:</span>
-      <select class="api-select" id="tiktokApiSelect">
-        <option value="v1">Nanzz V1 (MP3/MP4/HD/NoWM)</option>
-        <option value="v2">Nanzz V2 (MP3/MP4)</option>
-        <option value="v3">EmiliaBot V3 (All Formats)</option>
-      </select>
-    </div>
-    <div id="tiktokResult" class="result-area">
-      <div class="result-placeholder">Paste a TikTok link and tap Download.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: YOUTUBE DOWNLOADER -->
-  <section class="page" id="page-youtube">
-    <div class="page-header">
-      <div class="page-title">YouTube Downloader</div>
-      <div class="page-sub">Download YouTube videos or audio</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="youtubeInput" class="text-input" placeholder="Paste YouTube URL...">
-    </div>
-    <div class="api-toggle-row">
-      <span class="api-label">API Source:</span>
-      <select class="api-select" id="youtubeApiSelect">
-        <option value="v1">EmiliaBot V1 (MP4 + MP3)</option>
-        <option value="v2">FAA V2 (MP4)</option>
-      </select>
-    </div>
-    <button class="btn-primary full mt8" onclick="downloadYouTube()">Download</button>
-    <div id="youtubeResult" class="result-area">
-      <div class="result-placeholder">Paste a YouTube link and tap Download.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: TIKTOK DOWNLOADER 2 -->
-  <section class="page" id="page-tiktok2">
-    <div class="page-header">
-      <div class="page-title">TikTok DL 2</div>
-      <div class="page-sub">Alternative TikTok downloader</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="tiktok2Input" class="text-input" placeholder="Paste TikTok URL...">
-      <button class="btn-primary" onclick="downloadTikTok2()">Download</button>
-    </div>
-    <div class="api-toggle-row">
-      <span class="api-label">API Source:</span>
-      <select class="api-select" id="tiktok2ApiSelect">
-        <option value="v1">Nanzz V1 (MP3/MP4/HD/NoWM)</option>
-        <option value="v2">Nanzz V2 (MP3/MP4)</option>
-      </select>
-    </div>
-    <div id="tiktok2Result" class="result-area">
-      <div class="result-placeholder">Paste a TikTok link and tap Download.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: SPOTIFY DOWNLOADER -->
-  <section class="page" id="page-spotify">
-    <div class="page-header">
-      <div class="page-title">Spotify Downloader</div>
-      <div class="page-sub">Download Spotify tracks as MP3</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="spotifyInput" class="text-input" placeholder="Paste Spotify track URL...">
-    </div>
-    <div class="api-toggle-row">
-      <span class="api-label">API Source:</span>
-      <select class="api-select" id="spotifyApiSelect">
-        <option value="v1">Nanzz V1</option>
-        <option value="v2">Yupra V2</option>
-      </select>
-    </div>
-    <button class="btn-primary full mt8" onclick="downloadSpotify()">Download</button>
-    <div id="spotifyResult" class="result-area">
-      <div class="result-placeholder">Paste a Spotify track link and tap Download.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: INSTAGRAM DOWNLOADER -->
-  <section class="page" id="page-instagram">
-    <div class="page-header">
-      <div class="page-title">Instagram Downloader</div>
-      <div class="page-sub">Download Instagram reels and posts</div>
-    </div>
-    <div class="input-group">
-      <input type="text" id="igInput" class="text-input" placeholder="Paste Instagram URL...">
-    </div>
-    <div class="api-toggle-row">
-      <span class="api-label">API Source:</span>
-      <select class="api-select" id="igApiSelect">
-        <option value="v1">Nanzz V1</option>
-        <option value="v2">FAA V2</option>
-      </select>
-    </div>
-    <button class="btn-primary full mt8" onclick="downloadInstagram()">Download</button>
-    <div id="igResult" class="result-area">
-      <div class="result-placeholder">Paste an Instagram link and tap Download.</div>
-    </div>
-  </section>
-
-  <!-- PAGE: HISTORY -->
-  <section class="page" id="page-history">
-    <div class="page-header">
-      <div class="page-title">History</div>
-      <div class="page-sub">Your recent activity log</div>
-    </div>
-    <div class="history-controls">
-      <button class="btn-ghost" onclick="clearHistory()">Clear All</button>
-    </div>
-    <div id="historyList" class="history-list">
-      <div class="result-placeholder">No history recorded yet.</div>
-    </div>
-  </section>
-
-</main>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="bnav-item active" id="bnav-dashboard" onclick="showPage('dashboard')">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-    <span>Dashboard</span>
-  </button>
-  <button class="bnav-item" id="bnav-tools" onclick="showPage('calculator')">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-    <span>Tools</span>
-  </button>
-  <button class="bnav-item" id="bnav-downloader" onclick="showPage('tiktok')">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    <span>Downloader</span>
-  </button>
-  <button class="bnav-item" id="bnav-history" onclick="showPage('history')">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    <span>History</span>
-  </button>
-</nav>
-
-<!-- LOADING OVERLAY -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-spinner"></div>
-  <div class="loading-text">Fetching data...</div>
 </div>
 
 <script>
-/* ============================
-   NANO DASHBOARD - app.js
-   ============================ */
+    (function() {
+        'use strict';
 
-// ============================
-// STATE
-// ============================
-let currentPage = 'dashboard';
-let calcCurrent = '0';
-let calcPrev = '';
-let calcOper = null;
-let calcReset = false;
+        // ── PROXIES ──
+        const corsProxies = [
+            'https://api.allorigins.win/raw?url=', 'https://corsproxy.io/?',
+            'https://cors-anywhere.herokuapp.com/', 'https://api.codetabs.com/v1/proxy?quest=',
+            'https://thingproxy.freeboard.io/fetch/', 'https://cors.bridged.cc/',
+            'https://cors.eu.org/', 'https://proxy.cors.sh/', 'https://cors-proxy.htmldriven.com/?url=',
+            'https://cors-proxy.fringe.zone/', 'https://crossorigin.me/',
+            'https://corsproxy-io.herokuapp.com/', 'https://api-proxy.herokuapp.com/',
+            'https://fetch-proxy.herokuapp.com/fetch?url=', 'https://cors-anywhere-2.herokuapp.com/',
+            'https://cors-anywhere-3.herokuapp.com/', 'https://cors-anywhere-4.herokuapp.com/',
+            'https://cors-anywhere-5.herokuapp.com/', 'https://cors-anywhere-azure.herokuapp.com/',
+            'https://cors-unlimited.herokuapp.com/', 'https://proxy.cors.sh/', 'https://cors-proxy.org/',
+            'https://cors.red/', 'https://cors.5apps.com/', 'https://proxy.duckduckgo.com/',
+            'https://cors-proxy.fly.dev/', 'https://cors-proxy-1.fly.dev/', 'https://cors-proxy-2.fly.dev/',
+            'https://cors-proxy-3.fly.dev/', 'https://cors-proxy-4.fly.dev/', 'https://cors-proxy-5.fly.dev/',
+            'https://cors-proxy-6.fly.dev/', 'https://cors-proxy-7.fly.dev/', 'https://cors-proxy-8.fly.dev/',
+            'https://cors-proxy-9.fly.dev/', 'https://cors-proxy-10.fly.dev/', 'https://cors-proxy-11.fly.dev/',
+            'https://cors-proxy-12.fly.dev/'
+        ];
+        const regularProxies = [
+            'http://51.15.242.202:8888', 'http://51.89.14.70:80', 'http://51.79.50.54:3128',
+            'http://51.79.50.46:3128', 'http://51.158.68.133:3128', 'http://51.158.68.26:3128',
+            'http://51.158.68.68:3128', 'http://51.158.68.107:3128', 'http://51.158.68.153:3128',
+            'http://51.158.68.84:3128', 'http://51.158.68.120:3128', 'http://51.158.68.39:3128',
+            'http://51.158.68.91:3128', 'http://51.158.68.56:3128', 'http://51.158.68.142:3128',
+            'http://51.158.68.78:3128', 'http://51.158.68.33:3128', 'http://51.158.68.111:3128',
+            'http://51.158.68.97:3128', 'http://51.158.68.63:3128', 'http://51.158.68.128:3128',
+            'http://51.158.68.72:3128', 'http://51.158.68.45:3128', 'http://51.158.68.137:3128',
+            'http://51.158.68.51:3128', 'http://103.149.162.195:8080', 'http://103.149.162.194:8080',
+            'http://103.149.162.196:8080', 'http://103.149.162.197:8080', 'http://103.149.162.198:8080',
+            'http://103.149.162.199:8080', 'http://103.149.162.200:8080', 'http://103.149.162.201:8080',
+            'http://103.149.162.202:8080', 'http://103.149.162.203:8080', 'http://103.149.162.204:8080',
+            'http://103.149.162.205:8080', 'http://103.149.162.206:8080', 'http://103.149.162.207:8080',
+            'http://103.149.162.208:8080', 'http://103.149.162.209:8080', 'http://103.149.162.210:8080',
+            'http://103.149.162.211:8080', 'http://103.149.162.212:8080', 'http://103.149.162.213:8080',
+            'http://103.149.162.214:8080', 'http://103.149.162.215:8080', 'http://103.149.162.216:8080',
+            'http://103.149.162.217:8080', 'http://103.149.162.218:8080', 'http://103.149.162.219:8080',
+            'http://103.149.162.220:8080', 'http://103.149.162.221:8080', 'http://103.149.162.222:8080'
+        ];
 
-const PAGE_TITLES = {
-  dashboard:  'Dashboard',
-  calculator: 'Calculator',
-  src:        'SRC Proxy',
-  lyrics:     'Lyrics Search',
-  weather:    'Weather',
-  ytsearch:   'YouTube Search',
-  nekopoi:    'Nekopoi',
-  fdroid:     'F-Droid Search',
-  anime:      'Anime Search',
-  tiktok:     'TikTok DL',
-  youtube:    'YouTube DL',
-  tiktok2:    'TikTok DL 2',
-  spotify:    'Spotify DL',
-  instagram:  'Instagram DL',
-  history:    'History',
-};
+        // ── STATE ──
+        let currentPage = 'dashboard';
+        let srcFetchedSource = '';
+        let srcCurrentUrl = 'https://example.com';
+        let srcIsFetching = false;
+        let srcConsoleLogs = [];
+        let srcActiveProxyType = 'cors';
+        let srcSelectedProxyIndex = 0;
+        let historyData = [];
+        let dlCurrentTab = 'yt';
 
-const TOOLS_PAGES = ['calculator','src','lyrics','weather','ytsearch','nekopoi','fdroid','anime'];
-const DL_PAGES    = ['tiktok','youtube','tiktok2','spotify','instagram'];
+        // ── DOM REFS ──
+        const sidebar = document.getElementById('sidebar');
+        const mainWrap = document.getElementById('mainWrap');
+        const hamburger = document.getElementById('hamburger');
+        const pageTitle = document.getElementById('pageTitle');
+        const pagePath = document.getElementById('pagePath');
+        const pagesContainer = document.getElementById('pagesContainer');
+        const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
 
-// ============================
-// SIDEBAR
-// ============================
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebarOverlay').classList.add('active');
-}
+        // ── LOAD HISTORY ──
+        try {
+            const stored = localStorage.getItem('nova_src_history2');
+            if (stored) historyData = JSON.parse(stored);
+        } catch (_) {}
 
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('active');
-}
+        function saveHistory() {
+            try { localStorage.setItem('nova_src_history2', JSON.stringify(historyData.slice(0, 200))); } catch (_) {}
+        }
 
-// ============================
-// PAGE NAVIGATION
-// ============================
-function showPage(id) {
-  // Hide all
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // Show target
-  const target = document.getElementById('page-' + id);
-  if (!target) return;
-  target.classList.add('active');
-  currentPage = id;
+        // ── NAVIGATION ──
+        function navigateTo(page) {
+            currentPage = page;
+            // update nav
+            navItems.forEach(el => {
+                el.classList.toggle('active', el.dataset.page === page);
+            });
+            // pages
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
 
-  // Update topbar title
-  document.getElementById('topbarTitle').textContent = PAGE_TITLES[id] || id;
+            // update topbar
+            const titles = {
+                dashboard: 'Dashboard <span>· overview</span>',
+                'nova-src': 'NOVA SRC <span>· source viewer</span>',
+                downloaderID: 'DOWNLOADER <span>· media downloader</span>',
+                'status-server-all': 'STATUS SERVER <span>· system status</span>',
+                history: 'HISTORY <span>· activity log</span>'
+            };
+            const paths = {
+                dashboard: '/dashboard',
+                'nova-src': '/nova-src',
+                downloaderID: '/downloaderID',
+                'status-server-all': '/status-server-all',
+                history: '/history'
+            };
+            pageTitle.innerHTML = titles[page] || titles.dashboard;
+            pagePath.textContent = paths[page] || '/dashboard';
 
-  // Update bottom nav highlights
-  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
-  if (id === 'dashboard') {
-    document.getElementById('bnav-dashboard').classList.add('active');
-  } else if (TOOLS_PAGES.includes(id)) {
-    document.getElementById('bnav-tools').classList.add('active');
-  } else if (DL_PAGES.includes(id)) {
-    document.getElementById('bnav-downloader').classList.add('active');
-  } else if (id === 'history') {
-    document.getElementById('bnav-history').classList.add('active');
-  }
+            // close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                mainWrap.classList.remove('sidebar-open');
+            }
 
-  // Update sidebar active
-  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            // page-specific init
+            if (page === 'history') renderHistory();
+            if (page === 'nova-src') renderSrcProxySelect();
+            if (page === 'downloaderID') { /* already rendered */ }
+            if (page === 'dashboard') { /* already rendered */ }
+            if (page === 'status-server-all') { /* already rendered */ }
 
-  // If dashboard, refresh activity widget
-  if (id === 'dashboard') renderDashboardActivity();
-  if (id === 'history') renderHistory();
+            // update URL hash
+            if (window.location.hash !== '#' + page) {
+                history.pushState(null, '', '#' + page);
+            }
+        }
 
-  // Scroll to top
-  document.querySelector('.pages-container').scrollTo(0, 0);
-}
+        // ── HAMBURGER ──
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+            mainWrap.classList.toggle('sidebar-open');
+        });
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const isSidebar = sidebar.contains(e.target);
+                const isHamburger = hamburger.contains(e.target);
+                if (!isSidebar && !isHamburger && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    mainWrap.classList.remove('sidebar-open');
+                }
+            }
+        });
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navigateTo(this.dataset.page);
+            });
+        });
 
-// ============================
-// LOADING
-// ============================
-function showLoading(text = 'Fetching data...') {
-  const ov = document.getElementById('loadingOverlay');
-  ov.querySelector('.loading-text').textContent = text;
-  ov.classList.add('active');
-}
+        // ── HASH ROUTING ──
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.replace('#', '') || 'dashboard';
+            if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history'].includes(hash)) {
+                navigateTo(hash);
+            }
+        });
+        // initial
+        const initHash = window.location.hash.replace('#', '') || 'dashboard';
+        if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history'].includes(initHash)) {
+            navigateTo(initHash);
+        } else {
+            navigateTo('dashboard');
+        }
 
-function hideLoading() {
-  document.getElementById('loadingOverlay').classList.remove('active');
-}
+        // ── SRC: PROXY SELECT ──
+        function renderSrcProxySelect() {
+            const sel = document.getElementById('srcProxySelect');
+            if (!sel) return;
+            const isCors = srcActiveProxyType === 'cors';
+            const list = isCors ? corsProxies : regularProxies;
+            sel.innerHTML = list.map((p, i) =>
+                `<option value="${i}" ${i===srcSelectedProxyIndex?'selected':''}>${isCors ? 'CORS #'+(i+1) : 'HTTP #'+(i+1)} ${p.substring(0,36)}${p.length>36?'…':''}</option>`
+            ).join('');
+        }
 
-// ============================
-// HISTORY
-// ============================
-function getHistory() {
-  try {
-    return JSON.parse(localStorage.getItem('nano_history') || '[]');
-  } catch { return []; }
-}
+        // ── SRC: CONSOLE LOG ──
+        function srcLog(msg, type = 'info') {
+            const now = new Date();
+            const time = now.toTimeString().slice(0, 8);
+            srcConsoleLogs.push({ message: msg, type, time });
+            if (srcConsoleLogs.length > 200) srcConsoleLogs.shift();
+            const el = document.getElementById('srcConsole');
+            if (!el) return;
+            const div = document.createElement('div');
+            div.className = 'log-entry log-' + type;
+            div.innerHTML = `<span class="log-time">${time}</span>${escapeHtml(msg)}`;
+            el.appendChild(div);
+            el.scrollTop = el.scrollHeight;
+        }
 
-function addHistory(page, text) {
-  const hist = getHistory();
-  hist.unshift({ page, text, time: Date.now() });
-  if (hist.length > 50) hist.pop();
-  localStorage.setItem('nano_history', JSON.stringify(hist));
-}
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
 
-function clearHistory() {
-  if (!confirm('Clear all history?')) return;
-  localStorage.removeItem('nano_history');
-  renderHistory();
-  renderDashboardActivity();
-}
+        // ── SRC: FETCH ──
+        async function srcFetch() {
+            if (srcIsFetching) return;
+            const urlInput = document.getElementById('srcUrl');
+            const proxyTypeEl = document.getElementById('srcProxyType');
+            const proxySelect = document.getElementById('srcProxySelect');
+            let url = urlInput ? urlInput.value.trim() : srcCurrentUrl;
+            if (!url) { srcLog('Enter a URL', 'warning'); return; }
+            if (!/^https?:\/\//i.test(url)) { url = 'https://' + url;
+                urlInput.value = url; }
+            srcCurrentUrl = url;
+            const proxyType = proxyTypeEl ? proxyTypeEl.value : 'cors';
+            const proxyIdx = proxySelect ? parseInt(proxySelect.value) : 0;
+            srcActiveProxyType = proxyType;
+            srcSelectedProxyIndex = proxyIdx;
+            let proxyUrl = proxyType === 'cors' ? corsProxies[proxyIdx] || corsProxies[0] : regularProxies[proxyIdx] ||
+            regularProxies[0];
+            let proxyName = proxyType === 'cors' ? 'CORS #' + (proxyIdx + 1) : 'HTTP #' + (proxyIdx + 1);
 
-function timeAgo(ts) {
-  const diff = Math.floor((Date.now() - ts) / 1000);
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
-  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
-  return Math.floor(diff / 86400) + 'd ago';
-}
+            srcIsFetching = true;
+            srcFetchedSource = '';
+            srcConsoleLogs = [];
+            const dot = document.getElementById('srcDot');
+            if (dot) dot.classList.add('active');
+            const btn = document.getElementById('srcFetchBtn');
+            if (btn) btn.disabled = true;
+            srcLog('Fetching: ' + url, 'info');
+            srcLog('Proxy: ' + proxyName, 'info');
+            document.getElementById('srcCodeBody').innerHTML = '<div class="code-empty">Loading…</div>';
+            document.getElementById('srcFileLabel').textContent = 'Fetching…';
 
-function renderHistory() {
-  const hist = getHistory();
-  const el = document.getElementById('historyList');
-  if (!hist.length) {
-    el.innerHTML = '<div class="result-placeholder">No history recorded yet.</div>';
-    return;
-  }
-  el.innerHTML = hist.map(h => `
-    <div class="history-item">
-      <div class="history-item-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <div class="history-item-body">
-        <div class="history-item-page">${PAGE_TITLES[h.page] || h.page}</div>
-        <div class="history-item-text">${escHtml(h.text)}</div>
-      </div>
-      <div class="history-item-time">${timeAgo(h.time)}</div>
-    </div>
-  `).join('');
-}
+            try {
+                let fetchUrl = proxyType === 'cors' ? proxyUrl + encodeURIComponent(url) : url;
+                if (proxyType === 'regular') srcLog('HTTP proxy direct fetch (may fail)', 'warning');
+                const controller = new AbortController();
+                const tid = setTimeout(() => controller.abort(), 25000);
+                const res = await fetch(fetchUrl, { signal: controller.signal, headers: { 'User-Agent': 'Mozilla/5.0',
+                        'Accept': 'text/html' } });
+                clearTimeout(tid);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const text = await res.text();
+                srcFetchedSource = text;
+                srcLog('Success! ' + text.length + ' chars', 'success');
+                historyData.push({ url, proxyName, proxyUrl, timestamp: new Date().toISOString(), status: 'success' });
+                saveHistory();
+                renderSrcCode(text);
+                document.getElementById('srcFileLabel').textContent = url;
+                document.getElementById('srcCopyBtn').disabled = false;
+                document.getElementById('srcDownloadBtn').disabled = false;
+                document.getElementById('srcPreviewBtn').disabled = false;
+            } catch (e) {
+                srcLog('Failed: ' + e.message, 'error');
+                historyData.push({ url, proxyName, proxyUrl, timestamp: new Date().toISOString(), status: 'failed',
+                    error: e.message });
+                saveHistory();
+                document.getElementById('srcCodeBody').innerHTML = '<div class="code-empty">Error: ' + escapeHtml(e
+                .message) + '</div>';
+            }
+            srcIsFetching = false;
+            if (dot) dot.classList.remove('active');
+            if (btn) btn.disabled = false;
+        }
 
-function renderDashboardActivity() {
-  const hist = getHistory().slice(0, 5);
-  const el = document.getElementById('dashboardActivity');
-  if (!hist.length) {
-    el.innerHTML = '<div class="activity-empty">No recent activity yet.</div>';
-    return;
-  }
-  el.innerHTML = hist.map(h => `
-    <div class="activity-item">
-      <div class="activity-dot"></div>
-      <div class="activity-text">${escHtml(h.text)}</div>
-      <div class="activity-time">${timeAgo(h.time)}</div>
-    </div>
-  `).join('');
-}
+        function renderSrcCode(text) {
+            const body = document.getElementById('srcCodeBody');
+            if (!text) { body.innerHTML = '<div class="code-empty">No content</div>'; return; }
+            const lines = text.split('\n');
+            body.innerHTML = lines.map(line => `<span class="code-line">${escapeHtml(line)}</span>`).join('');
+        }
 
-// ============================
-// UTILS
-// ============================
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-}
+        async function srcAutoFetch() {
+            if (srcIsFetching) return;
+            const urlInput = document.getElementById('srcUrl');
+            let url = urlInput ? urlInput.value.trim() : srcCurrentUrl;
+            if (!url) { srcLog('Enter URL', 'warning'); return; }
+            if (!/^https?:\/\//i.test(url)) { url = 'https://' + url;
+                urlInput.value = url; }
+            srcCurrentUrl = url;
+            srcIsFetching = true;
+            srcFetchedSource = '';
+            srcConsoleLogs = [];
+            const dot = document.getElementById('srcDot');
+            if (dot) dot.classList.add('active');
+            const btn = document.getElementById('srcFetchBtn');
+            if (btn) btn.disabled = true;
+            srcLog('Auto-fetch: trying ' + corsProxies.length + ' CORS proxies…', 'info');
+            document.getElementById('srcCodeBody').innerHTML = '<div class="code-empty">Auto-fetching…</div>';
+            document.getElementById('srcFileLabel').textContent = 'Auto…';
 
-function setResult(elId, html) {
-  document.getElementById(elId).innerHTML = html;
-}
+            let success = false;
+            for (let i = 0; i < corsProxies.length; i++) {
+                const pUrl = corsProxies[i];
+                srcLog('[' + (i + 1) + '/' + corsProxies.length + '] Trying CORS #' + (i + 1) + '…', 'info');
+                try {
+                    const ctrl = new AbortController();
+                    const tid = setTimeout(() => ctrl.abort(), 12000);
+                    const res = await fetch(pUrl + encodeURIComponent(url), { signal: ctrl.signal,
+                        headers: { 'User-Agent': 'Mozilla/5.0' } });
+                    clearTimeout(tid);
+                    if (res.ok) {
+                        const text = await res.text();
+                        srcFetchedSource = text;
+                        srcLog('Success! ' + text.length + ' chars', 'success');
+                        historyData.push({ url, proxyName: 'CORS #' + (i + 1), proxyUrl: pUrl,
+                            timestamp: new Date().toISOString(), status: 'success' });
+                        saveHistory();
+                        renderSrcCode(text);
+                        document.getElementById('srcFileLabel').textContent = url + ' (auto #' + (i + 1) + ')';
+                        document.getElementById('srcCopyBtn').disabled = false;
+                        document.getElementById('srcDownloadBtn').disabled = false;
+                        document.getElementById('srcPreviewBtn').disabled = false;
+                        srcActiveProxyType = 'cors';
+                        srcSelectedProxyIndex = i;
+                        renderSrcProxySelect();
+                        success = true;
+                        break;
+                    } else srcLog('HTTP ' + res.status, 'warning');
+                } catch (e) { srcLog('Error: ' + e.message, 'error'); }
+            }
+            if (!success) {
+                srcLog('All CORS failed. Try direct or manual.', 'error');
+                document.getElementById('srcCodeBody').innerHTML = '<div class="code-empty">Auto-fetch failed.</div>';
+                historyData.push({ url, proxyName: 'Auto(failed)', proxyUrl: 'N/A',
+                    timestamp: new Date().toISOString(), status: 'failed' });
+                saveHistory();
+            }
+            srcIsFetching = false;
+            if (dot) dot.classList.remove('active');
+            if (btn) btn.disabled = false;
+        }
 
-function errBanner(msg) {
-  return `<div class="banner error">${escHtml(msg)}</div>`;
-}
+        function srcCopy() {
+            if (!srcFetchedSource) return;
+            navigator.clipboard.writeText(srcFetchedSource).then(() => srcLog('Copied!', 'success')).catch(() => srcLog(
+                'Copy failed', 'error'));
+        }
 
-// Direct download via fetch -> blob
-async function directDownload(url, filename) {
-  try {
-    showLoading('Downloading file...');
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Failed to fetch file');
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = filename || 'download';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-  } catch (e) {
-    alert('Download failed: ' + e.message);
-  } finally {
-    hideLoading();
-  }
-}
+        function srcDownload() {
+            if (!srcFetchedSource) return;
+            const blob = new Blob([srcFetchedSource], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            try { a.download = new URL(srcCurrentUrl).hostname + '_source.html'; } catch (_) { a.download =
+                'source.html'; }
+            a.click();
+            srcLog('Downloaded.', 'success');
+        }
 
-// Expose globally for inline onclick
-window.directDownload = directDownload;
+        function srcPreview() {
+            if (!srcFetchedSource) return;
+            const label = document.getElementById('previewUrlLabel');
+            if (label) label.textContent = srcCurrentUrl;
+            const frame = document.getElementById('previewFrame');
+            const blob = new Blob([srcFetchedSource], { type: 'text/html' });
+            frame.src = URL.createObjectURL(blob);
+            document.getElementById('previewModal').style.display = 'flex';
+        }
 
-// ============================
-// CALCULATOR
-// ============================
-function calcDisplay() {
-  document.getElementById('calcResult').textContent =
-    parseFloat(calcCurrent).toLocaleString('en-US', { maximumFractionDigits: 10 });
-  document.getElementById('calcExpr').textContent =
-    calcPrev ? calcPrev + ' ' + (calcOper === '*' ? 'x' : calcOper === '/' ? '÷' : calcOper) : '';
-}
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+            document.getElementById('previewFrame').src = 'about:blank';
+        }
+        document.getElementById('previewCloseBtn').addEventListener('click', closePreview);
+        document.getElementById('previewModal').addEventListener('click', function(e) {
+            if (e.target === this) closePreview();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('previewModal').style.display === 'flex') closePreview();
+        });
 
-function calcNum(n) {
-  if (calcReset || calcCurrent === '0') {
-    calcCurrent = n;
-    calcReset = false;
-  } else {
-    if (calcCurrent.replace('.','').replace('-','').length >= 12) return;
-    calcCurrent += n;
-  }
-  calcDisplay();
-}
+        // ── SRC: EVENT BINDING ──
+        document.addEventListener('DOMContentLoaded', function() {
+            const srcFetchBtn = document.getElementById('srcFetchBtn');
+            const srcAutoBtn = document.getElementById('srcAutoBtn');
+            const srcCopyBtn = document.getElementById('srcCopyBtn');
+            const srcDownloadBtn = document.getElementById('srcDownloadBtn');
+            const srcPreviewBtn = document.getElementById('srcPreviewBtn');
+            const srcUrl = document.getElementById('srcUrl');
+            const srcProxyType = document.getElementById('srcProxyType');
+            const srcProxySelect = document.getElementById('srcProxySelect');
 
-function calcDot() {
-  if (calcReset) { calcCurrent = '0.'; calcReset = false; calcDisplay(); return; }
-  if (!calcCurrent.includes('.')) calcCurrent += '.';
-  calcDisplay();
-}
+            if (srcFetchBtn) srcFetchBtn.addEventListener('click', srcFetch);
+            if (srcAutoBtn) srcAutoBtn.addEventListener('click', srcAutoFetch);
+            if (srcCopyBtn) srcCopyBtn.addEventListener('click', srcCopy);
+            if (srcDownloadBtn) srcDownloadBtn.addEventListener('click', srcDownload);
+            if (srcPreviewBtn) srcPreviewBtn.addEventListener('click', srcPreview);
+            if (srcUrl) srcUrl.addEventListener('keydown', function(e) { if (e.key === 'Enter') srcFetch(); });
+            if (srcProxyType) {
+                srcProxyType.addEventListener('change', function() {
+                    srcActiveProxyType = this.value;
+                    srcSelectedProxyIndex = 0;
+                    renderSrcProxySelect();
+                });
+            }
+            if (srcProxySelect) {
+                srcProxySelect.addEventListener('change', function() {
+                    srcSelectedProxyIndex = parseInt(this.value) || 0;
+                });
+            }
+            renderSrcProxySelect();
+        });
 
-function calcSign() {
-  calcCurrent = String(parseFloat(calcCurrent) * -1);
-  calcDisplay();
-}
+        // ── HISTORY ──
+        function renderHistory() {
+            const tbody = document.getElementById('historyBody');
+            if (!tbody) return;
+            if (!historyData.length) {
+                tbody.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--text-muted);">No history yet.</td></tr>';
+                return;
+            }
+            const rows = historyData.slice().reverse().map((h, idx) => {
+                const realIdx = historyData.length - 1 - idx;
+                return `<tr>
+              <td class="truncate" style="max-width:180px;" title="${escapeHtml(h.url)}">${escapeHtml(h.url)}</td>
+              <td>${escapeHtml(h.proxyName||'—')}</td>
+              <td>${new Date(h.timestamp).toLocaleString()}</td>
+              <td><span class="badge badge-${h.status}">${h.status}</span></td>
+              <td>
+                <button class="btn btn-outline btn-sm" onclick="window._refetch('${escapeHtml(h.url)}')">↻</button>
+                <button class="btn btn-outline btn-sm" style="color:var(--danger);" onclick="window._delHist(${realIdx})">✕</button>
+              </td>
+            </tr>`;
+            }).join('');
+            tbody.innerHTML = rows;
+        }
 
-function calcClear() {
-  calcCurrent = '0'; calcPrev = ''; calcOper = null; calcReset = false;
-  calcDisplay();
-}
+        window._refetch = function(url) {
+            const el = document.getElementById('srcUrl');
+            if (el) el.value = url;
+            navigateTo('nova-src');
+            setTimeout(srcFetch, 200);
+        };
+        window._delHist = function(idx) {
+            historyData.splice(idx, 1);
+            saveHistory();
+            renderHistory();
+        };
+        document.getElementById('clearHistoryBtn')?.addEventListener('click', function() {
+            if (confirm('Clear all history?')) { historyData = [];
+                saveHistory();
+                renderHistory(); }
+        });
 
-function calcOp(op) {
-  if (calcOper && !calcReset) {
-    calcEqual(true);
-  }
-  calcPrev = calcCurrent;
-  calcOper = op;
-  calcReset = true;
-  calcDisplay();
-}
+        // ── DOWNLOADER ──
+        const DL_APIS = {
+            yt: { name: 'YouTube', v1: 'https://api.emiliabot.my.id/download/youtube?url=', v2: 'https://api-nanzz.my.id/docs/api/downloader/ytdl.php?url=' },
+            tt: { name: 'TikTok', url: 'https://api-nanzz.my.id/docs/api/downloader/tiktok.php?url=' },
+            ig: { name: 'Instagram', url: 'https://api-nanzz.my.id/docs/api/downloader/Instagram.php?url=' },
+            sp: { name: 'Spotify', url: 'https://api-nanzz.my.id/docs/api/downloader/spotify-dl.php?url=' },
+            fb: { name: 'Facebook', url: 'https://api.emiliabot.my.id/download/facebook-dl?url=' },
+            pt: { name: 'Pinterest', url: 'https://api.emiliabot.my.id/download/pinterest-dl?url=' }
+        };
 
-function calcEqual(silent = false) {
-  if (!calcOper || !calcPrev) return;
-  const a = parseFloat(calcPrev);
-  const b = parseFloat(calcCurrent);
-  let res;
-  switch (calcOper) {
-    case '+': res = a + b; break;
-    case '-': res = a - b; break;
-    case '*': res = a * b; break;
-    case '/': res = b === 0 ? 'Error' : a / b; break;
-    default:  res = b;
-  }
-  if (!silent) {
-    document.getElementById('calcExpr').textContent =
-      calcPrev + ' ' + (calcOper === '*' ? 'x' : calcOper === '/' ? '÷' : calcOper) + ' ' + calcCurrent + ' =';
-    calcCurrent = String(res);
-    calcOper = null; calcPrev = ''; calcReset = true;
-    calcDisplay();
-    document.getElementById('calcExpr').textContent = document.getElementById('calcExpr').textContent;
-  } else {
-    calcCurrent = String(res);
-  }
-}
+        function dlSetMsg(t, c) {
+            const el = document.getElementById('dlMsg');
+            if (el) { el.textContent = t;
+                el.style.color = c || 'var(--text-muted)'; }
+        }
 
-// ============================
-// SRC PROXY
-// ============================
-async function fetchSrc() {
-  const url = document.getElementById('srcInput').value.trim();
-  if (!url) return;
-  showLoading('Fetching script...');
-  addHistory('src', url);
-  try {
-    const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-    const res = await fetch(proxy);
-    const text = await res.text();
-    document.getElementById('srcResult').innerHTML =
-      `<div class="src-header">Response — ${escHtml(url)}</div>` +
-      `<pre style="white-space:pre-wrap;word-break:break-word;font-size:12px;color:var(--text-secondary);max-height:60vh;overflow:auto;">${escHtml(text)}</pre>`;
-  } catch (e) {
-    document.getElementById('srcResult').innerHTML = errBanner('Failed to fetch: ' + e.message);
-  } finally {
-    hideLoading();
-  }
-}
+        // ── dlAddBtn WITH SVG ICONS (no emoji) ──
+        function dlAddBtn(label, link, typeHint) {
+            const container = document.getElementById('dlButtons');
+            if (!container || !link) return;
+            const a = document.createElement('a');
+            a.href = link;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.setAttribute('download', '');
+            const colors = { indigo: '#7c3aed', pink: '#ec4899', slate: '#64748b', violet: '#8b5cf6', blue: '#3b82f6',
+                emerald: '#10b981', red: '#ef4444' };
+            const color = colors[typeHint] || colors.slate;
+            a.style.borderColor = color + '44';
+            a.style.color = color;
 
-// ============================
-// LYRICS
-// ============================
-async function searchLyrics() {
-  const q = document.getElementById('lyricsInput').value.trim();
-  if (!q) return;
-  showLoading('Searching lyrics...');
-  addHistory('lyrics', q);
-  try {
-    const res = await fetch(`https://api.lolhuman.xyz/api/lirik?apikey=62ccb3e3a2140428a299f592&query=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    if (data.status !== 200 || !data.result) throw new Error(data.message || 'Not found');
-    const r = data.result;
-    setResult('lyricsResult', `
-      <div class="lyrics-box">
-        <div class="lyrics-song-title">${escHtml(r.title || q)}</div>
-        <div class="lyrics-artist">${escHtml(r.artist || '')}</div>
-        <div class="lyrics-text">${escHtml(r.lyrics || r.lirik || 'No lyrics found.')}</div>
-      </div>
-    `);
-  } catch (e) {
-    setResult('lyricsResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+            let icon = '';
+            const lc = label.toLowerCase();
+            if (lc.includes('mp3') || typeHint === 'mp3') {
+                icon =
+                    `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+            } else if (lc.includes('mp4') || lc.includes('video') || typeHint === 'mp4') {
+                icon =
+                    `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+            } else if (lc.includes('gambar') || lc.includes('image') || typeHint === 'image') {
+                icon =
+                    `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+            } else {
+                icon =
+                    `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+            }
+            a.innerHTML = `${icon} ${label}`;
+            container.appendChild(a);
+        }
 
-// ============================
-// WEATHER
-// ============================
-async function fetchWeather() {
-  const kab  = document.getElementById('weatherKab').value.trim();
-  const kec  = document.getElementById('weatherKec').value.trim();
-  const desa = document.getElementById('weatherDesa').value.trim();
-  if (!kab || !kec || !desa) return;
-  showLoading('Checking weather...');
-  addHistory('weather', `${kab}, ${kec}, ${desa}`);
-  try {
-    const url = `https://api-faa.my.id/faa/cuaca?kabupaten=${encodeURIComponent(kab)}&kecamatan=${encodeURIComponent(kec)}&desa=${encodeURIComponent(desa)}`;
-    const res  = await fetch(url);
-    const data = await res.json();
-    if (!data.result && !data.data) throw new Error(data.message || 'No data');
-    const r = data.result || data.data || data;
-    const cuaca = Array.isArray(r) ? r[0] : r;
-    setResult('weatherResult', `
-      <div class="weather-card">
-        <div class="weather-location">${escHtml(kab)} / ${escHtml(kec)} / ${escHtml(desa)}</div>
-        <div class="weather-desc">${escHtml(cuaca.cuaca || cuaca.weather || cuaca.description || 'N/A')}</div>
-        <div class="weather-stats">
-          <div class="weather-stat">
-            <div class="weather-stat-label">Temperature</div>
-            <div class="weather-stat-value">${escHtml(String(cuaca.suhu || cuaca.temp || cuaca.temperature || '--'))} C</div>
-          </div>
-          <div class="weather-stat">
-            <div class="weather-stat-label">Humidity</div>
-            <div class="weather-stat-value">${escHtml(String(cuaca.kelembaban || cuaca.humidity || '--'))}%</div>
-          </div>
-          <div class="weather-stat">
-            <div class="weather-stat-label">Wind</div>
-            <div class="weather-stat-value">${escHtml(String(cuaca.angin || cuaca.wind_speed || cuaca.wind || '--'))}</div>
-          </div>
-          <div class="weather-stat">
-            <div class="weather-stat-label">Visibility</div>
-            <div class="weather-stat-value">${escHtml(String(cuaca.jarak_pandang || cuaca.visibility || '--'))}</div>
-          </div>
-        </div>
-        ${cuaca.waktu || cuaca.time ? `<div style="margin-top:12px;font-size:11px;color:var(--text-dim)">Updated: ${escHtml(cuaca.waktu || cuaca.time)}</div>` : ''}
-      </div>
-      <details style="margin-top:10px;">
-        <summary style="font-size:12px;color:var(--text-muted);cursor:pointer;padding:6px 0;">Raw response</summary>
-        <pre style="font-size:11px;color:var(--text-secondary);white-space:pre-wrap;word-break:break-word;margin-top:8px;">${escHtml(JSON.stringify(r, null, 2))}</pre>
-      </details>
-    `);
-  } catch (e) {
-    setResult('weatherResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+        function dlShowResult(img, title, meta) {
+            const el = document.getElementById('dlResult');
+            if (el) el.classList.add('show');
+            const thumb = document.getElementById('dlThumb');
+            if (thumb) { if (img) thumb.src = img;
+                else thumb.style.display = 'none'; }
+            const t = document.getElementById('dlTitle');
+            if (t) t.textContent = title || '—';
+            const m = document.getElementById('dlMeta');
+            if (m) m.textContent = meta || '';
+            document.getElementById('dlButtons').innerHTML = '';
+        }
 
-// ============================
-// YOUTUBE SEARCH
-// ============================
-async function searchYouTube() {
-  const q = document.getElementById('ytSearchInput').value.trim();
-  if (!q) return;
-  showLoading('Searching YouTube...');
-  addHistory('ytsearch', q);
-  try {
-    const res = await fetch('https://api.yuulabs.web.id/api/search/youtube', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: q })
-    });
-    const data = await res.json();
-    const items = data.result || data.results || data.data || data.items || [];
-    if (!items.length) throw new Error('No results found');
-    const html = items.map(v => `
-      <div class="yt-card">
-        <div class="yt-thumb-wrap">
-          ${v.thumbnail ? `<img class="yt-thumb" src="${escHtml(v.thumbnail)}" loading="lazy" onerror="this.style.display='none'">` : ''}
-          ${v.duration ? `<div class="yt-duration">${escHtml(v.duration)}</div>` : ''}
-        </div>
-        <div class="yt-info">
-          <div class="yt-title">${escHtml(v.title || v.name || '')}</div>
-          <div class="yt-channel">${escHtml(v.channel || v.author || '')}</div>
-          <div class="yt-views">${escHtml(v.views || v.viewCount || '')}</div>
-          ${v.url || v.link ? `<div style="margin-top:6px"><a class="dl-btn secondary" href="${escHtml(v.url || v.link)}" target="_blank">Watch</a></div>` : ''}
-        </div>
-      </div>
-    `).join('');
-    setResult('ytSearchResult', html);
-  } catch (e) {
-    setResult('ytSearchResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+        async function dlFetch() {
+            const urlInput = document.getElementById('dlUrl');
+            let url = urlInput ? urlInput.value.trim() : '';
+            if (!url) { dlSetMsg('Peringatan: Tempel link dulu', '#f87171'); return; }
+            const tab = dlCurrentTab;
+            const api = DL_APIS[tab];
+            if (!api) { dlSetMsg('Peringatan: Platform tidak dikenali', '#f87171'); return; }
 
-// ============================
-// NEKOPOI
-// ============================
-async function searchNekopoi() {
-  const q = document.getElementById('nekoInput').value.trim();
-  if (!q) return;
-  showLoading('Searching Nekopoi...');
-  addHistory('nekopoi', q);
-  try {
-    const res  = await fetch(`https://api.covenant.sbs/api/anime/nekopoi/watch?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    const items = data.result || data.data || data.results || [];
-    if (!items.length) throw new Error('No results found');
-    const html = items.map(v => `
-      <div class="media-card">
-        ${v.thumbnail || v.cover ? `<img class="media-card-thumb" src="${escHtml(v.thumbnail || v.cover)}" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <div class="media-card-info">
-          <div class="media-card-title">${escHtml(v.title || v.name || '')}</div>
-          <div class="media-card-tags">
-            ${(v.genre || v.genres || []).map ? (v.genre || v.genres || []).map(g => `<span class="tag genre">${escHtml(g)}</span>`).join('') : ''}
-            ${v.type ? `<span class="tag">${escHtml(v.type)}</span>` : ''}
-          </div>
-          <div class="media-card-meta">
-            ${v.episode ? 'Episode: ' + escHtml(String(v.episode)) + '<br>' : ''}
-            ${v.date || v.year ? 'Year: ' + escHtml(String(v.date || v.year)) : ''}
-          </div>
-          ${v.url || v.link ? `<a class="dl-btn" style="margin-top:8px" href="${escHtml(v.url || v.link)}" target="_blank">Watch</a>` : ''}
-        </div>
-      </div>
-    `).join('');
-    setResult('nekoResult', html);
-  } catch (e) {
-    setResult('nekoResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+            const btn = document.getElementById('dlFetchBtn');
+            if (btn) { btn.disabled = true;
+                btn.textContent = 'Loading…'; }
+            dlSetMsg('Mengambil data…', '#9890c8');
+            document.getElementById('dlResult').classList.remove('show');
+            document.getElementById('dlButtons').innerHTML = '';
 
-// ============================
-// F-DROID
-// ============================
-async function searchFdroid() {
-  const q = document.getElementById('fdroidInput').value.trim();
-  if (!q) return;
-  showLoading('Searching F-Droid...');
-  addHistory('fdroid', q);
-  try {
-    const res  = await fetch(`https://api.emiliabot.my.id/search/fdroid?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    const items = data.result || data.data || data.results || [];
-    if (!items.length) throw new Error('No results found');
-    const html = items.map(app => `
-      <div class="result-card">
-        <div class="result-card-title">${escHtml(app.name || app.title || '')}</div>
-        <div class="result-card-meta">
-          ${app.packageName || app.package ? `<span style="font-size:11px;color:var(--text-muted);font-family:monospace">${escHtml(app.packageName || app.package)}</span><br>` : ''}
-          ${app.version ? 'Version: ' + escHtml(app.version) + '<br>' : ''}
-          ${app.summary || app.description ? escHtml((app.summary || app.description).substring(0,120)) + (app.summary?.length > 120 ? '...' : '') : ''}
-        </div>
-        ${app.apkUrl || app.download || app.url
-          ? `<button class="dl-btn" onclick="directDownload('${escHtml(app.apkUrl || app.download || app.url)}', '${escHtml((app.name || 'app').replace(/\s+/g,'-'))}.apk')">Download APK</button>`
-          : ''}
-      </div>
-    `).join('');
-    setResult('fdroidResult', html);
-  } catch (e) {
-    setResult('fdroidResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+            try {
+                if (tab === 'yt') await dlHandleYT(url, api);
+                else if (tab === 'tt') await dlHandleTT(url, api);
+                else if (tab === 'ig') await dlHandleIG(url, api);
+                else if (tab === 'sp') await dlHandleSP(url, api);
+                else if (tab === 'fb') await dlHandleFB(url, api);
+                else if (tab === 'pt') await dlHandlePT(url, api);
+                else dlSetMsg('Gagal: Platform tidak didukung', '#f87171');
+            } catch (e) {
+                console.error(e);
+                dlSetMsg('Gagal: ' + e.message, '#f87171');
+            } finally {
+                if (btn) { btn.disabled = false;
+                    btn.innerHTML =
+                        '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Ambil Data';
+                }
+            }
+        }
 
-// ============================
-// ANIME SEARCH
-// ============================
-async function searchAnime() {
-  const q = document.getElementById('animeInput').value.trim();
-  if (!q) return;
-  showLoading('Searching anime...');
-  addHistory('anime', q);
-  try {
-    const res  = await fetch(`https://api.emiliabot.my.id/anime/alqanime/search?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    const items = data.result || data.data || data.results || [];
-    if (!items.length) throw new Error('No results found');
-    const html = items.map(v => `
-      <div class="media-card">
-        ${v.thumbnail || v.image || v.cover ? `<img class="media-card-thumb" src="${escHtml(v.thumbnail || v.image || v.cover)}" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <div class="media-card-info">
-          <div class="media-card-title">${escHtml(v.title || v.name || '')}</div>
-          <div class="media-card-tags">
-            ${v.type ? `<span class="tag">${escHtml(v.type)}</span>` : ''}
-            ${v.status ? `<span class="tag genre">${escHtml(v.status)}</span>` : ''}
-            ${(v.genres || v.genre || []).map ? (v.genres || v.genre || []).slice(0,3).map(g => `<span class="tag genre">${escHtml(g)}</span>`).join('') : ''}
-          </div>
-          <div class="media-card-meta">
-            ${v.episode || v.episodes ? 'Episodes: ' + escHtml(String(v.episode || v.episodes)) + '<br>' : ''}
-            ${v.score || v.rating ? 'Score: ' + escHtml(String(v.score || v.rating)) + '<br>' : ''}
-            ${v.synopsis || v.description ? escHtml((v.synopsis || v.description).substring(0,100)) + '...' : ''}
-          </div>
-          ${v.url || v.link ? `<a class="dl-btn" style="margin-top:8px" href="${escHtml(v.url || v.link)}" target="_blank">View</a>` : ''}
-        </div>
-      </div>
-    `).join('');
-    setResult('animeResult', html);
-  } catch (e) {
-    setResult('animeResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+        async function dlHandleYT(url, api) {
+            try {
+                const r = await fetch(api.v1 + encodeURIComponent(url)).then(res => res.json());
+                if (r && r.status && r.data) {
+                    const d = r.data;
+                    dlShowResult(d.thumbnail, d.title, 'YouTube · via Emiliabot');
+                    if (d.mp3) dlAddBtn('MP3', d.mp3, 'mp3');
+                    if (d.mp4) dlAddBtn('MP4', d.mp4, 'mp4');
+                    dlSetMsg('Sukses', '#6ee7b7');
+                    return;
+                }
+            } catch (_) {}
+            const r2 = await fetch(api.v2 + encodeURIComponent(url)).then(res => res.json());
+            if (!r2 || !r2.status) throw new Error(r2?.message || 'V2 gagal');
+            const d = r2.data || r2.result || {};
+            dlShowResult(d.thumbnail, d.title || 'Video', 'YouTube · via Nanzz');
+            if (d.mp3) dlAddBtn('MP3', d.mp3, 'mp3');
+            if (d.mp4) dlAddBtn('MP4', d.mp4, 'mp4');
+            (d.downloads || []).forEach(x => dlAddBtn((x.type || x.quality || 'File').toUpperCase(), x.url || x.link,
+                'file'));
+            dlSetMsg('Sukses', '#6ee7b7');
+        }
 
-// ============================
-// HELPERS: RENDER DL CARD
-// ============================
-function renderDlCard(elId, { thumb, title, author, buttons }) {
-  setResult(elId, `
-    <div class="dl-result-card">
-      ${thumb ? `<img class="dl-result-thumb" src="${escHtml(thumb)}" onerror="this.style.display='none'">` : ''}
-      <div class="dl-result-title">${escHtml(title || 'Media')}</div>
-      ${author ? `<div class="dl-result-meta">${escHtml(author)}</div>` : ''}
-      <div class="dl-actions">${buttons || '<span style="color:var(--text-muted);font-size:13px">No download link found.</span>'}</div>
-    </div>
-  `);
-}
+        async function dlHandleTT(url, api) {
+            const r = await fetch(api.url + encodeURIComponent(url)).then(res => res.json());
+            if (!r || !r.status) throw new Error(r?.message || 'API TikTok gagal');
+            const d = r.result || r.data || {};
+            dlShowResult(d.thumbnail, d.title || 'Video TikTok', 'TikTok Downloader');
+            const list = d.downloads || [];
+            if (list.length) {
+                list.forEach(x => dlAddBtn((x.type || x.quality || 'File').toUpperCase(), x.url || x.link, 'file'));
+            }
+            if (d.mp3) dlAddBtn('MP3', d.mp3, 'mp3');
+            if (d.mp4) dlAddBtn('MP4', d.mp4, 'mp4');
+            if (d.nowm) dlAddBtn('No WM', d.nowm, 'mp4');
+            if (d.hd) dlAddBtn('HD', d.hd, 'mp4');
+            dlSetMsg('Sukses: TikTok siap', '#6ee7b7');
+        }
 
-function dlBtn(url, label, filename, secondary = false) {
-  if (!url) return '';
-  const cls = secondary ? 'dl-btn secondary' : 'dl-btn';
-  const safe = url.replace(/'/g, '%27');
-  const fn   = (filename || 'download').replace(/'/g, '');
-  return `<button class="${cls}" onclick="directDownload('${safe}','${fn}')">${label}</button>`;
-}
+        async function dlHandleIG(url, api) {
+            const r = await fetch(api.url + encodeURIComponent(url)).then(res => res.json());
+            let urls = [];
+            if (r?.debug?.result?.download_urls) urls = r.debug.result.download_urls;
+            else if (r?.result?.downloads) urls = r.result.downloads.map(x => x.url || x.link);
+            else if (r?.download_urls) urls = r.download_urls;
+            if (!urls.length) throw new Error('Tidak ada link download');
+            dlShowResult('', 'Instagram Reel / Post', 'Instagram Downloader');
+            urls.forEach((link, i) => dlAddBtn('File ' + (i + 1), link, 'file'));
+            dlSetMsg('Sukses: Instagram siap', '#6ee7b7');
+        }
 
-// ============================
-// TIKTOK DOWNLOADER (V1 / V2 / V3)
-// ============================
-// V1 nanzz: result.thumbnail, result.title, result.downloads[{type,label,url}]
-// V2 nanzz: result.video_tanpa_watermark, result.audio_mp3, result.caption, result.author
-// V3 emilia: result.data.{ cover, title, author.nickname, play(nowm), hdplay, wmplay, music }
+        async function dlHandleSP(url, api) {
+            const r = await fetch(api.url + encodeURIComponent(url)).then(res => res.json());
+            if (!r?.status) throw new Error(r?.message || 'Spotify gagal');
+            const m = r.metadata || {};
+            dlShowResult(m.image, m.name || 'Spotify Track', 'Spotify · ' + (m.artist || ''));
+            if (r.download_url || r.url) dlAddBtn('Download MP3', r.download_url || r.url, 'mp3');
+            dlSetMsg('Sukses: Spotify siap', '#6ee7b7');
+        }
 
-async function downloadTikTok() {
-  const url = document.getElementById('tiktokInput').value.trim();
-  const api = document.getElementById('tiktokApiSelect').value;
-  if (!url) return;
-  showLoading('Fetching TikTok...');
-  addHistory('tiktok', url);
-  try {
-    if (api === 'v1') {
-      // nanzz v1 — result.downloads array
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktok.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      const r = data.result;
-      const buttons = (r.downloads || []).map(d =>
-        dlBtn(d.url, d.label, 'tiktok-' + (d.type || 'video') + (d.type === 'mp3' ? '.mp3' : '.mp4'))
-      ).join('');
-      renderDlCard('tiktokResult', {
-        thumb: r.thumbnail, title: r.title,
-        author: '', buttons
-      });
+        async function dlHandleFB(url, api) {
+            const r = await fetch(api.url + encodeURIComponent(url)).then(res => res.json());
+            const d = r.data || r.result || r || {};
+            dlShowResult(d.thumbnail, d.title || 'Video Facebook', 'Facebook Downloader');
+            if (d.mp3) dlAddBtn('MP3', d.mp3, 'mp3');
+            if (d.mp4) dlAddBtn('MP4', d.mp4, 'mp4');
+            if (d.sd) dlAddBtn('MP4 SD', d.sd, 'mp4');
+            if (d.hd) dlAddBtn('MP4 HD', d.hd, 'mp4');
+            (d.downloads || []).forEach(x => dlAddBtn((x.type || 'File').toUpperCase(), x.url || x.link, 'file'));
+            dlSetMsg('Info: Facebook coba satu-satu', '#fcd34d');
+        }
 
-    } else if (api === 'v2') {
-      // nanzz v2 — result.video_tanpa_watermark + result.audio_mp3
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktokv2.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      const r = data.result;
-      const buttons =
-        dlBtn(r.video_tanpa_watermark, 'Download MP4 (No Watermark)', 'tiktok-nowm.mp4') +
-        dlBtn(r.audio_mp3, 'Download MP3', 'tiktok-audio.mp3', true);
-      renderDlCard('tiktokResult', {
-        thumb: '', title: r.caption,
-        author: r.author || '', buttons
-      });
+        async function dlHandlePT(url, api) {
+            const r = await fetch(api.url + encodeURIComponent(url)).then(res => res.json());
+            const d = r.data || r.result || r || {};
+            dlShowResult(d.thumbnail, d.title || 'Pin Pinterest', 'Pinterest Downloader');
+            if (d.mp3) dlAddBtn('MP3', d.mp3, 'mp3');
+            if (d.mp4) dlAddBtn('MP4', d.mp4, 'mp4');
+            if (d.image) dlAddBtn('Gambar', d.image, 'image');
+            dlSetMsg('Info: Pinterest coba satu-satu', '#fcd34d');
+        }
 
-    } else {
-      // emilia v3 — result.data.{ cover, title, author, play, hdplay, wmplay, music }
-      const res  = await fetch(`https://api.emiliabot.my.id/download/tiktok?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      const d = data.result.data;
-      const buttons =
-        dlBtn(d.play,   'Download MP4 (No WM)',    'tiktok-nowm.mp4') +
-        dlBtn(d.hdplay, 'Download MP4 HD',         'tiktok-hd.mp4', true) +
-        dlBtn(d.wmplay, 'Download MP4 (Watermark)','tiktok-wm.mp4', true) +
-        dlBtn(d.music,  'Download MP3',            'tiktok-audio.mp3', true);
-      renderDlCard('tiktokResult', {
-        thumb: d.cover, title: d.title,
-        author: d.author ? d.author.nickname || '' : '', buttons
-      });
-    }
-  } catch (e) {
-    setResult('tiktokResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+        // ── DOWNLOADER: TABS & EVENTS ──
+        document.addEventListener('DOMContentLoaded', function() {
+            const dlTabs = document.querySelectorAll('.dl-tab');
+            dlTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    dlTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    dlCurrentTab = this.dataset.dl;
+                    document.getElementById('dlResult').classList.remove('show');
+                    document.getElementById('dlButtons').innerHTML = '';
+                    dlSetMsg('');
+                    const placeholders = {
+                        yt: 'https://youtu.be/...',
+                        tt: 'https://vt.tiktok.com/...',
+                        ig: 'https://instagram.com/p/...',
+                        sp: 'https://open.spotify.com/track/...',
+                        fb: 'https://facebook.com/watch/...',
+                        pt: 'https://pinterest.com/pin/...'
+                    };
+                    const inp = document.getElementById('dlUrl');
+                    if (inp) inp.placeholder = placeholders[dlCurrentTab] || 'Tempel link...';
+                });
+            });
+            document.getElementById('dlFetchBtn')?.addEventListener('click', dlFetch);
+            document.getElementById('dlUrl')?.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') dlFetch();
+            });
+            document.getElementById('dlUrl')?.addEventListener('input', function() {
+                const u = this.value.trim();
+                if (!u) return;
+                const map = [
+                    [/(youtu|youtube)/i, 'yt'],
+                    [/tiktok/i, 'tt'],
+                    [/instagram|instagr\.am/i, 'ig'],
+                    [/spotify/i, 'sp'],
+                    [/facebook|fb\.watch|fb\.com/i, 'fb'],
+                    [/pinterest|pin\.it/i, 'pt']
+                ];
+                for (let i = 0; i < map.length; i++) {
+                    if (map[i][0].test(u)) {
+                        const target = map[i][1];
+                        dlTabs.forEach(t => t.classList.toggle('active', t.dataset.dl === target));
+                        dlCurrentTab = target;
+                        break;
+                    }
+                }
+            });
+            const inp = document.getElementById('dlUrl');
+            if (inp) inp.placeholder = 'https://youtu.be/...';
+        });
 
-// ============================
-// TIKTOK DOWNLOADER 2 (V1 / V2)
-// ============================
-async function downloadTikTok2() {
-  const url = document.getElementById('tiktok2Input').value.trim();
-  const api = document.getElementById('tiktok2ApiSelect').value;
-  if (!url) return;
-  showLoading('Fetching TikTok...');
-  addHistory('tiktok2', url);
-  try {
-    if (api === 'v1') {
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktok.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      const r = data.result;
-      const buttons = (r.downloads || []).map(d =>
-        dlBtn(d.url, d.label, 'tiktok-' + (d.type || 'video') + (d.type === 'mp3' ? '.mp3' : '.mp4'))
-      ).join('');
-      renderDlCard('tiktok2Result', { thumb: r.thumbnail, title: r.title, author: '', buttons });
+        // ── EXPOSE ──
+        window.navigateTo = navigateTo;
+        window.srcFetch = srcFetch;
+        window.srcAutoFetch = srcAutoFetch;
+        window.srcCopy = srcCopy;
+        window.srcDownload = srcDownload;
+        window.srcPreview = srcPreview;
+        window.closePreview = closePreview;
+        window._refetch = window._refetch;
+        window._delHist = window._delHist;
 
-    } else {
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/tiktokv2.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      const r = data.result;
-      const buttons =
-        dlBtn(r.video_tanpa_watermark, 'Download MP4 (No Watermark)', 'tiktok-nowm.mp4') +
-        dlBtn(r.audio_mp3, 'Download MP3', 'tiktok-audio.mp3', true);
-      renderDlCard('tiktok2Result', { thumb: '', title: r.caption, author: r.author || '', buttons });
-    }
-  } catch (e) {
-    setResult('tiktok2Result', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
+        // ── INIT ──
+        renderSrcProxySelect();
+        renderHistory();
 
-// ============================
-// YOUTUBE DOWNLOADER (V1 / V2)
-// ============================
-// V1 emilia: data.{ title, thumbnail, author, mp3, mp4 }
-// V2 faa:    result.{ title, thumbnail, author, url } (MP4 only)
+        // ── KEYBOARD SHORTCUT: ESC to close modal ──
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('previewModal');
+                if (modal && modal.style.display === 'flex') closePreview();
+            }
+        });
 
-async function downloadYouTube() {
-  const url = document.getElementById('youtubeInput').value.trim();
-  const api = document.getElementById('youtubeApiSelect').value;
-  if (!url) return;
-  showLoading('Fetching YouTube...');
-  addHistory('youtube', url);
-  try {
-    if (api === 'v1') {
-      // emilia — data.mp3 + data.mp4 both available
-      const res  = await fetch(`https://api.emiliabot.my.id/download/youtube?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error(data.message || 'API error');
-      const d = data.data;
-      const buttons =
-        dlBtn(d.mp4, 'Download MP4', 'youtube-video.mp4') +
-        dlBtn(d.mp3, 'Download MP3', 'youtube-audio.mp3', true);
-      renderDlCard('youtubeResult', {
-        thumb: d.thumbnail, title: d.title,
-        author: d.author || '', buttons
-      });
-
-    } else {
-      // faa ytmp4 — result.{ title, thumbnail, author/channel, url }
-      const res  = await fetch(`https://api-faa.my.id/faa/ytmp4?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      const r = data.result || data.data || data;
-      const dlUrl = r.url || r.download || r.link;
-      const buttons = dlBtn(dlUrl, 'Download MP4', 'youtube-video.mp4');
-      renderDlCard('youtubeResult', {
-        thumb: r.thumbnail || r.image,
-        title: r.title || r.judul || 'YouTube Video',
-        author: r.author || r.channel || '',
-        buttons
-      });
-    }
-  } catch (e) {
-    setResult('youtubeResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
-
-// ============================
-// SPOTIFY DOWNLOADER (V1 / V2)
-// ============================
-// V1 nanzz: { download_url, metadata.{ name, artist, album, duration, image } }
-// V2 yupra: check structure at runtime (fallback gracefully)
-
-async function downloadSpotify() {
-  const url = document.getElementById('spotifyInput').value.trim();
-  const api = document.getElementById('spotifyApiSelect').value;
-  if (!url) return;
-  showLoading('Fetching Spotify track...');
-  addHistory('spotify', url);
-  try {
-    let dlUrl, title, artist, album, dur, thumb;
-
-    if (api === 'v1') {
-      // nanzz — top-level download_url + metadata object
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/spotify-dl.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (!data.status) throw new Error('API error');
-      dlUrl  = data.download_url;
-      const m = data.metadata || {};
-      title  = m.name   || 'Spotify Track';
-      artist = m.artist || '';
-      album  = m.album  || '';
-      dur    = m.duration || '';
-      thumb  = m.image  || '';
-
-    } else {
-      // yupra
-      const res  = await fetch(`https://api.yupra.my.id/api/downloader/spotify?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      const r = data.result || data.data || data;
-      dlUrl  = r.download_url || r.url || r.mp3 || r.audio || r.link;
-      title  = r.title || r.name || 'Spotify Track';
-      artist = r.artist || r.artists || '';
-      album  = r.album  || '';
-      dur    = r.duration || '';
-      thumb  = r.thumbnail || r.image || r.cover || '';
-    }
-
-    const safeName = (title || 'track').replace(/[^a-z0-9]/gi, '-');
-    setResult('spotifyResult', `
-      <div class="dl-result-card">
-        <div class="spotify-row">
-          ${thumb ? `<img class="spotify-art" src="${escHtml(thumb)}" onerror="this.style.display='none'">` : ''}
-          <div class="spotify-info-block">
-            <div class="dl-result-title">${escHtml(title)}</div>
-            <div class="dl-result-meta">
-              ${escHtml(Array.isArray(artist) ? artist.join(', ') : artist)}
-              ${album ? ' · ' + escHtml(album) : ''}
-              ${dur   ? ' · ' + escHtml(String(dur)) : ''}
-            </div>
-          </div>
-        </div>
-        <div class="dl-actions">
-          ${dlBtn(dlUrl, 'Download MP3', safeName + '.mp3')}
-        </div>
-        ${dlUrl ? `<div class="audio-player-wrap"><audio controls src="${escHtml(dlUrl)}"></audio></div>` : ''}
-      </div>
-    `);
-  } catch (e) {
-    setResult('spotifyResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
-
-// ============================
-// INSTAGRAM DOWNLOADER (V1 / V2)
-// ============================
-// V1 nanzz: debug.result.download_urls[] array of strings
-// V2 faa:   result.{ url, thumbnail } or result[] array
-
-async function downloadInstagram() {
-  const url = document.getElementById('igInput').value.trim();
-  const api = document.getElementById('igApiSelect').value;
-  if (!url) return;
-  showLoading('Fetching Instagram post...');
-  addHistory('instagram', url);
-  try {
-    let buttons = '';
-    let thumb = '', title = 'Instagram Post';
-
-    if (api === 'v1') {
-      // nanzz — debug.result.download_urls[]
-      const res  = await fetch(`https://api-nanzz.my.id/docs/api/downloader/Instagram.php?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      const urls = data?.debug?.result?.download_urls || [];
-      if (!urls.length) throw new Error('No media found');
-      buttons = urls.map((u, i) => {
-        const ext = (u.includes('.mp4') || u.includes('mp4')) ? 'mp4' : 'mp4';
-        return dlBtn(u, `Download Video ${urls.length > 1 ? i+1 : ''}`.trim(), `instagram-${i+1}.${ext}`);
-      }).join('');
-
-    } else {
-      // faa igdl — result can be array or single object
-      const res  = await fetch(`https://api-faa.my.id/faa/igdl?url=${encodeURIComponent(url)}`);
-      const data = await res.json();
-      const r = data.result || data.data || data;
-      const items = Array.isArray(r) ? r : [r];
-      thumb = items[0]?.thumbnail || items[0]?.cover || '';
-      buttons = items.map((item, i) => {
-        const u = item.url || item.download || item.video || item.media;
-        const ext = (u && u.includes('.mp4')) ? 'mp4' : 'mp4';
-        return dlBtn(u, `Download Video ${items.length > 1 ? i+1 : ''}`.trim(), `instagram-${i+1}.${ext}`);
-      }).join('');
-    }
-
-    renderDlCard('igResult', { thumb, title, author: '', buttons });
-  } catch (e) {
-    setResult('igResult', errBanner('Error: ' + e.message));
-  } finally {
-    hideLoading();
-  }
-}
-
-// ============================
-// KEYBOARD ENTER SUPPORT
-// ============================
-document.addEventListener('keydown', function(e) {
-  if (e.key !== 'Enter') return;
-  const map = {
-    srcInput:      fetchSrc,
-    lyricsInput:   searchLyrics,
-    ytSearchInput: searchYouTube,
-    nekoInput:     searchNekopoi,
-    fdroidInput:   searchFdroid,
-    animeInput:    searchAnime,
-    tiktokInput:   downloadTikTok,
-    youtubeInput:  downloadYouTube,
-    tiktok2Input:  downloadTikTok2,
-    spotifyInput:  downloadSpotify,
-    igInput:       downloadInstagram,
-  };
-  const active = document.activeElement;
-  if (active && map[active.id]) map[active.id]();
-});
-
-// ============================
-// INIT
-// ============================
-document.addEventListener('DOMContentLoaded', function() {
-  showPage('dashboard');
-  renderDashboardActivity();
-});
+        console.log('🚀 NOVA Dashboard loaded');
+    })();
 </script>
+
 </body>
 </html>
