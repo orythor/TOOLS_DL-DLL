@@ -1022,7 +1022,6 @@
             gap: 0.5rem;
             flex-wrap: wrap;
         }
-        /* ── TOMBOL PUTIH (seperti screenshot) ── */
         #page-morse .morse-grid .card .card-actions .btn-icon {
             background: transparent;
             border: 1.5px solid #ffffff;
@@ -1057,7 +1056,7 @@
         }
         #page-morse .morse-grid .card textarea {
             width: 100%;
-            height: 220px;
+            height: 180px;
             background: var(--bg-input);
             border: 1px solid var(--border);
             border-radius: var(--radius-xs);
@@ -1109,9 +1108,98 @@
             box-shadow: 0 0 10px var(--accent2);
             animation: pulse 1s infinite alternate;
         }
+        /* Download controls */
+        #page-morse .dl-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        #page-morse .dl-controls .ctrl-group label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 2px;
+        }
+        #page-morse .dl-controls .ctrl-group input,
+        #page-morse .dl-controls .ctrl-group select {
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+            color: #fff;
+            font-size: 12px;
+            outline: none;
+            font-family: var(--font-mono);
+        }
+        #page-morse .dl-controls .ctrl-group input:focus,
+        #page-morse .dl-controls .ctrl-group select:focus {
+            border-color: var(--accent);
+        }
+        #page-morse .progress-wrap {
+            margin-top: 10px;
+            display: none;
+        }
+        #page-morse .progress-wrap .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-input);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        #page-morse .progress-wrap .progress-bar .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width 0.15s;
+        }
+        #page-morse .progress-wrap .status-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-align: center;
+        }
+        #page-morse .btn-download-gen {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font);
+        }
+        #page-morse .btn-download-gen:hover {
+            background: #8b5cf6;
+        }
+        #page-morse .btn-download-gen:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+        #page-morse .btn-download-gen svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
         @media (max-width: 768px) {
             #page-morse .morse-grid {
                 grid-template-columns: 1fr;
+            }
+            #page-morse .dl-controls {
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -1411,7 +1499,7 @@
             </section>
 
             <!-- ============================================================ -->
-            <!-- PAGE: MORSE -->
+            <!-- PAGE: MORSE (dengan sistem download baru) -->
             <!-- ============================================================ -->
             <section class="page" id="page-morse">
                 <div class="mode-bar">
@@ -1436,7 +1524,7 @@
                         <textarea id="morseTextInput" placeholder="Ketik atau edit teks biasa di sini..."></textarea>
                     </div>
 
-                    <!-- Morse Code -->
+                    <!-- Morse Code + Download Controls -->
                     <div class="card">
                         <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
                             <span>Kode Morse</span>
@@ -1448,11 +1536,8 @@
                                 <button id="morseBtnListen" class="btn-icon" title="Dekode Audio via Mikrofon Live">
                                     <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
                                 </button>
-                                <button id="morseBtnPlay" class="btn-icon" title="Putar Suara Morse">
+                                <button id="morseBtnPlay" class="btn-icon" title="Putar Suara Morse (Preview)">
                                     <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                                </button>
-                                <button id="morseBtnDownload" class="btn-icon" title="Unduh Audio WAV">
-                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                                 </button>
                                 <button id="morseBtnCopy" class="btn-icon" title="Salin Kode Morse">
                                     <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -1460,10 +1545,42 @@
                             </div>
                         </div>
                         <textarea id="morseOutput" class="morse-output" placeholder="Ketik/Tempel kode morse, Unggah File Audio, atau gunakan Mikrofon..."></textarea>
+
+                        <!-- Kontrol Download Generator Baru -->
+                        <div class="dl-controls">
+                            <div class="ctrl-group">
+                                <label>WPM</label>
+                                <input type="number" id="morseWpm" value="20" min="5" max="50">
+                            </div>
+                            <div class="ctrl-group">
+                                <label>Frekuensi (Hz)</label>
+                                <input type="number" id="morseFreq" value="600" min="300" max="1200">
+                            </div>
+                            <div class="ctrl-group">
+                                <label>Sample Rate</label>
+                                <select id="morseSampleRate">
+                                    <option value="8000">8 kHz (Smallest)</option>
+                                    <option value="16000" selected>16 kHz (Recommended)</option>
+                                    <option value="44100">44.1 kHz (CD Quality)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button class="btn-download-gen" id="morseDownloadGenBtn">
+                            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Generate & Download Audio WAV
+                        </button>
+
+                        <div class="progress-wrap" id="morseProgressWrap">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="morseProgressFill"></div>
+                            </div>
+                            <div class="status-text" id="morseProgressStatus">Ready</div>
+                        </div>
                     </div>
                 </div>
                 <footer style="text-align:center;color:var(--text-muted);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;margin-top:1rem;">
-                    MONOCHROME SYSTEM // ENCODE &bull; DECODE &bull; AUDIO FILE PARSER
+                    MONOCHROME SYSTEM // ENCODE &bull; DECODE &bull; AUDIO FILE GENERATOR
                 </footer>
             </section>
 
@@ -2135,7 +2252,7 @@
             if (inp) inp.placeholder = 'https://youtu.be/...';
         });
 
-        // ── MORSE ENGINE ──
+        // ── MORSE ENGINE dengan sistem download baru ──
         let morseInitialized = false;
 
         function initMorse() {
@@ -2198,12 +2315,20 @@
             const btnClear = document.getElementById('morseBtnClear');
             const btnCopy = document.getElementById('morseBtnCopy');
             const btnPlay = document.getElementById('morseBtnPlay');
-            const btnDownload = document.getElementById('morseBtnDownload');
             const btnListen = document.getElementById('morseBtnListen');
             const btnUpload = document.getElementById('morseBtnUpload');
             const fileInput = document.getElementById('morseFileInput');
             const statusDot = document.getElementById('morseStatusDot');
             const statusText = document.getElementById('morseStatusText');
+
+            // Elemen download generator baru
+            const wpmInput = document.getElementById('morseWpm');
+            const freqInput = document.getElementById('morseFreq');
+            const sampleRateSelect = document.getElementById('morseSampleRate');
+            const downloadBtn = document.getElementById('morseDownloadGenBtn');
+            const progressWrap = document.getElementById('morseProgressWrap');
+            const progressFill = document.getElementById('morseProgressFill');
+            const progressStatus = document.getElementById('morseProgressStatus');
 
             function encodeToMorse(text) {
                 return text.toUpperCase().split('').map(char => {
@@ -2252,7 +2377,7 @@
                 } catch (err) { console.error(err); }
             });
 
-            // Play audio
+            // ── Play audio (preview) ──
             let audioCtx = null;
             let isPlaying = false;
 
@@ -2262,11 +2387,13 @@
                 if (!audioCtx) {
                     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
                 }
-                const unit = 70;
+                const wpm = parseInt(wpmInput.value) || 20;
+                const unit = (1.2 / wpm) * 1000; // ms
                 const dashDuration = unit * 3;
                 const symbolPause = unit;
                 const letterPause = unit * 3;
                 const wordPause = unit * 7;
+                const freq = parseInt(freqInput.value) || 600;
 
                 const words = morseText.split('/');
                 for (let w = 0; w < words.length; w++) {
@@ -2279,9 +2406,10 @@
                                 const osc = audioCtx.createOscillator();
                                 const gain = audioCtx.createGain();
                                 osc.type = 'sine';
-                                osc.frequency.value = 600;
+                                osc.frequency.value = freq;
                                 osc.connect(gain);
                                 gain.connect(audioCtx.destination);
+                                gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
                                 osc.start();
                                 await new Promise(r => setTimeout(r, dur));
                                 osc.stop();
@@ -2299,124 +2427,152 @@
                 playMorse(morseOutput.value);
             });
 
-            // Download WAV
-            function buildSchedule(morseText) {
-                const unit = 0.07;
-                const dashDuration = unit * 3;
-                const symbolPause = unit;
-                const letterPause = unit * 3;
-                const wordPause = unit * 7;
-                let currentTime = 0.05;
-                const schedule = [];
-                const words = morseText.trim().split('/');
-                for (let w = 0; w < words.length; w++) {
-                    const letters = words[w].trim().split(/\s+/).filter(Boolean);
-                    for (let l = 0; l < letters.length; l++) {
-                        const symbols = letters[l];
-                        for (let s = 0; s < symbols.length; s++) {
-                            const char = symbols[s];
-                            if (char === '.' || char === '-') {
-                                const dur = char === '.' ? unit : dashDuration;
-                                schedule.push({ start: currentTime, duration: dur });
-                                currentTime += dur + symbolPause;
-                            }
-                        }
-                        currentTime += letterPause - symbolPause;
-                    }
-                    if (w < words.length - 1) currentTime += wordPause - letterPause;
+            // ── GENERATOR DOWNLOAD BARU (Large File Support) ──
+            async function generateAndDownload() {
+                const text = textInput.value.trim().toUpperCase();
+                if (!text) {
+                    alert('Silakan masukkan teks terlebih dahulu!');
+                    return;
                 }
-                const totalDuration = Math.max(currentTime + 0.2, 0.5);
-                return { schedule, totalDuration };
+
+                const wpm = parseInt(wpmInput.value) || 20;
+                const frequency = parseInt(freqInput.value) || 600;
+                const sampleRate = parseInt(sampleRateSelect.value) || 16000;
+
+                downloadBtn.disabled = true;
+                progressWrap.style.display = 'block';
+                progressFill.style.width = '0%';
+                progressStatus.innerText = 'Menganalisis teks & durasi...';
+
+                const unitDuration = 1.2 / wpm;
+                const unitSamples = Math.floor(sampleRate * unitDuration);
+
+                // Ubah teks ke urutan kode Morse
+                let morseSequence = [];
+                for (let char of text) {
+                    if (MORSE_MAP[char]) {
+                        morseSequence.push(MORSE_MAP[char]);
+                    }
+                }
+
+                // Hitung total sampel
+                let totalSamples = 0;
+                for (let i = 0; i < morseSequence.length; i++) {
+                    const code = morseSequence[i];
+                    if (code === ' ') {
+                        totalSamples += unitSamples * 7;
+                    } else {
+                        for (let symbol of code) {
+                            totalSamples += (symbol === '.' ? unitSamples : unitSamples * 3);
+                            totalSamples += unitSamples;
+                        }
+                        totalSamples += unitSamples * 2;
+                    }
+                }
+
+                if (totalSamples === 0) {
+                    alert('Tidak ada karakter valid untuk dikonversi.');
+                    downloadBtn.disabled = false;
+                    progressWrap.style.display = 'none';
+                    return;
+                }
+
+                const pcmBuffer = new Int16Array(totalSamples);
+                let writeIndex = 0;
+                const totalSymbols = morseSequence.length;
+
+                progressStatus.innerText = 'Membuat audio Morse...';
+
+                for (let i = 0; i < totalSymbols; i++) {
+                    const code = morseSequence[i];
+
+                    if (code === ' ') {
+                        writeIndex += unitSamples * 7;
+                    } else {
+                        for (let symbol of code) {
+                            const duration = symbol === '.' ? unitSamples : unitSamples * 3;
+                            for (let s = 0; s < duration; s++) {
+                                const t = s / sampleRate;
+                                let envelope = 1;
+                                const fadeSamples = Math.min(100, duration / 2);
+                                if (s < fadeSamples) envelope = s / fadeSamples;
+                                else if (s > duration - fadeSamples) envelope = (duration - s) / fadeSamples;
+                                const val = Math.sin(2 * Math.PI * frequency * t) * envelope;
+                                pcmBuffer[writeIndex++] = val < 0 ? val * 0x8000 : val * 0x7FFF;
+                            }
+                            writeIndex += unitSamples;
+                        }
+                        writeIndex += unitSamples * 2;
+                    }
+
+                    if (i % 50 === 0 || i === totalSymbols - 1) {
+                        const percent = Math.floor(((i + 1) / totalSymbols) * 100);
+                        progressFill.style.width = percent + '%';
+                        progressStatus.innerText = `Memproses audio... ${percent}%`;
+                        await new Promise(resolve => setTimeout(resolve, 0));
+                    }
+                }
+
+                progressStatus.innerText = 'Menyusun header WAV...';
+                await new Promise(resolve => setTimeout(resolve, 10));
+
+                const wavBlob = createWavBlob(pcmBuffer, sampleRate);
+                const fileSizeMB = (wavBlob.size / (1024 * 1024)).toFixed(2);
+
+                progressStatus.innerText = `Selesai! Ukuran file: ${fileSizeMB} MB. Mengunduh...`;
+
+                const downloadUrl = URL.createObjectURL(wavBlob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `morse_audio_${Date.now()}.wav`;
+                document.body.appendChild(a);
+                a.click();
+
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(downloadUrl);
+                    downloadBtn.disabled = false;
+                    progressWrap.style.display = 'none';
+                    progressStatus.innerText = `Berhasil diunduh (${fileSizeMB} MB)`;
+                }, 1000);
             }
 
-            function audioBufferToWav(buffer) {
+            function createWavBlob(pcmSamples, sampleRate) {
                 const numChannels = 1;
-                const sampleRate = buffer.sampleRate;
-                const format = 1;
-                const bitDepth = 16;
-                const channelData = buffer.getChannelData(0);
-                const bytesPerSample = bitDepth / 8;
-                const blockAlign = numChannels * bytesPerSample;
-                const dataByteLength = channelData.length * bytesPerSample;
-                const headerByteLength = 44;
-                const totalLength = headerByteLength + dataByteLength;
-                const arrayBuffer = new ArrayBuffer(totalLength);
-                const view = new DataView(arrayBuffer);
-                function writeString(view, offset, string) {
+                const bytesPerSample = 2;
+                const dataSize = pcmSamples.length * bytesPerSample;
+                const buffer = new ArrayBuffer(44 + dataSize);
+                const view = new DataView(buffer);
+
+                function writeString(offset, string) {
                     for (let i = 0; i < string.length; i++) {
                         view.setUint8(offset + i, string.charCodeAt(i));
                     }
                 }
-                writeString(view, 0, 'RIFF');
-                view.setUint32(4, 36 + dataByteLength, true);
-                writeString(view, 8, 'WAVE');
-                writeString(view, 12, 'fmt ');
+
+                writeString(0, 'RIFF');
+                view.setUint32(4, 36 + dataSize, true);
+                writeString(8, 'WAVE');
+                writeString(12, 'fmt ');
                 view.setUint32(16, 16, true);
-                view.setUint16(20, format, true);
+                view.setUint16(20, 1, true);
                 view.setUint16(22, numChannels, true);
                 view.setUint32(24, sampleRate, true);
-                view.setUint32(28, sampleRate * blockAlign, true);
-                view.setUint16(32, blockAlign, true);
-                view.setUint16(34, bitDepth, true);
-                writeString(view, 36, 'data');
-                view.setUint32(40, dataByteLength, true);
-                let offset = 44;
-                for (let i = 0; i < channelData.length; i++, offset += 2) {
-                    let sample = Math.max(-1, Math.min(1, channelData[i]));
-                    view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-                }
-                return new Blob([arrayBuffer], { type: 'audio/wav' });
+                view.setUint32(28, sampleRate * numChannels * bytesPerSample, true);
+                view.setUint16(32, numChannels * bytesPerSample, true);
+                view.setUint16(34, 16, true);
+                writeString(36, 'data');
+                view.setUint32(40, dataSize, true);
+
+                const pcmBytes = new Int16Array(buffer, 44, pcmSamples.length);
+                pcmBytes.set(pcmSamples);
+
+                return new Blob([buffer], { type: 'audio/wav' });
             }
 
-            async function downloadMorseAudio(morseText) {
-                if (!morseText || !morseText.trim()) return;
-                btnDownload.disabled = true;
-                try {
-                    const { schedule, totalDuration } = buildSchedule(morseText);
-                    const sampleRate = 44100;
-                    const offlineCtx = new(window.OfflineAudioContext || window.webkitOfflineAudioContext)(
-                        1,
-                        Math.ceil(sampleRate * totalDuration),
-                        sampleRate
-                    );
-                    for (const item of schedule) {
-                        const osc = offlineCtx.createOscillator();
-                        const gain = offlineCtx.createGain();
-                        osc.type = 'sine';
-                        osc.frequency.value = 600;
-                        gain.gain.setValueAtTime(0, item.start);
-                        gain.gain.linearRampToValueAtTime(0.8, item.start + 0.005);
-                        gain.gain.setValueAtTime(0.8, item.start + item.duration - 0.005);
-                        gain.gain.linearRampToValueAtTime(0, item.start + item.duration);
-                        osc.connect(gain);
-                        gain.connect(offlineCtx.destination);
-                        osc.start(item.start);
-                        osc.stop(item.start + item.duration);
-                    }
-                    const renderedBuffer = await offlineCtx.startRendering();
-                    const wavBlob = audioBufferToWav(renderedBuffer);
-                    const downloadUrl = URL.createObjectURL(wavBlob);
-                    const anchor = document.createElement('a');
-                    anchor.href = downloadUrl;
-                    anchor.download = `morse_audio_${Date.now()}.wav`;
-                    document.body.appendChild(anchor);
-                    anchor.click();
-                    document.body.removeChild(anchor);
-                    URL.revokeObjectURL(downloadUrl);
-                    btnDownload.style.background = '#ffffff';
-                    btnDownload.style.color = '#000000';
-                    setTimeout(() => {
-                        btnDownload.style.background = 'transparent';
-                        btnDownload.style.color = '#ffffff';
-                    }, 300);
-                } catch (err) { console.error(err); } finally { btnDownload.disabled = false; }
-            }
+            downloadBtn.addEventListener('click', generateAndDownload);
 
-            btnDownload.addEventListener('click', () => {
-                downloadMorseAudio(morseOutput.value);
-            });
-
-            // Microphone
+            // ── Mikrofon ──
             let isListening = false;
             let micStream = null;
             let micAudioCtx = null;
@@ -2516,7 +2672,7 @@
 
             btnListen.addEventListener('click', toggleListening);
 
-            // Upload file
+            // ── Upload file ──
             btnUpload.addEventListener('click', () => {
                 fileInput.click();
             });
@@ -2636,7 +2792,6 @@
         // ── INIT ──
         renderSrcProxySelect();
         renderHistory();
-        // Morse will init when page is navigated to
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
