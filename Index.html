@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VONZX TOLS</title>
+    <title>VONZX</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
         /* ── RESET & ROOT ── */
@@ -48,7 +48,7 @@
             -webkit-font-smoothing: antialiased;
         }
         body {
-            background-image: url('https://img2.pixhost.to/images/9526/751519126_1000236800.jpg');
+            background-image: url('https://img2.pixhost.to/images/9504/751327786_1000236603.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -1005,6 +1005,115 @@
         .w-full {
             width: 100%;
         }
+
+        /* ── MORSE PAGE SPECIFIC ── */
+        #page-morse .morse-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        #page-morse .morse-grid .card {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        #page-morse .morse-grid .card .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        /* ── TOMBOL PUTIH (seperti screenshot) ── */
+        #page-morse .morse-grid .card .card-actions .btn-icon {
+            background: transparent;
+            border: 1.5px solid #ffffff;
+            color: #ffffff;
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+        #page-morse .morse-grid .card .card-actions .btn-icon:hover {
+            background: #ffffff;
+            color: #0c0820;
+            border-color: #ffffff;
+            box-shadow: 0 0 12px rgba(255,255,255,0.2);
+        }
+        #page-morse .morse-grid .card .card-actions .btn-icon.active {
+            background: #ffffff;
+            color: #0c0820;
+            border-color: #ffffff;
+        }
+        #page-morse .morse-grid .card .card-actions .btn-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        #page-morse .morse-grid .card textarea {
+            width: 100%;
+            height: 220px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            color: var(--text);
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            padding: 12px;
+            font-family: var(--font-mono);
+            line-height: 1.6;
+        }
+        #page-morse .morse-grid .card textarea::placeholder {
+            color: #5a5288;
+        }
+        #page-morse .morse-grid .card textarea.morse-output {
+            letter-spacing: 0.2em;
+            word-spacing: 0.4em;
+        }
+        #page-morse .mode-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1.25rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        #page-morse .mode-bar .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+        #page-morse .mode-bar .status-badge .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #555;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        #page-morse .mode-bar .status-badge .status-dot.active {
+            background-color: var(--accent2);
+            box-shadow: 0 0 10px var(--accent2);
+            animation: pulse 1s infinite alternate;
+        }
+        @media (max-width: 768px) {
+            #page-morse .morse-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1042,6 +1151,10 @@
                 <button class="nav-item" data-page="history">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     HISTORY
+                </button>
+                <button class="nav-item" data-page="morse">
+                    <svg viewBox="0 0 24 24"><path d="M4 4l16 16M4 20L20 4"/><circle cx="12" cy="12" r="2"/></svg>
+                    MORSE
                 </button>
             </nav>
             <div class="sidebar-footer">
@@ -1297,6 +1410,63 @@
                 <button class="btn btn-outline btn-sm mt-3" style="color:var(--danger);" id="clearHistoryBtn">Clear All</button>
             </section>
 
+            <!-- ============================================================ -->
+            <!-- PAGE: MORSE -->
+            <!-- ============================================================ -->
+            <section class="page" id="page-morse">
+                <div class="mode-bar">
+                    <span>Mode Sistem: Dua Arah (Encode &amp; Decode)</span>
+                    <div class="status-badge">
+                        <div id="morseStatusDot" class="status-dot"></div>
+                        <span id="morseStatusText">Mikrofon Mati</span>
+                    </div>
+                </div>
+
+                <div class="morse-grid">
+                    <!-- Input Normal Text -->
+                    <div class="card">
+                        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <span>Teks Normal</span>
+                            <div class="card-actions">
+                                <button id="morseBtnClear" class="btn-icon" title="Hapus Semua Teks">
+                                    <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="morseTextInput" placeholder="Ketik atau edit teks biasa di sini..."></textarea>
+                    </div>
+
+                    <!-- Morse Code -->
+                    <div class="card">
+                        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+                            <span>Kode Morse</span>
+                            <div class="card-actions">
+                                <input type="file" id="morseFileInput" accept="audio/*" style="display:none;">
+                                <button id="morseBtnUpload" class="btn-icon" title="Unggah & Dekode File Audio (WAV/MP3)">
+                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                </button>
+                                <button id="morseBtnListen" class="btn-icon" title="Dekode Audio via Mikrofon Live">
+                                    <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                                </button>
+                                <button id="morseBtnPlay" class="btn-icon" title="Putar Suara Morse">
+                                    <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                                </button>
+                                <button id="morseBtnDownload" class="btn-icon" title="Unduh Audio WAV">
+                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </button>
+                                <button id="morseBtnCopy" class="btn-icon" title="Salin Kode Morse">
+                                    <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="morseOutput" class="morse-output" placeholder="Ketik/Tempel kode morse, Unggah File Audio, atau gunakan Mikrofon..."></textarea>
+                    </div>
+                </div>
+                <footer style="text-align:center;color:var(--text-muted);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;margin-top:1rem;">
+                    MONOCHROME SYSTEM // ENCODE &bull; DECODE &bull; AUDIO FILE PARSER
+                </footer>
+            </section>
+
         </div><!-- /pages -->
     </div><!-- /main-wrap -->
 </div><!-- /app -->
@@ -1390,47 +1560,41 @@
         // ── NAVIGATION ──
         function navigateTo(page) {
             currentPage = page;
-            // update nav
             navItems.forEach(el => {
                 el.classList.toggle('active', el.dataset.page === page);
             });
-            // pages
             document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
             const target = document.getElementById('page-' + page);
             if (target) target.classList.add('active');
 
-            // update topbar
             const titles = {
                 dashboard: 'Dashboard <span>· overview</span>',
                 'nova-src': 'NOVA SRC <span>· source viewer</span>',
                 downloaderID: 'DOWNLOADER <span>· media downloader</span>',
                 'status-server-all': 'STATUS SERVER <span>· system status</span>',
-                history: 'HISTORY <span>· activity log</span>'
+                history: 'HISTORY <span>· activity log</span>',
+                morse: 'MORSE <span>· encoder & decoder</span>'
             };
             const paths = {
                 dashboard: '/dashboard',
                 'nova-src': '/nova-src',
                 downloaderID: '/downloaderID',
                 'status-server-all': '/status-server-all',
-                history: '/history'
+                history: '/history',
+                morse: '/morse'
             };
             pageTitle.innerHTML = titles[page] || titles.dashboard;
             pagePath.textContent = paths[page] || '/dashboard';
 
-            // close sidebar on mobile
             if (window.innerWidth <= 768) {
                 sidebar.classList.remove('open');
                 mainWrap.classList.remove('sidebar-open');
             }
 
-            // page-specific init
             if (page === 'history') renderHistory();
             if (page === 'nova-src') renderSrcProxySelect();
-            if (page === 'downloaderID') { /* already rendered */ }
-            if (page === 'dashboard') { /* already rendered */ }
-            if (page === 'status-server-all') { /* already rendered */ }
+            if (page === 'morse') initMorse();
 
-            // update URL hash
             if (window.location.hash !== '#' + page) {
                 history.pushState(null, '', '#' + page);
             }
@@ -1458,16 +1622,14 @@
             });
         });
 
-        // ── HASH ROUTING ──
         window.addEventListener('hashchange', function() {
             const hash = window.location.hash.replace('#', '') || 'dashboard';
-            if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history'].includes(hash)) {
+            if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history', 'morse'].includes(hash)) {
                 navigateTo(hash);
             }
         });
-        // initial
         const initHash = window.location.hash.replace('#', '') || 'dashboard';
-        if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history'].includes(initHash)) {
+        if (['dashboard', 'nova-src', 'downloaderID', 'status-server-all', 'history', 'morse'].includes(initHash)) {
             navigateTo(initHash);
         } else {
             navigateTo('dashboard');
@@ -1484,7 +1646,6 @@
             ).join('');
         }
 
-        // ── SRC: CONSOLE LOG ──
         function srcLog(msg, type = 'info') {
             const now = new Date();
             const time = now.toTimeString().slice(0, 8);
@@ -1505,7 +1666,6 @@
             return d.innerHTML;
         }
 
-        // ── SRC: FETCH ──
         async function srcFetch() {
             if (srcIsFetching) return;
             const urlInput = document.getElementById('srcUrl');
@@ -1675,7 +1835,6 @@
             if (e.key === 'Escape' && document.getElementById('previewModal').style.display === 'flex') closePreview();
         });
 
-        // ── SRC: EVENT BINDING ──
         document.addEventListener('DOMContentLoaded', function() {
             const srcFetchBtn = document.getElementById('srcFetchBtn');
             const srcAutoBtn = document.getElementById('srcAutoBtn');
@@ -1707,7 +1866,6 @@
             renderSrcProxySelect();
         });
 
-        // ── HISTORY ──
         function renderHistory() {
             const tbody = document.getElementById('historyBody');
             if (!tbody) return;
@@ -1765,7 +1923,6 @@
                 el.style.color = c || 'var(--text-muted)'; }
         }
 
-        // ── dlAddBtn WITH SVG ICONS (no emoji) ──
         function dlAddBtn(label, link, typeHint) {
             const container = document.getElementById('dlButtons');
             if (!container || !link) return;
@@ -1928,7 +2085,6 @@
             dlSetMsg('Info: Pinterest coba satu-satu', '#fcd34d');
         }
 
-        // ── DOWNLOADER: TABS & EVENTS ──
         document.addEventListener('DOMContentLoaded', function() {
             const dlTabs = document.querySelectorAll('.dl-tab');
             dlTabs.forEach(tab => {
@@ -1979,6 +2135,493 @@
             if (inp) inp.placeholder = 'https://youtu.be/...';
         });
 
+        // ── MORSE ENGINE ──
+        let morseInitialized = false;
+
+        function initMorse() {
+            if (morseInitialized) return;
+            morseInitialized = true;
+
+            const MORSE_MAP = {
+                'A': '.-',
+                'B': '-...',
+                'C': '-.-.',
+                'D': '-..',
+                'E': '.',
+                'F': '..-.',
+                'G': '--.',
+                'H': '....',
+                'I': '..',
+                'J': '.---',
+                'K': '-.-',
+                'L': '.-..',
+                'M': '--',
+                'N': '-.',
+                'O': '---',
+                'P': '.--.',
+                'Q': '--.-',
+                'R': '.-.',
+                'S': '...',
+                'T': '-',
+                'U': '..-',
+                'V': '...-',
+                'W': '.--',
+                'X': '-..-',
+                'Y': '-.--',
+                'Z': '--..',
+                '1': '.----',
+                '2': '..---',
+                '3': '...--',
+                '4': '....-',
+                '5': '.....',
+                '6': '-....',
+                '7': '--...',
+                '8': '---..',
+                '9': '----.',
+                '0': '-----',
+                '.': '.-.-.-',
+                ',': '--..--',
+                '?': '..--..',
+                '!': '-.-.--',
+                '-': '-....-',
+                '/': '-..-.',
+                '@': '.--.-.',
+                '=': '-...-'
+            };
+            const REVERSE_MORSE_MAP = {};
+            for (const [char, morse] of Object.entries(MORSE_MAP)) {
+                REVERSE_MORSE_MAP[morse] = char;
+            }
+
+            const textInput = document.getElementById('morseTextInput');
+            const morseOutput = document.getElementById('morseOutput');
+            const btnClear = document.getElementById('morseBtnClear');
+            const btnCopy = document.getElementById('morseBtnCopy');
+            const btnPlay = document.getElementById('morseBtnPlay');
+            const btnDownload = document.getElementById('morseBtnDownload');
+            const btnListen = document.getElementById('morseBtnListen');
+            const btnUpload = document.getElementById('morseBtnUpload');
+            const fileInput = document.getElementById('morseFileInput');
+            const statusDot = document.getElementById('morseStatusDot');
+            const statusText = document.getElementById('morseStatusText');
+
+            function encodeToMorse(text) {
+                return text.toUpperCase().split('').map(char => {
+                    if (char === ' ') return '/';
+                    return MORSE_MAP[char] || char;
+                }).join(' ');
+            }
+
+            function decodeToText(morse) {
+                if (!morse) return '';
+                const words = morse.trim().split(/\s*[\/]\s*/);
+                return words.map(word => {
+                    const symbols = word.trim().split(/\s+/);
+                    return symbols.map(sym => REVERSE_MORSE_MAP[sym] || sym).join('');
+                }).join(' ');
+            }
+
+            textInput.addEventListener('input', () => {
+                if (document.activeElement === textInput) {
+                    morseOutput.value = encodeToMorse(textInput.value);
+                }
+            });
+
+            morseOutput.addEventListener('input', () => {
+                if (document.activeElement === morseOutput) {
+                    textInput.value = decodeToText(morseOutput.value);
+                }
+            });
+
+            btnClear.addEventListener('click', () => {
+                textInput.value = '';
+                morseOutput.value = '';
+                textInput.focus();
+            });
+
+            btnCopy.addEventListener('click', async () => {
+                if (!morseOutput.value) return;
+                try {
+                    await navigator.clipboard.writeText(morseOutput.value);
+                    btnCopy.style.background = '#ffffff';
+                    btnCopy.style.color = '#000000';
+                    setTimeout(() => {
+                        btnCopy.style.background = 'transparent';
+                        btnCopy.style.color = '#ffffff';
+                    }, 200);
+                } catch (err) { console.error(err); }
+            });
+
+            // Play audio
+            let audioCtx = null;
+            let isPlaying = false;
+
+            async function playMorse(morseText) {
+                if (isPlaying || !morseText.trim()) return;
+                isPlaying = true;
+                if (!audioCtx) {
+                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                }
+                const unit = 70;
+                const dashDuration = unit * 3;
+                const symbolPause = unit;
+                const letterPause = unit * 3;
+                const wordPause = unit * 7;
+
+                const words = morseText.split('/');
+                for (let w = 0; w < words.length; w++) {
+                    const letters = words[w].trim().split(/\s+/).filter(Boolean);
+                    for (let l = 0; l < letters.length; l++) {
+                        const symbols = letters[l];
+                        for (let symbol of symbols) {
+                            if (symbol === '.' || symbol === '-') {
+                                const dur = symbol === '.' ? unit : dashDuration;
+                                const osc = audioCtx.createOscillator();
+                                const gain = audioCtx.createGain();
+                                osc.type = 'sine';
+                                osc.frequency.value = 600;
+                                osc.connect(gain);
+                                gain.connect(audioCtx.destination);
+                                osc.start();
+                                await new Promise(r => setTimeout(r, dur));
+                                osc.stop();
+                                await new Promise(r => setTimeout(r, symbolPause));
+                            }
+                        }
+                        await new Promise(r => setTimeout(r, letterPause));
+                    }
+                    if (w < words.length - 1) await new Promise(r => setTimeout(r, wordPause));
+                }
+                isPlaying = false;
+            }
+
+            btnPlay.addEventListener('click', () => {
+                playMorse(morseOutput.value);
+            });
+
+            // Download WAV
+            function buildSchedule(morseText) {
+                const unit = 0.07;
+                const dashDuration = unit * 3;
+                const symbolPause = unit;
+                const letterPause = unit * 3;
+                const wordPause = unit * 7;
+                let currentTime = 0.05;
+                const schedule = [];
+                const words = morseText.trim().split('/');
+                for (let w = 0; w < words.length; w++) {
+                    const letters = words[w].trim().split(/\s+/).filter(Boolean);
+                    for (let l = 0; l < letters.length; l++) {
+                        const symbols = letters[l];
+                        for (let s = 0; s < symbols.length; s++) {
+                            const char = symbols[s];
+                            if (char === '.' || char === '-') {
+                                const dur = char === '.' ? unit : dashDuration;
+                                schedule.push({ start: currentTime, duration: dur });
+                                currentTime += dur + symbolPause;
+                            }
+                        }
+                        currentTime += letterPause - symbolPause;
+                    }
+                    if (w < words.length - 1) currentTime += wordPause - letterPause;
+                }
+                const totalDuration = Math.max(currentTime + 0.2, 0.5);
+                return { schedule, totalDuration };
+            }
+
+            function audioBufferToWav(buffer) {
+                const numChannels = 1;
+                const sampleRate = buffer.sampleRate;
+                const format = 1;
+                const bitDepth = 16;
+                const channelData = buffer.getChannelData(0);
+                const bytesPerSample = bitDepth / 8;
+                const blockAlign = numChannels * bytesPerSample;
+                const dataByteLength = channelData.length * bytesPerSample;
+                const headerByteLength = 44;
+                const totalLength = headerByteLength + dataByteLength;
+                const arrayBuffer = new ArrayBuffer(totalLength);
+                const view = new DataView(arrayBuffer);
+                function writeString(view, offset, string) {
+                    for (let i = 0; i < string.length; i++) {
+                        view.setUint8(offset + i, string.charCodeAt(i));
+                    }
+                }
+                writeString(view, 0, 'RIFF');
+                view.setUint32(4, 36 + dataByteLength, true);
+                writeString(view, 8, 'WAVE');
+                writeString(view, 12, 'fmt ');
+                view.setUint32(16, 16, true);
+                view.setUint16(20, format, true);
+                view.setUint16(22, numChannels, true);
+                view.setUint32(24, sampleRate, true);
+                view.setUint32(28, sampleRate * blockAlign, true);
+                view.setUint16(32, blockAlign, true);
+                view.setUint16(34, bitDepth, true);
+                writeString(view, 36, 'data');
+                view.setUint32(40, dataByteLength, true);
+                let offset = 44;
+                for (let i = 0; i < channelData.length; i++, offset += 2) {
+                    let sample = Math.max(-1, Math.min(1, channelData[i]));
+                    view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+                }
+                return new Blob([arrayBuffer], { type: 'audio/wav' });
+            }
+
+            async function downloadMorseAudio(morseText) {
+                if (!morseText || !morseText.trim()) return;
+                btnDownload.disabled = true;
+                try {
+                    const { schedule, totalDuration } = buildSchedule(morseText);
+                    const sampleRate = 44100;
+                    const offlineCtx = new(window.OfflineAudioContext || window.webkitOfflineAudioContext)(
+                        1,
+                        Math.ceil(sampleRate * totalDuration),
+                        sampleRate
+                    );
+                    for (const item of schedule) {
+                        const osc = offlineCtx.createOscillator();
+                        const gain = offlineCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = 600;
+                        gain.gain.setValueAtTime(0, item.start);
+                        gain.gain.linearRampToValueAtTime(0.8, item.start + 0.005);
+                        gain.gain.setValueAtTime(0.8, item.start + item.duration - 0.005);
+                        gain.gain.linearRampToValueAtTime(0, item.start + item.duration);
+                        osc.connect(gain);
+                        gain.connect(offlineCtx.destination);
+                        osc.start(item.start);
+                        osc.stop(item.start + item.duration);
+                    }
+                    const renderedBuffer = await offlineCtx.startRendering();
+                    const wavBlob = audioBufferToWav(renderedBuffer);
+                    const downloadUrl = URL.createObjectURL(wavBlob);
+                    const anchor = document.createElement('a');
+                    anchor.href = downloadUrl;
+                    anchor.download = `morse_audio_${Date.now()}.wav`;
+                    document.body.appendChild(anchor);
+                    anchor.click();
+                    document.body.removeChild(anchor);
+                    URL.revokeObjectURL(downloadUrl);
+                    btnDownload.style.background = '#ffffff';
+                    btnDownload.style.color = '#000000';
+                    setTimeout(() => {
+                        btnDownload.style.background = 'transparent';
+                        btnDownload.style.color = '#ffffff';
+                    }, 300);
+                } catch (err) { console.error(err); } finally { btnDownload.disabled = false; }
+            }
+
+            btnDownload.addEventListener('click', () => {
+                downloadMorseAudio(morseOutput.value);
+            });
+
+            // Microphone
+            let isListening = false;
+            let micStream = null;
+            let micAudioCtx = null;
+            let analyserNode = null;
+            let animationFrameId = null;
+            let signalOn = false;
+            let signalStartTime = 0;
+            let silenceStartTime = 0;
+            const UNIT_DUR = 80;
+            const DOT_DASH_THRESHOLD = UNIT_DUR * 2;
+            const LETTER_SPACE_THRESHOLD = UNIT_DUR * 3.5;
+            const WORD_SPACE_THRESHOLD = UNIT_DUR * 7;
+
+            async function toggleListening() {
+                if (isListening) {
+                    stopListening();
+                } else {
+                    await startListening();
+                }
+            }
+
+            async function startListening() {
+                try {
+                    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    micAudioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    const source = micAudioCtx.createMediaStreamSource(micStream);
+                    analyserNode = micAudioCtx.createAnalyser();
+                    analyserNode.fftSize = 1024;
+                    source.connect(analyserNode);
+                    isListening = true;
+                    btnListen.classList.add('active');
+                    statusDot.classList.add('active');
+                    statusText.innerText = 'Mendengarkan Audio Morse...';
+                    silenceStartTime = performance.now();
+                    signalOn = false;
+                    processAudioSignal();
+                } catch (err) {
+                    console.error(err);
+                    alert('Tidak dapat mengakses mikrofon.');
+                }
+            }
+
+            function stopListening() {
+                isListening = false;
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                if (micStream) micStream.getTracks().forEach(track => track.stop());
+                if (micAudioCtx) micAudioCtx.close();
+                btnListen.classList.remove('active');
+                statusDot.classList.remove('active');
+                statusText.innerText = 'Mikrofon Mati';
+            }
+
+            function processAudioSignal() {
+                if (!isListening) return;
+                const bufferLength = analyserNode.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyserNode.getByteFrequencyData(dataArray);
+                let sum = 0,
+                    binCount = 0;
+                for (let i = 8; i <= 30; i++) { sum += dataArray[i];
+                    binCount++; }
+                const avgVolume = sum / binCount;
+                const VOLUME_THRESHOLD = 50;
+                const now = performance.now();
+
+                if (avgVolume > VOLUME_THRESHOLD) {
+                    if (!signalOn) {
+                        signalOn = true;
+                        signalStartTime = now;
+                        const silenceDur = now - silenceStartTime;
+                        if (silenceDur >= WORD_SPACE_THRESHOLD) {
+                            if (morseOutput.value.trim().length > 0 && !morseOutput.value.endsWith('/ ')) {
+                                morseOutput.value = morseOutput.value.trim() + ' / ';
+                            }
+                        } else if (silenceDur >= LETTER_SPACE_THRESHOLD) {
+                            if (morseOutput.value.length > 0 && !morseOutput.value.endsWith(' ')) {
+                                morseOutput.value += ' ';
+                            }
+                        }
+                    }
+                } else {
+                    if (signalOn) {
+                        signalOn = false;
+                        silenceStartTime = now;
+                        const signalDur = now - signalStartTime;
+                        if (signalDur > 20) {
+                            const symbol = signalDur < DOT_DASH_THRESHOLD ? '.' : '-';
+                            morseOutput.value += symbol;
+                            textInput.value = decodeToText(morseOutput.value);
+                            morseOutput.scrollTop = morseOutput.scrollHeight;
+                            textInput.scrollTop = textInput.scrollHeight;
+                        }
+                    }
+                }
+                animationFrameId = requestAnimationFrame(processAudioSignal);
+            }
+
+            btnListen.addEventListener('click', toggleListening);
+
+            // Upload file
+            btnUpload.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                statusDot.classList.add('active');
+                statusText.innerText = 'Menganalisis Berkas Audio...';
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    const decodeAudioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    const audioBuffer = await decodeAudioCtx.decodeAudioData(arrayBuffer);
+                    const pcmData = audioBuffer.getChannelData(0);
+                    const sampleRate = audioBuffer.sampleRate;
+                    const windowSize = Math.floor(sampleRate * 0.005);
+                    const numWindows = Math.floor(pcmData.length / windowSize);
+                    const envelope = new Float32Array(numWindows);
+                    let maxAmp = 0;
+                    for (let i = 0; i < numWindows; i++) {
+                        let sum = 0;
+                        const start = i * windowSize;
+                        for (let j = 0; j < windowSize; j++) {
+                            sum += Math.abs(pcmData[start + j]);
+                        }
+                        envelope[i] = sum / windowSize;
+                        if (envelope[i] > maxAmp) maxAmp = envelope[i];
+                    }
+                    if (maxAmp === 0) {
+                        alert('File audio kosong.');
+                        statusDot.classList.remove('active');
+                        statusText.innerText = 'Mikrofon Mati';
+                        return;
+                    }
+                    for (let i = 0; i < numWindows; i++) envelope[i] /= maxAmp;
+                    const THRESHOLD = 0.25;
+                    const states = [];
+                    let currentState = envelope[0] > THRESHOLD ? 'ON' : 'OFF';
+                    let count = 0;
+                    for (let i = 0; i < numWindows; i++) {
+                        const isSignal = envelope[i] > THRESHOLD;
+                        const stateNow = isSignal ? 'ON' : 'OFF';
+                        if (stateNow === currentState) {
+                            count++;
+                        } else {
+                            states.push({ type: currentState, durationMs: (count * windowSize / sampleRate) * 1000 });
+                            currentState = stateNow;
+                            count = 1;
+                        }
+                    }
+                    if (count > 0) {
+                        states.push({ type: currentState, durationMs: (count * windowSize / sampleRate) * 1000 });
+                    }
+                    const cleanStates = states.filter(s => s.durationMs >= 20);
+                    const onDurations = cleanStates.filter(s => s.type === 'ON').map(s => s.durationMs);
+                    if (onDurations.length === 0) {
+                        alert('Tidak ditemukan nada Morse.');
+                        statusDot.classList.remove('active');
+                        statusText.innerText = 'Mikrofon Mati';
+                        return;
+                    }
+                    onDurations.sort((a, b) => a - b);
+                    const estimatedDot = Math.max(onDurations[0], 30);
+                    const dotDashThreshold = estimatedDot * 2.1;
+                    const letterSpaceThreshold = estimatedDot * 2.5;
+                    const wordSpaceThreshold = estimatedDot * 5.5;
+                    let parsedMorse = '';
+                    for (let i = 0; i < cleanStates.length; i++) {
+                        const s = cleanStates[i];
+                        if (s.type === 'OFF') {
+                            if (s.durationMs >= wordSpaceThreshold) {
+                                if (parsedMorse.trim().length > 0 && !parsedMorse.endsWith('/ ')) {
+                                    parsedMorse = parsedMorse.trim() + ' / ';
+                                }
+                            } else if (s.durationMs >= letterSpaceThreshold) {
+                                if (parsedMorse.length > 0 && !parsedMorse.endsWith(' ')) {
+                                    parsedMorse += ' ';
+                                }
+                            }
+                        } else if (s.type === 'ON') {
+                            if (s.durationMs < dotDashThreshold) {
+                                parsedMorse += '.';
+                            } else {
+                                parsedMorse += '-';
+                            }
+                        }
+                    }
+                    morseOutput.value = parsedMorse.trim();
+                    textInput.value = decodeToText(morseOutput.value);
+                    statusText.innerText = 'Sukses Mendeduksi Audio!';
+                    setTimeout(() => {
+                        statusDot.classList.remove('active');
+                        statusText.innerText = 'Mikrofon Mati';
+                    }, 1500);
+                } catch (err) {
+                    console.error(err);
+                    alert('Gagal memproses file audio.');
+                    statusDot.classList.remove('active');
+                    statusText.innerText = 'Mikrofon Mati';
+                } finally {
+                    fileInput.value = '';
+                }
+            });
+        }
+
         // ── EXPOSE ──
         window.navigateTo = navigateTo;
         window.srcFetch = srcFetch;
@@ -1993,8 +2636,8 @@
         // ── INIT ──
         renderSrcProxySelect();
         renderHistory();
+        // Morse will init when page is navigated to
 
-        // ── KEYBOARD SHORTCUT: ESC to close modal ──
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const modal = document.getElementById('previewModal');
